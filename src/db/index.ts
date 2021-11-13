@@ -4,7 +4,7 @@ if (!admin.apps.length) {
     try {
         if (process.env.DB_ENV === 'production') {
             admin.initializeApp({
-                serviceAccountId: '110310737448759594698'
+                serviceAccountId: process.env.SA_ID
             })
         } else {
             admin.initializeApp({
