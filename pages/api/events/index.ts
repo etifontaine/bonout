@@ -27,7 +27,7 @@ export default async function handler(
       return res.status(400).json({ error: 'body must be set' })
     }
 
-    let payload: BoEvent|null = null
+    let payload: BoEvent | null = null
     try {
       payload = JSON.parse(req.body);
     } catch (error) {
