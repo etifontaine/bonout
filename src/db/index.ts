@@ -2,9 +2,15 @@ import admin from 'firebase-admin';
 
 if (!admin.apps.length) {
     try {
-        admin.initializeApp({
-            credential: admin.credential.cert('bonout-web-app-sa.json'),
-        });
+        if (process.env.DB_ENV === 'production') {
+            admin.initializeApp({
+                serviceAccountId: '110310737448759594698'
+            })
+        } else {
+            admin.initializeApp({
+                credential: admin.credential.cert('bonout-web-app-sa.json'),
+            });
+        }
     } catch (error) {
         console.log('Firebase admin initialization error', error);
     }
