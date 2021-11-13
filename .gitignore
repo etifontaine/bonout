@@ -35,3 +35,12 @@ yarn-error.log*
 
 # typescript
 *.tsbuildinfo
+
+#cypress
+/cypress/integration/1-getting-started
+/cypress/integration/2-advanced-examples
+/cypress/fixtures/example.json
+/cypress/screenshots/
+/cypress/videos/
+
+bonout-web-app-sa.json
