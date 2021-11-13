@@ -11,6 +11,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+      - run: 'echo "$GCP_SA" > bonout-web-app-sa.json'
+        shell: bash
+        env:
+          GCP_SA: ${{secrets.GCP_SA}}
       # Install NPM dependencies, cache them correctly
       # and run all Cypress tests
       - name: Cypress run

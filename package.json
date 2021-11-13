@@ -6,7 +6,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test": "NODE_ENV='staging' cypress run --headless",
+    "test": "DB_ENV='staging' cypress run --headless",
     "cypress": "DB_ENV='staging' cypress open"
   },
   "dependencies": {
