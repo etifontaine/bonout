@@ -1,14 +1,10 @@
 module.exports = {
   purge: [
     'public/index.html',
-    'src/**/*.ts',
-    'src/**/*.tsx',
+    'src/**/*.js',
+    'src/**/*.jsx',
   ],
-  darkMode: false, // or 'media' or 'class'
   theme: {
-    fontFamily: {
-      sans: ["Inter", "sans-serif"],
-    },
     extend: {
       colors: {
         gray: {
