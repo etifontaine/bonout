@@ -1,11 +1,11 @@
 export type BoEvent = {
-  id: string;
+  id?: string;
   title: string;
   description: string;
   user_id: string;
   address: string;
-  start_at: Date;
-  end_at: Date;
+  start_at: string;
+  end_at: string;
   main_asset?: string;
   link: string;
 };

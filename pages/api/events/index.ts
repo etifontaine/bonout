@@ -3,7 +3,9 @@ import type { BoEvent } from "../../../src/types";
 import {
   getEvents,
   createEvent,
+  getEventByLink,
 } from "../../../src/models/events";
+
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<
@@ -17,17 +19,37 @@ export default async function handler(
         .status(500)
         .json({ error: "Failed to get events" });
 
-    res.status(200).json(events);
+    return res.status(200).json(events);
   }
 
   if (req.method === "POST") {
-    const payload = JSON.parse(req.body);
-    await createEvent(payload)
+    if (!req.body) {
+      return res.status(400).json({ error: 'body must be set' })
+    }
+
+    let payload: BoEvent | null = null
+    try {
+      payload = JSON.parse(req.body);
+    } catch (error) {
+      return res.status(400).json({ error: 'can not parse body' })
+    }
+
+    if (!payload) {
+      return res.status(400).json({ error: 'payload must be set' })
+    }
+
+    // check if an event already exist with this link
+    const eventExist = await getEventByLink(payload.link)
+    if (eventExist) {
+      payload.link += `-${Math.random().toString(36).substr(2, 9)}`
+    }
+
+    return await createEvent(payload)
       .then(() => {
-        res.status(204).json({ message: "Success" });
+        return res.status(204).json({ message: "success" });
       })
       .catch(e => {
-        res.status(500).json({ error: e.message });
+        return res.status(500).json({ error: e.message });
       });
   }
 }
