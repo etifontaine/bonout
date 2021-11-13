@@ -1,7 +1,7 @@
 {
   "events": [
     {
-      "id": 1,
+      "id": "1",
       "title": "Pot de départ de Mathieu",
       "description": "Hello! Après 4 belles années avec vous, je pars pour de nouvelles aventures. Je vous propose qu’on se retrouve jeudi 13 Novembre à 18h, au Bar du Favart.",
       "user_id": "1",
@@ -11,7 +11,7 @@
       "link": "https://www.google.com"
     },
     {
-      "id": 2,
+      "id": "2",
       "title": "Pot de départ de Mathieu",
       "description": "Hello! Après 4 belles années avec vous, je pars pour de nouvelles aventures. Je vous propose qu’on se retrouve jeudi 13 Novembre à 18h, au Bar du Favart.",
       "user_id": "1",
@@ -21,7 +21,7 @@
       "link": "https://www.google.com"
     },
     {
-      "id": 3,
+      "id": "3",
       "title": "Pot de départ de Mathieu",
       "description": "Hello! Après 4 belles années avec vous, je pars pour de nouvelles aventures. Je vous propose qu’on se retrouve jeudi 13 Novembre à 18h, au Bar du Favart.",
       "user_id": "1",
