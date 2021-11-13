@@ -1,6 +1,7 @@
 const eventLink = `cypress-test-${Math.random().toString(36).substr(2, 9)}`
 
 describe("POST api/events", () => {
+  console.log(`using ${process.env.DB_ENV}`)
   it("should be an error if id don't exist", () => {
     cy.request({
       method: "POST",
