@@ -14,7 +14,7 @@ function Footer() {
           <div className="sm:col-span-12 lg:col-span-3">
             <div className="mb-2">
               {/* Logo */}
-              <Link href="/" aria-label="Bonout">
+              <Link href="/" aria-label="Bonout" passHref>
                 <Image alt="logo" className="inline-block"  src="/images/logo.svg" width="50" height="50" />
               </Link>
             </div>
