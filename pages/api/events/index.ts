@@ -1,4 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
+import { v4 as uuidv4 } from 'uuid';
 import type { BoEvent } from "../../../src/types";
 import {
   getEvents,
@@ -38,15 +39,11 @@ export default async function handler(
       return res.status(400).json({ error: 'payload must be set' })
     }
 
-    // check if an event already exist with this link
-    const eventExist = await getEventByLink(payload.link)
-    if (eventExist) {
-      payload.link += `-${Math.random().toString(36).substr(2, 9)}`
-    }
+    payload.link = uuidv4()
 
     return await createEvent(payload)
-      .then(() => {
-        return res.status(201).json({ message: "success" });
+      .then((event) => {
+        return res.status(201).json({ message: event.link });
       })
       .catch(e => {
         return res.status(500).json({ error: e.message });

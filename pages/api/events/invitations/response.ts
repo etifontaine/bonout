@@ -31,6 +31,9 @@ export default async function handler(
     if (!payload.link) {
         return res.status(400).json({ error: 'link must be set' })
     }
+    if (!payload.name) {
+        return res.status(400).json({ error: 'name must be set' })
+    }
     if (!Object.values(BoInvitationValidResponse).includes(payload.response)) {
         return res.status(400).json({ error: `${payload.response} is not a valid response` })
     }
@@ -50,7 +53,7 @@ export default async function handler(
 
     return await createInvitationResponse(event.id, payload)
         .then(() => {
-            return res.status(201).json({ message: "success" });
+            return res.status(201).json({ message: existingInvitation ? 'updated' : 'created' });
         })
         .catch((e: { message: string; }) => {
             return res.status(500).json({ error: e.message });

@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react';
 import type { NextPage } from 'next'
 import Head from 'next/head'
-import Header from '../components/Landing/Header';
+import Header from '../components/Header';
 import HeroHome from '../components/Landing/HeroHome';
 import FeaturesHome from '../components/Landing/Features';
 import Testimonials from '../components/Landing/Testimonials';
-import Footer from '../components/Landing/Footer';
+import Footer from '../components/Footer';
 
 import AOS from 'aos';
 

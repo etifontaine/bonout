@@ -8,6 +8,8 @@ export type BoEvent = {
   end_at: string;
   main_asset?: string;
   link: string;
+  comingGuestAmount?: number;
+  maybeComingGuestAmount?: number;
   invitations: BoInvitationResponse[]
 };
 
