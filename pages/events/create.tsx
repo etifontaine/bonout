@@ -3,11 +3,7 @@ import Input from "../../components/Input";
 import Head from "next/head";
 import { MouseEventHandler, useState } from "react";
 import { toast } from "react-toastify";
-import usePlacesAutocomplete, {
-  getDetails,
-  getGeocode,
-  getLatLng,
-} from "use-places-autocomplete";
+import usePlacesAutocomplete from "use-places-autocomplete";
 import useOnclickOutside from "react-cool-onclickoutside";
 
 const Add: NextPage = () => {
