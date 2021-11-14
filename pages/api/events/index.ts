@@ -46,7 +46,7 @@ export default async function handler(
 
     return await createEvent(payload)
       .then(() => {
-        return res.status(204).json({ message: "success" });
+        return res.status(201).json({ message: "success" });
       })
       .catch(e => {
         return res.status(500).json({ error: e.message });

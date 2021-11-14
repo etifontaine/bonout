@@ -1,5 +1,6 @@
+const { FieldValue } = require('firebase-admin/firestore');
 import db from '../db';
-import { BoEvent } from "../types";
+import { BoEvent, BoInvitationResponse } from "../types";
 
 const COLLECTION_NAME = `${process.env.DB_ENV}_events`;
 
@@ -46,4 +47,24 @@ export async function createEvent(payload: BoEvent): Promise<BoEvent> {
 
 export async function deleteEventByID(id: string): Promise<void> {
   await db.collection(COLLECTION_NAME).doc(id).delete()
+}
+
+export async function createInvitationResponse(eventID: BoEvent["id"], payload: BoInvitationResponse) {
+  const eventRef = db.collection(COLLECTION_NAME).doc(eventID);
+
+  const unionRes = await eventRef.update({
+    invitations: FieldValue.arrayUnion(payload)
+  });
+
+  return unionRes
+}
+
+export async function deleteInvitationResponse(eventID: BoEvent["id"], payload: BoInvitationResponse) {
+  const eventRef = db.collection(COLLECTION_NAME).doc(eventID);
+
+  const unionRes = await eventRef.update({
+    invitations: FieldValue.arrayRemove(payload)
+  });
+
+  return unionRes
 }

@@ -17,7 +17,7 @@ describe("POST api/events", () => {
       }),
       failOnStatusCode: false,
     }).then(response => {
-      expect(response.status).to.be.equal(204);
+      expect(response.status).to.be.equal(201);
     });
   });
 });
@@ -54,3 +54,37 @@ describe("GET api/events/[id]", () => {
     });
   });
 });
+
+describe("POST api/events/invitations/response", () => {
+  it("should be an error if response is not valid", () => {
+    cy.request({
+      method: 'POST',
+      url: "http://localhost:3000/api/events/invitations/response",
+      body: JSON.stringify({
+        name: "cypress-test",
+        response: "yes",
+        link: eventLink
+      }),
+      failOnStatusCode: false,
+    }).then(response => {
+      expect(response.status).to.be.equal(201);
+    });
+  })
+})
+
+describe("POST api/events/invitations/response", () => {
+  it("should be an error if request is not valid", () => {
+    cy.request({
+      method: 'POST',
+      url: "http://localhost:3000/api/events/invitations/response",
+      body: JSON.stringify({
+        name: "cypress-test",
+        response: "bonout",
+        link: eventLink
+      }),
+      failOnStatusCode: false,
+    }).then(response => {
+      expect(response.status).to.be.equal(400);
+    });
+  })
+})
