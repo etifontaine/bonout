@@ -4,7 +4,6 @@ import Header from '../components/Landing/Header';
 import HeroHome from '../components/Landing/HeroHome';
 import FeaturesHome from '../components/Landing/Features';
 import Testimonials from '../components/Landing/Testimonials';
-import Newsletter from '../components/Landing/Newsletter';
 import Footer from '../components/Landing/Footer';
 
 import AOS from 'aos';
