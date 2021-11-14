@@ -2,7 +2,11 @@ module.exports = {
   purge: [
     'public/index.html',
     'src/**/*.js',
+    'src/**/*.ts',
     'src/**/*.jsx',
+    'src/**/*.tsx',
+    'components/**/*.jsx',
+    'components/**/*.tsx',
   ],
   theme: {
     extend: {
@@ -132,8 +136,5 @@ module.exports = {
     translate: ['responsive', 'hover', 'focus', 'group-hover'],
     boxShadow: ['responsive', 'hover', 'focus', 'focus-within'],
     opacity: ['responsive', 'hover', 'focus', 'group-hover'],
-  },
-  plugins: [
-    require('@tailwindcss/forms'),
-  ],
+  }
 };
