@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 
 function Header() {
 
@@ -24,7 +25,7 @@ function Header() {
             {/* Logo */}
             <Link href="/">
               <a className="block" aria-label="Bonout">
-                <img alt="logo" src="images/logo.svg" width="50" height="50" />
+                <Image alt="logo" src="/images/logo.svg" width="50" height="50" />
               </a>
             </Link>
           </div>

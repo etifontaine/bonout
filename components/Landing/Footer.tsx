@@ -1,5 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 
 function Footer() {
   return (
@@ -13,8 +14,8 @@ function Footer() {
           <div className="sm:col-span-12 lg:col-span-3">
             <div className="mb-2">
               {/* Logo */}
-              <Link href="/" className="inline-block" aria-label="Bonout">
-                <img alt="logo" src="images/logo.svg" width="50" height="50" />
+              <Link href="/" aria-label="Bonout">
+                <Image alt="logo" className="inline-block"  src="/images/logo.svg" width="50" height="50" />
               </Link>
             </div>
             {/* <div className="text-sm text-gray-600">
