@@ -40,14 +40,12 @@ export async function getServerSideProps(context: { query: { link: string; }; })
 
 const Invitation: NextPage<PageProps> = ({ event }) => {
   if (!event) {
-    Router.push('/')
+    Router.push('/home')
   }
 
   const [modalContent, setModal] = useState<IModal>({})
 
   const setResponse = (userResponse: BoInvitationValidResponse) => {
-    console.log(userResponse);
-
     setModal({ userResponse, link: event.link })
   }
 

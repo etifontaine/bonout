@@ -63,7 +63,7 @@ export default function InvitationModal({ link, userResponse }: IModal) {
                 link: link
             }),
         }).then(() => {
-            Router.push("/")
+            Router.push("/home")
         })
     }
 

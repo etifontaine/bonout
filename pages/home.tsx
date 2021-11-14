@@ -21,20 +21,20 @@ const Add: NextPage = () => {
         <h2 className="text-2xl font-medium pt-4 pl-2 pb-2">
           C'est aujourd'hui !{" "}
         </h2>
-        <EventCard event={fakeEvent} />
+        {/* <EventCard event={fakeEvent} /> */}
 
         <h2 className="text-2xl font-medium pt-4 pl-2 pb-2">
           À venir{" "}
         </h2>
         <section className="h-full bg-white">
-          {fakeEvents.map((event, index) => (
+          {/* {fakeEvents.map((event, index) => (
             <>
               <EventItem event={event} key={event.id} />
               {index !== fakeEvents.length - 1 ? (
                 <Separator key={event.id + "sep"} />
               ) : null}
             </>
-          ))}
+          ))} */}
         </section>
       </main>
     </div>
@@ -49,26 +49,4 @@ function Separator() {
   );
 }
 
-const fakeEvent = {
-  id: "1",
-  user_id: "1",
-  title: "Event 1",
-  description: "Description 1",
-  start_at: "2021-11-14T18:30",
-  end_at: "2020-01-01",
-  address: "Address 1",
-  link: "Link 1",
-  invitations: [
-    {
-      name: "Invitation 1",
-      link: "Link 1",
-      response: BoInvitationValidResponse.YES,
-      created_at: "2020-01-01",
-    },
-  ],
-};
-const fakeEvents: BoEvent[] = [1, 2, 3, 4, 5].map(
-  () => fakeEvent
-);
-console.log(fakeEvents);
 export default Add;
