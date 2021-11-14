@@ -5,18 +5,7 @@ function Features() {
 
   const [tab, setTab] = useState(1);
 
-  const tabs = useRef(null);
-
-  const heightFix = () => {
-    if (tabs.current.children[tab]) {
-      tabs.current.style.height = tabs.current.children[tab - 1].offsetHeight + 'px'
-    }
-  }
-
-  useEffect(() => {
-    heightFix()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [tab])
+  const tabs = useRef<HTMLLinkElement>(null);
 
   return (
     <section className="relative">
