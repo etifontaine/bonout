@@ -100,7 +100,6 @@ function Features() {
                 >
                   <div className="relative inline-flex flex-col">
                     <Image className="md:max-w-none mx-auto rounded" src="/images/features-bg.png" width="500" height="462" alt="Features bg" />
-                    <Image className="md:max-w-none absolute w-full left-0 transform animate-float mt-30pc" src="/images/features-element.png" width="500" height="44" alt="Element" />
                   </div>
                 </Transition>
                 {/* Item 2 */}
@@ -117,7 +116,6 @@ function Features() {
                 >
                   <div className="relative inline-flex flex-col">
                     <Image className="md:max-w-none mx-auto rounded" src="/images/features-bg.png" width="500" height="462" alt="Features bg" />
-                    <Image className="md:max-w-none absolute w-full left-0 transform animate-float mt-30pc" src="/images/features-element.png" width="500" height="44" alt="Element" />
                   </div>
                 </Transition>
                 {/* Item 3 */}
@@ -134,7 +132,6 @@ function Features() {
                 >
                   <div className="relative inline-flex flex-col">
                     <Image className="md:max-w-none mx-auto rounded" src="/images/features-bg.png" width="500" height="462" alt="Features bg" />
-                    <Image className="md:max-w-none absolute w-full left-0 transform animate-float mt-30pc" src="/images/features-element.png" width="500" height="44" alt="Element" />
                   </div>
                 </Transition>
               </div>

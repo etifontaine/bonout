@@ -27,13 +27,11 @@ function CSSTransition({
   children,
   ...rest
 }) {
-  const enterClasses = enter.split(' ').filter((s) => s.length);
-  const enterStartClasses = enterStart.split(' ').filter((s) => s.length);
-  const enterEndClasses = enterEnd.split(' ').filter((s) => s.length);
-  const leaveClasses = leave.split(' ').filter((s) => s.length);
-  const leaveStartClasses = leaveStart.split(' ').filter((s) => s.length);
-  const leaveEndClasses = leaveEnd.split(' ').filter((s) => s.length);
   const removeFromDom = unmountOnExit;
+
+  function getClasses(kind) {
+    return kind.split(' ').filter((s) => s.length)
+  }
 
   function addClasses(node, classes) {
     classes.length && node.classList.add(...classes);
@@ -57,28 +55,28 @@ function CSSTransition({
       }}
       onEnter={() => {
         if (!removeFromDom) nodeRef.current.style.display = null;
-        addClasses(nodeRef.current, [...enterClasses, ...enterStartClasses])
+        addClasses(nodeRef.current, [...getClasses(enter), ...getClasses(enterStart)])
       }}
       onEntering={() => {
-        removeClasses(nodeRef.current, enterStartClasses)
-        addClasses(nodeRef.current, enterEndClasses)
+        removeClasses(nodeRef.current, getClasses(enterStart))
+        addClasses(nodeRef.current, getClasses(enterEnd))
       }}
       onEntered={() => {
-        removeClasses(nodeRef.current, [...enterEndClasses, ...enterClasses])
+        removeClasses(nodeRef.current, [...getClasses(enterEnd), ...getClasses(enter)])
       }}
       onExit={() => {
-        addClasses(nodeRef.current, [...leaveClasses, ...leaveStartClasses])
+        addClasses(nodeRef.current, [...getClasses(leave), ...getClasses(leaveStart)])
       }}
       onExiting={() => {
-        removeClasses(nodeRef.current, leaveStartClasses)
-        addClasses(nodeRef.current, leaveEndClasses)
+        removeClasses(nodeRef.current, getClasses(leaveStart))
+        addClasses(nodeRef.current, getClasses(leaveEnd))
       }}
       onExited={() => {
-        removeClasses(nodeRef.current, [...leaveEndClasses, ...leaveClasses])
+        removeClasses(nodeRef.current, [...getClasses(leaveEnd), ...getClasses(leave)])
         if (!removeFromDom) nodeRef.current.style.display = 'none';
       }}
     >
-      <Component ref={nodeRef} {...rest} style={{ display: !removeFromDom ? 'none': null }}>{children}</Component>
+      <Component ref={nodeRef} {...rest} style={{ display: !removeFromDom ? 'none' : null }}>{children}</Component>
     </ReactCSSTransition>
   )
 }

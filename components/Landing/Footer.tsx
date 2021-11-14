@@ -13,10 +13,7 @@ function Footer() {
           {/* 1st block */}
           <div className="sm:col-span-12 lg:col-span-3">
             <div className="mb-2">
-              {/* Logo */}
-              <Link href="/" aria-label="Bonout" passHref>
-                <Image alt="logo" className="inline-block"  src="/images/logo.svg" width="50" height="50" />
-              </Link>
+              <Image alt="logo" className="inline-block" src="/images/logo.svg" width="50" height="50" />
             </div>
             {/* <div className="text-sm text-gray-600">
               <Link href="#" className="text-gray-600 hover:text-gray-900 hover:underline transition duration-150 ease-in-out">Conditions générales d'utilisation</Link> · <Link href="#" className="text-gray-600 hover:text-gray-900 hover:underline transition duration-150 ease-in-out">Politique de confidentialité</Link>

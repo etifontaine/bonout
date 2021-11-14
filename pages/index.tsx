@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import type { NextPage } from 'next'
+import Head from 'next/head'
 import Header from '../components/Landing/Header';
 import HeroHome from '../components/Landing/HeroHome';
 import FeaturesHome from '../components/Landing/Features';
@@ -22,7 +23,14 @@ const Home: NextPage = () => {
 
   return (
     <div className="flex flex-col min-h-screen overflow-hidden">
-
+      <Head>
+        <title>Bonout</title>
+        <meta name="description" content="Bonout t'aide à organiser ton prochain événement, un seul site avec toutes les fonctionnalités!" />
+        <meta charSet="utf-8" />
+        <link rel="icon" href="/images/logo.svg" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="theme-color" content="#000000" />
+      </Head>
       {/*  Site header */}
       <Header />
 
