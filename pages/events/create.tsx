@@ -8,14 +8,13 @@ import useOnclickOutside from "react-cool-onclickoutside";
 
 const Add: NextPage = () => {
   return (
-    <div className="font-sans">
+    <div>
       <Head>
         <title>Créer un évemment</title>
         <meta
           name="description"
           content="Créé un évenement Bonout"
         />
-        <link rel="icon" href="/favicon.ico" />
         <script
           async
           src={`https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_PLACES_API_KEY}&libraries=places&callback=initMap`}
@@ -23,7 +22,7 @@ const Add: NextPage = () => {
         <script>{"function initMap() {}"}</script>
       </Head>
 
-      <main className="">
+      <main>
         <h1 className="text-3xl font-medium w-2/3">
           Création d'un évenement
         </h1>
@@ -151,6 +150,23 @@ function Form() {
           address: location,
           description,
         }),
+      }).then(res => {
+        if (res.status === 200) {
+          toast.success("Votre évenement a été créé");
+        } else {
+          res
+            .json()
+            .then(data => {
+              toast.error(
+                data.error
+                  ? data.error
+                  : "Une erreur est survenue"
+              );
+            })
+            .catch(() => {
+              toast.error("Une erreur est survenue");
+            });
+        }
       });
     } else {
       toast.error("Il y a des erreurs dans le formulaire");
