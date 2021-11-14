@@ -1,6 +1,8 @@
 import type { NextPage } from "next";
 import Input from "../../components/Input";
 import Head from "next/head";
+import Router from "next/router";
+import Header from '../../components/Header';
 import { MouseEventHandler, useState } from "react";
 import { toast } from "react-toastify";
 import usePlacesAutocomplete from "use-places-autocomplete";
@@ -8,26 +10,39 @@ import useOnclickOutside from "react-cool-onclickoutside";
 
 const Add: NextPage = () => {
   return (
-    <div>
+    <div className="flex flex-col min-h-screen overflow-hidden">
       <Head>
-        <title>Créer un évemment</title>
-        <meta
-          name="description"
-          content="Créé un évenement Bonout"
-        />
+        <title>Bonout - Invitation</title>
+        <meta name="description" content="Bonout t'aide à organiser ton prochain événement, un seul site avec toutes les fonctionnalités!" />
+        <meta charSet="utf-8" />
+        <link rel="icon" href="/images/logo.svg" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="theme-color" content="#000000" />
         <script
           async
           src={`https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_PLACES_API_KEY}&libraries=places&callback=initMap`}
         ></script>
         <script>{"function initMap() {}"}</script>
       </Head>
+      <Header />
+      <main className="flex-grow">
+        <section className="relative">
+          <div className="max-w-6xl mx-auto px-4 sm:px-6">
 
-      <main>
-        <h1 className="text-3xl font-medium w-2/3">
-          Création d'un évenement
-        </h1>
+            {/* Hero content */}
+            <div className="pt-32 pb-12 md:pt-40 md:pb-20">
+
+              {/* Section header */}
+              <div className="text-center pb-12 md:pb-16">
+                <h1 className="text-4xl md:text-5xl font-extrabold leading-tighter tracking-tighter mb-4">Création d'un événement</h1>
+                <div className="max-w-3xl mx-auto">
+                  <Form />
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
       </main>
-      <Form />
     </div>
   );
 };
@@ -144,15 +159,16 @@ function Form() {
       fetch("/api/events", {
         method: "POST",
         body: JSON.stringify({
-          title,
-          start_at: date,
-          end_at: date,
-          address: location,
-          description,
+          title: title.value,
+          start_at: date.value,
+          end_at: date.value,
+          address: location.value,
+          description: description.value,
         }),
-      }).then(res => {
-        if (res.status === 200) {
-          toast.success("Votre évenement a été créé");
+      }).then(async res => {
+        if (res.status === 201) {
+          const { message } = await res.json()
+          Router.push(`/invitation/${message}`)
         } else {
           res
             .json()
@@ -228,15 +244,14 @@ function Form() {
         // disabled={!isFormValid}
         type="submit"
         className={`
-        ${
-          isFormValid ? "" : "cursor-not-allowed opacity-30"
-        }
+        ${isFormValid ? "" : "cursor-not-allowed opacity-30"
+          }
         bg-blue-500
-        cursor-pointer 
-        hover:bg-blue-700 
-        text-white 
-        font-bold 
-        py-2 px-4 
+        cursor-pointer
+        hover:bg-blue-700
+        text-white
+        font-bold
+        py-2 px-4
         rounded-full float-right`}
       />
     </form>

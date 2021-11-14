@@ -1,6 +1,6 @@
 const { FieldValue } = require('firebase-admin/firestore');
 import db from '../db';
-import { BoEvent, BoInvitationResponse } from "../types";
+import { BoEvent, BoInvitationResponse, BoInvitationValidResponse } from "../types";
 
 const COLLECTION_NAME = `${process.env.DB_ENV}_events`;
 
@@ -30,6 +30,15 @@ export async function getEventByLink(
   }
   const event = eventsQuery.docs[0].data() as BoEvent
   event.id = eventsQuery.docs[0].id
+  let comingGuestAmount = 0
+  let maybeComingGuestAmount = 0
+  event.invitations?.map(invitation => {
+    comingGuestAmount += invitation.response === BoInvitationValidResponse.YES ? 1 : 0
+    maybeComingGuestAmount += invitation.response === BoInvitationValidResponse.MAYBE ? 1 : 0
+  })
+
+  event.comingGuestAmount = comingGuestAmount
+  event.maybeComingGuestAmount = maybeComingGuestAmount
 
   return event
 }

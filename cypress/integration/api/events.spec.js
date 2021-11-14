@@ -1,4 +1,4 @@
-const eventLink = `cypress-test-${Math.random().toString(36).substr(2, 9)}`
+let eventLink
 
 describe("POST api/events", () => {
   console.log(`using ${process.env.DB_ENV}`)
@@ -13,10 +13,10 @@ describe("POST api/events", () => {
         address: "test",
         start_at: new Date().toDateString(),
         end_at: new Date().toDateString(),
-        link: eventLink,
       }),
       failOnStatusCode: false,
-    }).then(response => {
+    }).then(async response => {
+      eventLink = response.body.message
       expect(response.status).to.be.equal(201);
     });
   });
