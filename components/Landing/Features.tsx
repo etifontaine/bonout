@@ -31,7 +31,7 @@ function Features() {
           {/* Section header */}
           <div className="max-w-3xl mx-auto text-center pb-12 md:pb-16">
             <h1 className="h2 mb-4">Découvres les fonctionnalités</h1>
-            <p className="text-xl text-gray-600">Regroupez toute l'oganisation de vos événements au même endroit.</p>
+            <p className="text-xl text-gray-600">Regroupes toute l'oganisation de tes événements au même endroit.</p>
           </div>
 
           {/* Section content */}

@@ -34,7 +34,6 @@ const Home: NextPage = () => {
         <HeroHome />
         <FeaturesHome />
         <Testimonials />
-        <Newsletter />
 
       </main>
 
