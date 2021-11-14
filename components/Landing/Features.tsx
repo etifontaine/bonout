@@ -5,7 +5,7 @@ function Features() {
 
   const [tab, setTab] = useState(1);
 
-  const tabs = useRef<HTMLLinkElement>(null);
+  const tabs = useRef<HTMLDivElement>(null);
 
   return (
     <section className="relative">
