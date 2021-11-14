@@ -37,7 +37,6 @@ export default function Input(props: InputProps) {
       <input
         id={id}
         className={`appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 ${className}`}
-        // id="grid-first-name"
         value={value}
         onChange={event => onChange(event.target.value)} // onChange is a function that takes an event
         placeholder={placeholder}
