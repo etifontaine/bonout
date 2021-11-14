@@ -2,6 +2,7 @@ import type { NextPage } from "next";
 import Input from "../../components/Input";
 import Head from "next/head";
 import { MouseEventHandler, useState } from "react";
+import { toast } from "react-toastify";
 import usePlacesAutocomplete, {
   getDetails,
   getGeocode,
@@ -57,6 +58,12 @@ function Form() {
     defaultInputState
   );
 
+  const isFormValid =
+    title.isValid &&
+    description.isValid &&
+    date.isValid &&
+    location.isValid;
+
   const ref = useOnclickOutside(() => {
     // When user clicks outside of the component, we can dismiss
     // the searched suggestions by calling this method
@@ -75,8 +82,6 @@ function Form() {
     },
     debounce: 300,
   });
-
-  // const [isFormValid, setFormValid] = useState(false);
 
   const handleTitleChange = (value: string) => {
     const isValid = isLongEnough(value);
@@ -136,20 +141,11 @@ function Form() {
     clearSuggestions();
   };
 
-  const isFormValid = () => {
-    return (
-      title.isValid &&
-      description.isValid &&
-      date.isValid &&
-      location.isValid
-    );
-  };
-
   const handleSubmit = (
     e: React.FormEvent<HTMLFormElement>
   ) => {
     e.preventDefault();
-    if (isFormValid()) {
+    if (isFormValid) {
       fetch("/api/events", {
         method: "POST",
         body: JSON.stringify({
@@ -160,6 +156,8 @@ function Form() {
           description,
         }),
       });
+    } else {
+      toast.error("Il y a des erreurs dans le formulaire");
     }
   };
   return (
@@ -215,8 +213,19 @@ function Form() {
       </div>
       <input
         value="Créer"
+        // disabled={!isFormValid}
         type="submit"
-        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full float-right"
+        className={`
+        ${
+          isFormValid ? "" : "cursor-not-allowed opacity-30"
+        }
+        bg-blue-500
+        cursor-pointer 
+        hover:bg-blue-700 
+        text-white 
+        font-bold 
+        py-2 px-4 
+        rounded-full float-right`}
       />
     </form>
   );
