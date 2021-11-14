@@ -6,11 +6,11 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test": "NODE_ENV='staging' cypress run --headless",
+    "test": "DB_ENV='staging' cypress run --headless",
     "cypress": "DB_ENV='staging' cypress open"
   },
   "dependencies": {
-    "@types/react-places-autocomplete": "^7.2.9",
+    "aos": "2.3.4",
     "firebase-admin": "10.0.0",
     "next": "12.0.3",
     "react": "17.0.2",
@@ -21,15 +21,20 @@
     "uuid": "8.3.2"
   },
   "devDependencies": {
-    "@types/googlemaps": "^3.43.3",
+    "@types/react-places-autocomplete": "^7.2.9",
+    "@types/aos": "3.0.4",
     "@types/node": "16.11.7",
     "@types/react": "17.0.34",
     "@types/uuid": "8.3.1",
+    "@types/googlemaps": "^3.43.3",
+    "react-transition-group": "4.4.2",
+    "sharp": "^0.29.2",
     "autoprefixer": "10.4.0",
     "cypress": "9.0.0",
     "eslint": "7",
     "eslint-config-next": "12.0.3",
     "postcss": "8.3.11",
+    "sass": "^1.43.4",
     "tailwindcss": "2.2.19",
     "typescript": "4.4.4"
   }
