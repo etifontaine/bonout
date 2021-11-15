@@ -42,15 +42,15 @@ export default async function handler(
     }
 
     function isLinkParam() {
-      return req.query.param[0] === "link";
+      return req.query.params[0] === "link";
     }
 
     function isIdParam() {
-      return req.query.param[0] === "id";
+      return req.query.params[0] === "id";
     }
 
     function getSecondParam() {
-      return req.query.param[1];
+      return req.query.params[1];
     }
   }
 }
