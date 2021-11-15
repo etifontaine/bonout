@@ -6,23 +6,51 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<BoEvent | { error: string }>
 ) {
-  const { param } = req.query;
+  if (isNotGetRequest()) return;
 
-  if (!param) return res.status(400).end();
-
-  if (req.method === "GET") {
-    let event: BoEvent | null;
-    switch (param[0]) {
-      case "link":
-        event = await getEventByLink(param[1]);
-        break;
-      case "id":
-        event = await getEventByID(param[1]);
-        break;
-      default:
-        event = null;
+  try {
+    const event = await getEventHandler();
+    if (event) {
+      res.status(200).json(event);
+    } else {
+      res.status(404).json({ error: "Event not found !" });
     }
-    if (!event) return res.status(404).json({ error: "Event not found !" });
-    res.status(200).json(event);
+  } catch (e: any) {
+    console.error(e);
+    res.status(404).json({ error: e.message });
+  }
+
+  function isNotGetRequest(): boolean {
+    return req.method !== "GET";
+  }
+
+  async function getEventHandler(): Promise<BoEvent | null> {
+    if (isLinkParam()) {
+      if (thereIsNotValue()) throw new Error("Link value missing");
+      return await getEventByLink(getSecondParam());
+    }
+
+    if (isIdParam()) {
+      if (thereIsNotValue()) throw new Error("Id value missing");
+      return await getEventByID(getSecondParam());
+    }
+
+    throw new Error("Unknown parameter");
+
+    function thereIsNotValue() {
+      return !getSecondParam();
+    }
+
+    function isLinkParam() {
+      return req.query.param[0] === "link";
+    }
+
+    function isIdParam() {
+      return req.query.param[0] === "id";
+    }
+
+    function getSecondParam() {
+      return req.query.param[1];
+    }
   }
 }
