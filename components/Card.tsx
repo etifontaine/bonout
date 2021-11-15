@@ -7,10 +7,7 @@ export default function Card({
   children: React.ReactNode;
 }) {
   return (
-    <div
-      className="bg-white rounded-lg overflow-hidden shadow-lg"
-      {...props}
-    >
+    <div className="bg-white rounded-lg overflow-hidden shadow-lg" {...props}>
       {children}
     </div>
   );

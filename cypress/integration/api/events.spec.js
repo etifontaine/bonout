@@ -1,7 +1,7 @@
-let eventLink
+let eventLink;
 
 describe("POST api/events", () => {
-  console.log(`using ${process.env.DB_ENV}`)
+  console.log(`using ${process.env.DB_ENV}`);
   it("should be an error if id don't exist", () => {
     cy.request({
       method: "POST",
@@ -15,8 +15,8 @@ describe("POST api/events", () => {
         end_at: new Date().toDateString(),
       }),
       failOnStatusCode: false,
-    }).then(async response => {
-      eventLink = response.body.message
+    }).then(async (response) => {
+      eventLink = response.body.message;
       expect(response.status).to.be.equal(201);
     });
   });
@@ -24,12 +24,10 @@ describe("POST api/events", () => {
 
 describe("GET api/events", () => {
   it("should be an array", () => {
-    cy.request("http://localhost:3000/api/events").then(
-      response => {
-        expect(response.body).to.be.an("array");
-        expect(response.body.length).to.be.greaterThan(0);
-      }
-    );
+    cy.request("http://localhost:3000/api/events").then((response) => {
+      expect(response.body).to.be.an("array");
+      expect(response.body.length).to.be.greaterThan(0);
+    });
   });
 });
 
@@ -38,10 +36,8 @@ describe("GET api/events/[id]", () => {
     cy.request({
       url: "http://localhost:3000/api/events/undefined",
       failOnStatusCode: false,
-    }).then(response => {
-      expect(response.body.error).to.be.equal(
-        "Event not found !"
-      );
+    }).then((response) => {
+      expect(response.body.error).to.be.equal("Event not found !");
     });
   });
 
@@ -49,7 +45,7 @@ describe("GET api/events/[id]", () => {
     cy.request({
       url: `http://localhost:3000/api/events/link/${eventLink}`,
       failOnStatusCode: false,
-    }).then(response => {
+    }).then((response) => {
       expect(response.body.link).to.be.equal(eventLink);
     });
   });
@@ -58,33 +54,33 @@ describe("GET api/events/[id]", () => {
 describe("POST api/events/invitations/response", () => {
   it("should be an error if response is not valid", () => {
     cy.request({
-      method: 'POST',
+      method: "POST",
       url: "http://localhost:3000/api/events/invitations/response",
       body: JSON.stringify({
         name: "cypress-test",
         response: "yes",
-        link: eventLink
+        link: eventLink,
       }),
       failOnStatusCode: false,
-    }).then(response => {
+    }).then((response) => {
       expect(response.status).to.be.equal(201);
     });
-  })
-})
+  });
+});
 
 describe("POST api/events/invitations/response", () => {
   it("should be an error if request is not valid", () => {
     cy.request({
-      method: 'POST',
+      method: "POST",
       url: "http://localhost:3000/api/events/invitations/response",
       body: JSON.stringify({
         name: "cypress-test",
         response: "bonout",
-        link: eventLink
+        link: eventLink,
       }),
       failOnStatusCode: false,
-    }).then(response => {
+    }).then((response) => {
       expect(response.status).to.be.equal(400);
     });
-  })
-})
+  });
+});

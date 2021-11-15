@@ -8,25 +8,21 @@ export default async function handler(
 ) {
   const { param } = req.query;
 
-  if (!param)
-    return res.status(400).end();
+  if (!param) return res.status(400).end();
 
   if (req.method === "GET") {
-    let event: BoEvent | null
+    let event: BoEvent | null;
     switch (param[0]) {
-      case 'link':
+      case "link":
         event = await getEventByLink(param[1]);
         break;
-      case 'id':
+      case "id":
         event = await getEventByID(param[1]);
         break;
       default:
-        event = null
+        event = null;
     }
-    if (!event)
-      return res
-        .status(404)
-        .json({ error: "Event not found !" });
+    if (!event) return res.status(404).json({ error: "Event not found !" });
     res.status(200).json(event);
   }
 }

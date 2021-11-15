@@ -1,23 +1,13 @@
 import React from "react";
 import type { BoEvent } from "../../src/types";
 
-export default function EventItem({
-  event,
-  ...props
-}: {
-  event: BoEvent;
-}) {
+export default function EventItem({ event, ...props }: { event: BoEvent }) {
   return (
-    <div
-      className="bg-white overflow-hidden w-full"
-      {...props}
-    >
+    <div className="bg-white overflow-hidden w-full" {...props}>
       <div className="flex flex-col p-4">
         <div className="flex flex-row justify-between">
           <div className="flex flex-col">
-            <div className="text-lg font-bold">
-              {event.title}
-            </div>
+            <div className="text-lg font-bold">{event.title}</div>
             {event.address ? (
               <div className="text-xs">{event.address}</div>
             ) : null}

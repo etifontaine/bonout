@@ -11,9 +11,7 @@ export interface InputProps {
   disabled?: boolean;
   required?: boolean;
   helperText?: string;
-  onKeyDown?: (
-    event: React.KeyboardEvent<HTMLInputElement>
-  ) => void;
+  onKeyDown?: (event: React.KeyboardEvent<HTMLInputElement>) => void;
 }
 
 export default function Input(props: InputProps) {
@@ -38,7 +36,7 @@ export default function Input(props: InputProps) {
         id={id}
         className={`appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 ${className}`}
         value={value}
-        onChange={event => onChange(event.target.value)} // onChange is a function that takes an event
+        onChange={(event) => onChange(event.target.value)} // onChange is a function that takes an event
         placeholder={placeholder}
         type={type}
         disabled={disabled}
@@ -49,10 +47,7 @@ export default function Input(props: InputProps) {
   );
 }
 
-function Label(props: {
-  txt?: string;
-  helperText?: string;
-}) {
+function Label(props: { txt?: string; helperText?: string }) {
   return props.txt ? (
     <label
       className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
@@ -60,9 +55,7 @@ function Label(props: {
     >
       {props.txt}
       {props.helperText ? (
-        <div className="text-red-500">
-          {props.helperText}
-        </div>
+        <div className="text-red-500">{props.helperText}</div>
       ) : null}
     </label>
   ) : null;
