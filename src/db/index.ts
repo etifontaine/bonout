@@ -6,6 +6,8 @@ if (!admin.apps.length) {
       admin.initializeApp({
         serviceAccountId: process.env.SA_ID,
       });
+    } else if (process.env.DB_ENV === "build") {
+      admin.initializeApp();
     } else {
       admin.initializeApp({
         credential: admin.credential.cert("bonout-web-app-sa.json"),
