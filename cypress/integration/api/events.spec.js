@@ -31,10 +31,10 @@ describe("GET api/events", () => {
   });
 });
 
-describe("GET api/events/[id]", () => {
+describe("GET api/events/id/[id]", () => {
   it("should be an error if id don't exist", () => {
     cy.request({
-      url: "http://localhost:3000/api/events/undefined",
+      url: "http://localhost:3000/api/events/id/undefined",
       failOnStatusCode: false,
     }).then((response) => {
       expect(response.body.error).to.be.equal("Event not found !");
