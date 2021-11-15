@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 import type { BoEvent } from "../../../src/types";
 import {
   getEvents,
@@ -9,43 +9,38 @@ import {
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<
-    BoEvent[] | { error: string } | { message: string }
-  >
+  res: NextApiResponse<BoEvent[] | { error: string } | { message: string }>
 ) {
   if (req.method === "GET") {
     const events = await getEvents();
-    if (!events)
-      return res
-        .status(500)
-        .json({ error: "Failed to get events" });
+    if (!events) return res.status(500).json({ error: "Failed to get events" });
 
     return res.status(200).json(events);
   }
 
   if (req.method === "POST") {
     if (!req.body) {
-      return res.status(400).json({ error: 'body must be set' })
+      return res.status(400).json({ error: "body must be set" });
     }
 
-    let payload: BoEvent | null = null
+    let payload: BoEvent | null = null;
     try {
       payload = JSON.parse(req.body);
     } catch (error) {
-      return res.status(400).json({ error: 'can not parse body' })
+      return res.status(400).json({ error: "can not parse body" });
     }
 
     if (!payload) {
-      return res.status(400).json({ error: 'payload must be set' })
+      return res.status(400).json({ error: "payload must be set" });
     }
 
-    payload.link = uuidv4()
+    payload.link = uuidv4();
 
     return await createEvent(payload)
       .then((event) => {
         return res.status(201).json({ message: event.link });
       })
-      .catch(e => {
+      .catch((e) => {
         return res.status(500).json({ error: e.message });
       });
   }

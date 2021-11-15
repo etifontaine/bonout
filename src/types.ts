@@ -10,7 +10,7 @@ export type BoEvent = {
   link: string;
   comingGuestAmount?: number;
   maybeComingGuestAmount?: number;
-  invitations: BoInvitationResponse[]
+  invitations: BoInvitationResponse[];
 };
 
 export type BoDB = {
@@ -18,14 +18,14 @@ export type BoDB = {
 };
 
 export enum BoInvitationValidResponse {
-  YES = 'yes',
-  NO = 'no',
-  MAYBE = 'maybe',
+  YES = "yes",
+  NO = "no",
+  MAYBE = "maybe",
 }
 
 export type BoInvitationResponse = {
-  name: string
-  link: string
-  response: BoInvitationValidResponse
-  created_at: string
-}
+  name: string;
+  link: string;
+  response: BoInvitationValidResponse;
+  created_at: string;
+};

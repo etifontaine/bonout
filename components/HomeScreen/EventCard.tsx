@@ -1,27 +1,14 @@
 import React from "react";
-import {
-  BoEvent,
-  BoInvitationValidResponse,
-} from "../../src/types";
+import { BoEvent, BoInvitationValidResponse } from "../../src/types";
 import type { BoInvitationResponse } from "../../src/types";
 
-export default function EventCard({
-  event,
-  ...props
-}: {
-  event: BoEvent;
-}) {
+export default function EventCard({ event, ...props }: { event: BoEvent }) {
   return (
-    <div
-      className="bg-white overflow-hidden shadow-lg w-full"
-      {...props}
-    >
+    <div className="bg-white overflow-hidden shadow-lg w-full" {...props}>
       <div className="flex flex-col p-4">
         <div className="flex flex-row justify-between">
           <div className="flex flex-col">
-            <div className="text-lg font-bold">
-              {event.title}
-            </div>
+            <div className="text-lg font-bold">{event.title}</div>
             {event.address ? (
               <div className="text-xs">{event.address}</div>
             ) : null}
@@ -52,17 +39,12 @@ function getHoursAndMinuteLeft(date: string) {
   return `${hours}h${minutes}`;
 }
 
-function calcHowManyUsers(
-  users: Array<BoInvitationResponse>
-) {
-  return users.filter(
-    user => user.response === BoInvitationValidResponse.YES
-  ).length;
+function calcHowManyUsers(users: Array<BoInvitationResponse>) {
+  return users.filter((user) => user.response === BoInvitationValidResponse.YES)
+    .length;
 }
 
-function presenceSentences(
-  users: Array<BoInvitationResponse>
-): string {
+function presenceSentences(users: Array<BoInvitationResponse>): string {
   if (users.length === 0) {
     return "Personne n'a encore répondu";
   }
@@ -75,9 +57,7 @@ function presenceSentences(
     return "1 personne à prévu de venir";
   }
   if (usersWhoAreComing > 0) {
-    return (
-      usersWhoAreComing + " personnes ont prévu de venir"
-    );
+    return usersWhoAreComing + " personnes ont prévu de venir";
   }
   if (usersWhoAreComing === 0) {
     return "Personne n'est présent";

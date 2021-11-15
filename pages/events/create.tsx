@@ -2,7 +2,7 @@ import type { NextPage } from "next";
 import Input from "../../components/Input";
 import Head from "next/head";
 import Router from "next/router";
-import Header from '../../components/Header';
+import Header from "../../components/Header";
 import { MouseEventHandler, useState } from "react";
 import { toast } from "react-toastify";
 import usePlacesAutocomplete from "use-places-autocomplete";
@@ -13,7 +13,10 @@ const Add: NextPage = () => {
     <div className="flex flex-col min-h-screen overflow-hidden">
       <Head>
         <title>Bonout - Invitation</title>
-        <meta name="description" content="Bonout t'aide à organiser ton prochain événement, un seul site avec toutes les fonctionnalités!" />
+        <meta
+          name="description"
+          content="Bonout t'aide à organiser ton prochain événement, un seul site avec toutes les fonctionnalités!"
+        />
         <meta charSet="utf-8" />
         <link rel="icon" href="/images/logo.svg" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -28,13 +31,13 @@ const Add: NextPage = () => {
       <main className="flex-grow">
         <section className="relative">
           <div className="max-w-6xl mx-auto px-4 sm:px-6">
-
             {/* Hero content */}
             <div className="pt-32 pb-12 md:pt-40 md:pb-20">
-
               {/* Section header */}
               <div className="text-center pb-12 md:pb-16">
-                <h1 className="text-4xl md:text-5xl font-extrabold leading-tighter tracking-tighter mb-4">Création d'un événement</h1>
+                <h1 className="text-4xl md:text-5xl font-extrabold leading-tighter tracking-tighter mb-4">
+                  Création d'un événement
+                </h1>
                 <div className="max-w-3xl mx-auto">
                   <Form />
                 </div>
@@ -60,19 +63,12 @@ function Form() {
     isTouched: false,
   };
   const [title, setTitle] = useState(defaultInputState);
-  const [description, setDescription] = useState(
-    defaultInputState
-  );
+  const [description, setDescription] = useState(defaultInputState);
   const [date, setDate] = useState(defaultInputState);
-  const [location, setLocation] = useState(
-    defaultInputState
-  );
+  const [location, setLocation] = useState(defaultInputState);
 
   const isFormValid =
-    title.isValid &&
-    description.isValid &&
-    date.isValid &&
-    location.isValid;
+    title.isValid && description.isValid && date.isValid && location.isValid;
 
   const ref = useOnclickOutside(() => {
     // When user clicks outside of the component, we can dismiss
@@ -99,9 +95,7 @@ function Form() {
       value,
       isTouched: true,
       isValid,
-      helperText: isValid
-        ? ""
-        : "Le titre doit contenir au moins 5 caractères",
+      helperText: isValid ? "" : "Le titre doit contenir au moins 5 caractères",
     });
   };
 
@@ -123,9 +117,7 @@ function Form() {
       value,
       isTouched: true,
       isValid,
-      helperText: isValid
-        ? ""
-        : "La date doit être postérieure à aujourd'hui",
+      helperText: isValid ? "" : "La date doit être postérieure à aujourd'hui",
     });
   };
 
@@ -151,9 +143,7 @@ function Form() {
     clearSuggestions();
   };
 
-  const handleSubmit = (
-    e: React.FormEvent<HTMLFormElement>
-  ) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (isFormValid) {
       fetch("/api/events", {
@@ -165,19 +155,15 @@ function Form() {
           address: location.value,
           description: description.value,
         }),
-      }).then(async res => {
+      }).then(async (res) => {
         if (res.status === 201) {
-          const { message } = await res.json()
-          Router.push(`/invitation/${message}`)
+          const { message } = await res.json();
+          Router.push(`/invitation/${message}`);
         } else {
           res
             .json()
-            .then(data => {
-              toast.error(
-                data.error
-                  ? data.error
-                  : "Une erreur est survenue"
-              );
+            .then((data) => {
+              toast.error(data.error ? data.error : "Une erreur est survenue");
             })
             .catch(() => {
               toast.error("Une erreur est survenue");
@@ -222,10 +208,7 @@ function Form() {
             helperText={location.helperText}
             required={true}
           />
-          <SuggestionList
-            handleSelect={handleSelect}
-            suggestions={data}
-          />
+          <SuggestionList handleSelect={handleSelect} suggestions={data} />
         </div>
         <Input
           id="description"
@@ -244,8 +227,7 @@ function Form() {
         // disabled={!isFormValid}
         type="submit"
         className={`
-        ${isFormValid ? "" : "cursor-not-allowed opacity-30"
-          }
+        ${isFormValid ? "" : "cursor-not-allowed opacity-30"}
         bg-blue-500
         cursor-pointer
         hover:bg-blue-700
@@ -264,9 +246,9 @@ function SuggestionList(props: {
 }) {
   return props.suggestions.length > 0 ? (
     <ul className="list-reset absolute bg-white shadow-lg w-full">
-      {props.suggestions.map(suggestion => (
+      {props.suggestions.map((suggestion) => (
         <li
-          onClick={e => props.handleSelect(suggestion)}
+          onClick={(e) => props.handleSelect(suggestion)}
           key={suggestion.place_id}
           className="py-2 cursor-pointer border-b-2 border-gray-400 border-solid"
         >
