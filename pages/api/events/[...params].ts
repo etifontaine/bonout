@@ -25,28 +25,32 @@ export default async function handler(
   }
 
   async function getEventHandler(): Promise<BoEvent | null> {
-    if (isLinkParam()) {
-      if (thereIsNotValue()) throw new Error("Link value missing");
-      return await getEventByLink(getSecondParam());
+    if (isUnknownParameter()) throw new Error("Unknown parameter");
+    if (isValueMissing()) throw new Error(`${getFirstParam()} value missing`);
+
+    if (isLinkParam()) return await getEventByLink(getSecondParam());
+    if (isIdParam()) return await getEventByID(getSecondParam());
+
+    return null;
+
+    function isUnknownParameter(): boolean {
+      return ["id", "link"].indexOf(getFirstParam()) === -1;
     }
 
-    if (isIdParam()) {
-      if (thereIsNotValue()) throw new Error("Id value missing");
-      return await getEventByID(getSecondParam());
-    }
-
-    throw new Error("Unknown parameter");
-
-    function thereIsNotValue() {
+    function isValueMissing() {
       return !getSecondParam();
     }
 
     function isLinkParam() {
-      return req.query.params[0] === "link";
+      return getFirstParam() === "link";
     }
 
     function isIdParam() {
-      return req.query.params[0] === "id";
+      return getFirstParam() === "id";
+    }
+
+    function getFirstParam() {
+      return req.query.params[0];
     }
 
     function getSecondParam() {
