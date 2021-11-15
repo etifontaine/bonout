@@ -1,8 +1,10 @@
-name: End-to-end tests
+name: Cypress tests
 
-on: [push]
+on: [pull_request]
+
 jobs:
-  cypress-run:
+  setup:
+    name: Setup Dependencies
     runs-on: ubuntu-20.04
     steps:
       - name: Checkout
@@ -12,24 +14,41 @@ jobs:
         shell: bash
         env:
           GCP_SA: ${{secrets.GCP_SA}}
-      - name: Cache pnpm modules
-        uses: actions/cache@v2
+      - uses: actions/cache@v2
         with:
-          path: ~/.pnpm-store
-          key: ${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
+          path: ${{ github.workspace }}/.next/cache
+          # Generate a new cache whenever packages or source files change.
+          key: ${{ runner.os }}-nextjs-${{ hashFiles('**/pnpm-lock.yaml') }}-${{ hashFiles('**.[jt]s', '**.[jt]sx') }}
+          # If source files changed but packages didn't, rebuild from a prior cache.
           restore-keys: |
-            ${{ runner.os }}-
+            ${{ runner.os }}-nextjs-${{ hashFiles('**/pnpm-lock.yaml') }}-
       - uses: pnpm/action-setup@v2.0.1
         with:
           version: 6.0.2
           run_install: true
-      - name: Cypress run
-        uses: cypress-io/github-action@v2
+      - run: pnpm install cypress
+      - run: pnpm run build
+      - uses: cypress-io/github-action@v2
         with:
-          build: yarn run build
-          start: yarn run start
+          start: npm run start
           wait-on: http://localhost:3000
           install: false
         env:
           DB_ENV: staging
 
+  prettier:
+    runs-on: ubuntu-20.04
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        # Make sure the actual branch is checked out when running on pull requests
+        ref: ${{ github.head_ref }}
+        # This is important to fetch the changes to the previous commit
+        fetch-depth: 0
+    - name: Prettify code
+      uses: creyD/prettier_action@v4.0
+      with:
+        # This part is also where you can pass other options, for example:
+        prettier_options: --write **/*.{js,md}
+        only_changed: True
