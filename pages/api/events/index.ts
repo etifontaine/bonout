@@ -47,9 +47,44 @@ export default async function handler(
     }
 
     function getBodyPayload(): BoEvent {
-      const payload = JSON.parse(req.body);
-      if (!payload) throw new RequestError("Body is not a valid JSON");
-      return payload;
+      return checkEventTypes(checkJSONSyntax(req.body));
+
+      function checkJSONSyntax(json: string) {
+        try {
+          return JSON.parse(json);
+        } catch (err) {
+          throw new RequestError("Body is not a valid JSON");
+        }
+      }
+
+      function checkEventTypes(event: BoEvent): BoEvent {
+        fieldsToCheck().forEach((field) => {
+          if (!isString(field))
+            throw new RequestError(`${field} must be a string !`);
+          if (isEmpty(field))
+            throw new RequestError(`${field} must not be empty !`);
+        });
+
+        return event;
+
+        function fieldsToCheck(): string[] {
+          return [
+            event.title,
+            event.description,
+            event.address,
+            event.start_at,
+            event.end_at,
+            event.user_id,
+          ];
+        }
+
+        function isString(element: any): boolean {
+          return typeof element === "string";
+        }
+        function isEmpty(s: string): boolean {
+          return !s || !s.trim();
+        }
+      }
     }
   }
 }
