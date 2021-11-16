@@ -1,9 +1,9 @@
 // react component for a text input
 
 export interface InputProps {
-  id?: string;
+  id: string;
   value: string;
-  onChange: (value: string) => void;
+  onChange: (value: string, id: string) => void;
   label?: string;
   placeholder?: string;
   type?: string;
@@ -36,7 +36,7 @@ export default function Input(props: InputProps) {
         id={id}
         className={`appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 ${className}`}
         value={value}
-        onChange={(event) => onChange(event.target.value)} // onChange is a function that takes an event
+        onChange={(event) => onChange(event.target.value, id)} // onChange is a function that takes an event
         placeholder={placeholder}
         type={type}
         disabled={disabled}

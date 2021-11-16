@@ -64,11 +64,11 @@ function Form() {
   };
   const [title, setTitle] = useState(defaultInputState);
   const [description, setDescription] = useState(defaultInputState);
-  const [date, setDate] = useState(defaultInputState);
+  const [date, setDate] = useState({ start_at: defaultInputState, end_at: defaultInputState });
   const [location, setLocation] = useState(defaultInputState);
 
   const isFormValid =
-    title.isValid && description.isValid && date.isValid && location.isValid;
+    title.isValid && description.isValid && date['start_at'].isValid && date['end_at'].isValid && location.isValid;
 
   const ref = useOnclickOutside(() => {
     // When user clicks outside of the component, we can dismiss
@@ -111,14 +111,18 @@ function Form() {
     });
   };
 
-  const handleDateChange = (value: string) => {
+  const handleDateChange = (value: string, id: string) => {
     const isValid = isNotPassedDate(value);
+
     setDate({
-      value,
-      isTouched: true,
-      isValid,
-      helperText: isValid ? "" : "La date doit être postérieure à aujourd'hui",
-    });
+      ...date,
+      [id]: {
+        value,
+        isTouched: true,
+        isValid,
+        helperText: isValid ? "" : "La date doit être dans le futur",
+      }
+    })
   };
 
   const handleLocationChange = (value: string) => {
@@ -150,8 +154,8 @@ function Form() {
         method: "POST",
         body: JSON.stringify({
           title: title.value,
-          start_at: date.value,
-          end_at: date.value,
+          start_at: date['start_at'].value,
+          end_at: date['end_at'].value,
           address: location.value,
           description: description.value,
         }),
@@ -191,14 +195,26 @@ function Form() {
         </div>
         <div className="w-full mb-2">
           <Input
-            id="date"
-            label="Quel jour ?"
+            id="start_at"
+            label="À partir de quand ?"
             onChange={handleDateChange}
-            value={date.value}
+            value={date['start_at'].value}
             type="datetime-local"
-            helperText={date.helperText}
+            helperText={date['start_at'].helperText}
             required={true}
-            className={setInvalidClass(date)}
+            className={setInvalidClass(date['start_at'])}
+          />
+        </div>
+        <div className="w-full mb-2">
+          <Input
+            id="end_at"
+            label="Jusqu'à quand ?"
+            onChange={handleDateChange}
+            value={date['end_at'].value}
+            type="datetime-local"
+            helperText={date['end_at'].helperText}
+            required={true}
+            className={setInvalidClass(date['end_at'])}
           />
         </div>
         <div ref={ref} className="w-full mb-2">
