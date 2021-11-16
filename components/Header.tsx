@@ -32,6 +32,7 @@ function Header() {
                   src="/images/logo.svg"
                   width="50"
                   height="50"
+                  priority={true}
                 />
               </a>
             </Link>
