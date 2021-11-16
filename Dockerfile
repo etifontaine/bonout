@@ -23,9 +23,6 @@ COPY --from=dependencies /app/node_modules ./node_modules
 ENV DB_ENV=build
 RUN npm install -g pnpm
 
-ARG GOOGLE_PLACES_API_KEY
-ENV NEXT_PUBLIC_GOOGLE_PLACES_API_KEY=GOOGLE_PLACES_API_KEY
-
 RUN pnpm run build
 RUN rm -rf node_modules
 ENV NODE_ENV production

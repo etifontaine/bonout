@@ -6,7 +6,6 @@ on:
 
 env:
   PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
-  GOOGLE_PLACES_API_KEY: ${{ secrets.GOOGLE_PLACES_API_KEY }}
   SERVICE: web-app-staging
   REGION: europe-west1
 
@@ -30,7 +29,7 @@ jobs:
 
     - name: Build and Push Container
       run: |-
-        docker build --build-arg GOOGLE_PLACES_API_KEY='${{env.GOOGLE_PLACES_API_KEY}}' -t eu.gcr.io/${{ env.PROJECT_ID }}/web-app/${{ env.SERVICE }}:${{  github.sha }} .
+        docker build -t eu.gcr.io/${{ env.PROJECT_ID }}/web-app/${{ env.SERVICE }}:${{  github.sha }} .
         docker push eu.gcr.io/${{ env.PROJECT_ID }}/web-app/${{ env.SERVICE }}:${{  github.sha }}
 
     - name: Deploy to Cloud Run
