@@ -34,21 +34,19 @@ export default async function handler(
   }
 
   async function createEventHandler(): Promise<BoEvent> {
-    if (isBodyEmpty()) throw new RequestError("Body is empty");
-
     return await createEvent(setUniqLink(getBodyPayload()));
-
-    function isBodyEmpty(): boolean {
-      return !req.body;
-    }
 
     function setUniqLink(payload: BoEvent): BoEvent {
       return { ...payload, link: uuidv4() };
     }
 
     function getBodyPayload(): BoEvent {
+      if (isBodyEmpty()) throw new RequestError("Body is empty");
       return checkEventTypes(checkJSONSyntax(req.body));
 
+      function isBodyEmpty(): boolean {
+        return !req.body;
+      }
       function checkJSONSyntax(json: string) {
         try {
           return JSON.parse(json);
