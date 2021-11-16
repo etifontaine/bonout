@@ -32,9 +32,12 @@ export default async function handler(
   }
 
   async function getEventHandler(): Promise<BoEvent | null> {
-    if (isUnknownParameter()) throw new RequestError("Unknown parameter");
+    if (isUnknownParameter())
+      throw new RequestError(API_ERROR_MESSAGES.UNKNOWN_PARAMETER);
     if (isValueMissing())
-      throw new RequestError(`${getFirstParam()} value missing`);
+      throw new RequestError(
+        getFirstParam() + API_ERROR_MESSAGES.VALUE_MISSING
+      );
 
     if (isLinkParam()) return await getEventByLink(getSecondParam());
     if (isIdParam()) return await getEventByID(getSecondParam());
