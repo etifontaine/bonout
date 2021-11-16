@@ -1,6 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import type { BoEvent } from "../../../src/types";
 import { RequestError } from "../../../src/utils/CustomErrors";
+import { API_ERROR_MESSAGES } from "../../../src/utils/errorMessages";
 import { getEventByID, getEventByLink } from "../../../src/models/events";
 
 export default async function handler(
@@ -14,7 +15,7 @@ export default async function handler(
       if (event) {
         res.status(200).json(event);
       } else {
-        res.status(404).json({ error: "Event not found !" });
+        res.status(404).json({ error: "Event" + API_ERROR_MESSAGES.NOT_FOUND });
       }
     })
     .catch((err) => {
