@@ -14,7 +14,7 @@ const Home: NextPage = () => {
     AOS.init({
       once: true,
       disable: "phone",
-      duration: 700,
+      duration: 500,
       easing: "ease-out-cubic",
     });
   });
