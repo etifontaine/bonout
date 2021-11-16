@@ -21,7 +21,9 @@ export async function getEvents(): Promise<BoEvent[]> {
 export async function getEventByID(id: string): Promise<BoEvent | null> {
   const eventQuery = await db.collection(COLLECTION_NAME).doc(id).get();
 
-  return eventQuery.data() as BoEvent;
+  const eventData = eventQuery.data() as BoEvent;
+
+  return eventData ? ({ ...eventData, id: eventQuery.id } as BoEvent) : null;
 }
 export async function getEventByLink(link: string): Promise<BoEvent | null> {
   const eventsQuery = await db
@@ -56,7 +58,7 @@ export async function createEvent(payload: BoEvent): Promise<BoEvent> {
 
   const eventQuery = await event.get();
 
-  return eventQuery.data() as BoEvent;
+  return { ...eventQuery.data(), id: eventQuery.id } as BoEvent;
 }
 
 export async function deleteEventByID(id: string): Promise<void> {
