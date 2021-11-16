@@ -30,11 +30,11 @@ export default function Input(props: InputProps) {
   } = props;
 
   return (
-    <div className="w-full md:w-1/2 mb-6 md:mb-0">
-      <Label txt={label} helperText={helperText} />
+    <div className="w-full mb-6 md:mb-0">
+      <Label txt={label} />
       <input
         id={id}
-        className={`appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 ${className}`}
+        className={`appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 ${className}`}
         value={value}
         onChange={(event) => onChange(event.target.value)} // onChange is a function that takes an event
         placeholder={placeholder}
@@ -43,20 +43,18 @@ export default function Input(props: InputProps) {
         onKeyDown={onKeyDown}
         required={required}
       />
+      <Label txt={helperText} isHelp={helperText? true : false} />
     </div>
   );
 }
 
-function Label(props: { txt?: string; helperText?: string }) {
+function Label(props: { txt?: string, isHelp?: boolean }) {
   return props.txt ? (
     <label
-      className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+      className={`${props.isHelp ? 'text-red-500 text-xs' : 'text-gray-700 text-s font-bold'} block text-left tracking-wide`}
       htmlFor="grid-first-name"
     >
       {props.txt}
-      {props.helperText ? (
-        <div className="text-red-500">{props.helperText}</div>
-      ) : null}
     </label>
   ) : null;
 }
