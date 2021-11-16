@@ -1,5 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import type { BoEvent } from "../../../src/types";
+import { RequestError } from "../../../src/utils/CustomErrors";
 import { getEventByID, getEventByLink } from "../../../src/models/events";
 
 export default async function handler(
@@ -8,30 +9,36 @@ export default async function handler(
 ) {
   if (isNotGetRequest()) return;
 
-  try {
-    const event = await getEventHandler();
-    if (event) {
-      res.status(200).json(event);
-    } else {
-      res.status(404).json({ error: "Event not found !" });
-    }
-  } catch (e: any) {
-    console.error(e);
-    res.status(404).json({ error: e.message });
-  }
+  await getEventHandler()
+    .then((event) => {
+      if (event) {
+        res.status(200).json(event);
+      } else {
+        res.status(404).json({ error: "Event not found !" });
+      }
+    })
+    .catch((err) => {
+      if (err instanceof RequestError) {
+        res.status(400).json({ error: err.message });
+      } else {
+        console.error(err);
+        res.status(500).json({ error: "Internal server error" });
+      }
+    });
 
   function isNotGetRequest(): boolean {
     return req.method !== "GET";
   }
 
   async function getEventHandler(): Promise<BoEvent | null> {
-    if (isUnknownParameter()) throw new Error("Unknown parameter");
-    if (isValueMissing()) throw new Error(`${getFirstParam()} value missing`);
+    if (isUnknownParameter()) throw new RequestError("Unknown parameter");
+    if (isValueMissing())
+      throw new RequestError(`${getFirstParam()} value missing`);
 
     if (isLinkParam()) return await getEventByLink(getSecondParam());
     if (isIdParam()) return await getEventByID(getSecondParam());
 
-    return null;
+    throw new Error("Unreachable code, check guards conditions");
 
     function isUnknownParameter(): boolean {
       return ["id", "link"].indexOf(getFirstParam()) === -1;
