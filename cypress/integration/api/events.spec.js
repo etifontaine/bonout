@@ -134,6 +134,42 @@ describe("GET api/events/[...params]/[id/link]", () => {
     });
   });
 
+  it("should be an error parameter is unknown", () => {
+    cy.request({
+      url: "http://localhost:3000/api/events/undefined/",
+      failOnStatusCode: false,
+    }).then((response) => {
+      expect(response.status).to.eq(400);
+      expect(response.body.error).to.be.equal(
+        API_ERROR_MESSAGES.UNKNOWN_PARAMETER
+      );
+    });
+  });
+
+  it("should be an error if value missing [LINK]", () => {
+    cy.request({
+      url: "http://localhost:3000/api/events/link/",
+      failOnStatusCode: false,
+    }).then((response) => {
+      expect(response.status).to.eq(400);
+      expect(response.body.error).to.be.equal(
+        "link" + API_ERROR_MESSAGES.VALUE_MISSING
+      );
+    });
+  });
+
+  it("should be an error if value missing [ID]", () => {
+    cy.request({
+      url: "http://localhost:3000/api/events/id/",
+      failOnStatusCode: false,
+    }).then((response) => {
+      expect(response.status).to.eq(400);
+      expect(response.body.error).to.be.equal(
+        "id" + API_ERROR_MESSAGES.VALUE_MISSING
+      );
+    });
+  });
+
   it("should be an object with link if it exist [LINK]", () => {
     cy.request({
       url: `http://localhost:3000/api/events/link/${event.link}`,

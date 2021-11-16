@@ -5,4 +5,6 @@ export const API_ERROR_MESSAGES = {
   SHOULD_NOT_BE_EMPTY: " should not be empty",
   PROPERTY_NOT_FOUND: " property not found",
   NOT_FOUND: " not found",
+  UNKNOWN_PARAMETER: "Unknown parameter",
+  VALUE_MISSING: " value missing",
 };
