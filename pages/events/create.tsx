@@ -23,7 +23,7 @@ const Add: NextPage = () => {
         <meta name="theme-color" content="#000000" />
         <script
           async
-          src={`https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_PLACES_API_KEY}&libraries=places&callback=initMap`}
+          src={`https://maps.googleapis.com/maps/api/js?key=AIzaSyAugCWPRmET1IH1TkplqNzrGMgK1yItKmM&libraries=places&callback=initMap`}
         ></script>
         <script>{"function initMap() {}"}</script>
       </Head>
