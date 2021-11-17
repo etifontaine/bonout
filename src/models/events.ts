@@ -1,4 +1,5 @@
-const { FieldValue } = require("firebase-admin/firestore");
+import { firestore } from "firebase-admin";
+const { FieldValue } = firestore;
 import db from "../db";
 import {
   BoEvent,
