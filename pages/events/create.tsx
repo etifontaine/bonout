@@ -23,7 +23,7 @@ const Add: NextPage = () => {
         <meta name="theme-color" content="#000000" />
         <script
           async
-          src={`https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_PLACES_API_KEY}&libraries=places&callback=initMap`}
+          src={`https://maps.googleapis.com/maps/api/js?key=AIzaSyAugCWPRmET1IH1TkplqNzrGMgK1yItKmM&libraries=places&callback=initMap`}
         ></script>
         <script>{"function initMap() {}"}</script>
       </Head>
@@ -64,11 +64,11 @@ function Form() {
   };
   const [title, setTitle] = useState(defaultInputState);
   const [description, setDescription] = useState(defaultInputState);
-  const [date, setDate] = useState(defaultInputState);
+  const [date, setDate] = useState({ start_at: defaultInputState, end_at: defaultInputState });
   const [location, setLocation] = useState(defaultInputState);
 
   const isFormValid =
-    title.isValid && description.isValid && date.isValid && location.isValid;
+    title.isValid && description.isValid && date['start_at'].isValid && date['end_at'].isValid && location.isValid;
 
   const ref = useOnclickOutside(() => {
     // When user clicks outside of the component, we can dismiss
@@ -111,14 +111,18 @@ function Form() {
     });
   };
 
-  const handleDateChange = (value: string) => {
+  const handleDateChange = (value: string, id: string) => {
     const isValid = isNotPassedDate(value);
+
     setDate({
-      value,
-      isTouched: true,
-      isValid,
-      helperText: isValid ? "" : "La date doit être postérieure à aujourd'hui",
-    });
+      ...date,
+      [id]: {
+        value,
+        isTouched: true,
+        isValid,
+        helperText: isValid ? "" : "La date doit être dans le futur",
+      }
+    })
   };
 
   const handleLocationChange = (value: string) => {
@@ -150,8 +154,8 @@ function Form() {
         method: "POST",
         body: JSON.stringify({
           title: title.value,
-          start_at: date.value,
-          end_at: date.value,
+          start_at: date['start_at'].value,
+          end_at: date['end_at'].value,
           address: location.value,
           description: description.value,
         }),
@@ -177,27 +181,43 @@ function Form() {
   return (
     <form onSubmit={handleSubmit} className="pt-3">
       <div className="flex flex-wrap">
-        <Input
-          id="name"
-          label="Un nom ?"
-          placeholder="Nom de l'évenement"
-          onChange={handleTitleChange}
-          value={title.value}
-          helperText={title.helperText}
-          className={setInvalidClass(title)}
-          required={true}
-        />
-        <Input
-          id="date"
-          label="Quel jour ?"
-          onChange={handleDateChange}
-          value={date.value}
-          type="datetime-local"
-          helperText={date.helperText}
-          required={true}
-          className={setInvalidClass(date)}
-        />
-        <div ref={ref} className="relative w-full">
+        <div className="w-full mb-2">
+          <Input
+            id="name"
+            label="Un nom ?"
+            placeholder="Nom de l'évenement"
+            onChange={handleTitleChange}
+            value={title.value}
+            helperText={title.helperText}
+            className={setInvalidClass(title)}
+            required={true}
+          />
+        </div>
+        <div className="w-full mb-2">
+          <Input
+            id="start_at"
+            label="À partir de quand ?"
+            onChange={handleDateChange}
+            value={date['start_at'].value}
+            type="datetime-local"
+            helperText={date['start_at'].helperText}
+            required={true}
+            className={setInvalidClass(date['start_at'])}
+          />
+        </div>
+        <div className="w-full mb-2">
+          <Input
+            id="end_at"
+            label="Jusqu'à quand ?"
+            onChange={handleDateChange}
+            value={date['end_at'].value}
+            type="datetime-local"
+            helperText={date['end_at'].helperText}
+            required={true}
+            className={setInvalidClass(date['end_at'])}
+          />
+        </div>
+        <div ref={ref} className="w-full mb-2">
           <Input
             id="location"
             label="Un lieu ?"
@@ -210,17 +230,19 @@ function Form() {
           />
           <SuggestionList handleSelect={handleSelect} suggestions={data} />
         </div>
-        <Input
-          id="description"
-          label="Quelque infos ?"
-          placeholder="Description de l'évenement"
-          onChange={handleDescriptionChange}
-          helperText={description.helperText}
-          value={description.value}
-          type="textarea"
-          className={setInvalidClass(description)}
-          required={true}
-        />
+        <div className="w-full mb-2">
+          <Input
+            id="description"
+            label="Et quelque infos ?"
+            placeholder="Description de l'évenement"
+            onChange={handleDescriptionChange}
+            helperText={description.helperText}
+            value={description.value}
+            type="textarea"
+            className={setInvalidClass(description)}
+            required={true}
+          />
+        </div>
       </div>
       <input
         value="Créer"
@@ -228,13 +250,14 @@ function Form() {
         type="submit"
         className={`
         ${isFormValid ? "" : "cursor-not-allowed opacity-30"}
-        bg-blue-500
+        bg-yellow-600
+        hover:bg-yellow-700
+        btn
         cursor-pointer
-        hover:bg-blue-700
         text-white
         font-bold
         py-2 px-4
-        rounded-full float-right`}
+        float-right`}
       />
     </form>
   );
@@ -245,12 +268,12 @@ function SuggestionList(props: {
   handleSelect: CallableFunction;
 }) {
   return props.suggestions.length > 0 ? (
-    <ul className="list-reset absolute bg-white shadow-lg w-full">
+    <ul className="bg-white border border-gray-300 w-full -mt-10">
       {props.suggestions.map((suggestion) => (
         <li
           onClick={(e) => props.handleSelect(suggestion)}
           key={suggestion.place_id}
-          className="py-2 cursor-pointer border-b-2 border-gray-400 border-solid"
+          className="pl-2 pr-2 py-1 bg-white text-left border-b-2 border-gray-100 relative cursor-pointer hover:bg-yellow-600 hover:text-gray-900"
         >
           {suggestion.description}
         </li>
