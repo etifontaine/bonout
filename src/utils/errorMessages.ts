@@ -7,4 +7,5 @@ export const API_ERROR_MESSAGES = {
   NOT_FOUND: " not found",
   UNKNOWN_PARAMETER: "Unknown parameter",
   VALUE_MISSING: " value missing",
+  METHOD_NOT_ALLOWED: "Method not allowed",
 };

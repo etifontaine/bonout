@@ -27,5 +27,5 @@ export type BoInvitationResponse = {
   name: string;
   link: string;
   response: BoInvitationValidResponse;
-  created_at: string;
+  created_at?: string;
 };
