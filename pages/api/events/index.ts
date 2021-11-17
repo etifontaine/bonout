@@ -40,7 +40,8 @@ export default async function handler(
 
     function setUniqLink(payload: BoEvent): BoEvent {
       const uid = new ShortUniqueId({ length: 10 });
-      return { ...payload, link: uid) };
+      const uidString = uid() as string;
+      return { ...payload, link: uidString };
     }
 
     function getBodyPayload(): BoEvent {
