@@ -1,10 +1,9 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { v4 as uuidv4 } from "uuid";
+import ShortUniqueId from 'short-unique-id';
 import type { BoEvent } from "../../../src/types";
 import {
   getEvents,
   createEvent,
-  getEventByLink,
 } from "../../../src/models/events";
 
 export default async function handler(
@@ -34,7 +33,8 @@ export default async function handler(
       return res.status(400).json({ error: "payload must be set" });
     }
 
-    payload.link = uuidv4();
+    const uid = new ShortUniqueId({ length: 10 });
+    payload.link = uid()
 
     return await createEvent(payload)
       .then((event) => {

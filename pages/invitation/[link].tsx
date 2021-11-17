@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import type { NextPage } from "next";
 import Head from "next/head";
 import Router from "next/router";
+import dayjs from 'dayjs'
 import Header from "../../components/Header";
 import Modal from "../../components/Invitation/Modal";
 import { BoEvent, BoInvitationValidResponse } from "../../src/types";
@@ -49,6 +50,29 @@ const Invitation: NextPage<PageProps> = ({ event }) => {
     setModal({ userResponse, link: event.link });
   };
 
+  const shareEvent = () => {
+    if (navigator.share) {
+      navigator.share({
+        title: event.title,
+        text: event.description,
+        url: event.link,
+      })
+        .catch((error) => console.log('Error sharing', error));
+    }
+  }
+
+  const openAddress = () => {
+    let address = event.address.replace(/\s\s+/g, " "); // remove spaces
+    address = encodeURIComponent(address);
+
+    const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+    if (isSafari) {
+      window.open('http://maps.apple.com/?q=' + address);
+    } else { /* else use Google */
+      window.open('https://maps.google.com/maps?q=' + address);
+    }
+  }
+
   return (
     <div className="flex flex-col min-h-screen overflow-hidden">
       <Head>
@@ -84,10 +108,13 @@ const Invitation: NextPage<PageProps> = ({ event }) => {
                     {event.description}
                   </p>
                   <p className="text-xl text-gray-600 mb-8">
-                    {event.start_at}/{event.end_at}
+                    Du {dayjs(event.start_at).format('DD/MM/YYYY')} à {dayjs(event.start_at).format('HH:mm')} au {dayjs(event.end_at).format('DD/MM/YYYY')} à {dayjs(event.end_at).format('HH:mm')}
                   </p>
                   <p className="text-xl text-gray-600 mb-8">
-                    Adresse: {event.address}
+                    Adresse: <button onClick={() => openAddress()}>{event.address}</button>
+                  </p>
+                  <p className="text-xl text-gray-600 mb-8">
+                    Lien: <button onClick={() => shareEvent()}>{event.link}</button>
                   </p>
                   {event.comingGuestAmount > 0 ? (
                     <p className="text-xl text-gray-600 mb-8">
