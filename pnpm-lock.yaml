@@ -15,6 +15,7 @@ specifiers:
   aos: 2.3.4
   autoprefixer: 10.4.0
   babel-jest: 27.0.6
+  dayjs: ^1.10.7
   eslint: 7.32.0
   eslint-config-next: 12.0.3
   firebase-admin: 10.0.0
@@ -30,6 +31,7 @@ specifiers:
   react-transition-group: 4.4.2
   sass: 1.43.4
   sharp: 0.29.3
+  short-unique-id: 4.4.4
   tailwindcss: 2.2.19
   typescript: 4.4.4
   use-places-autocomplete: 1.10.0
@@ -40,6 +42,7 @@ dependencies:
   '@heroicons/react': 1.0.5_react@17.0.2
   '@types/google.maps': 3.46.1
   aos: 2.3.4
+  dayjs: 1.10.7
   firebase-admin: 10.0.0
   next: 12.0.3_0c41f19aae22112e9f1896e888ec7296
   react: 17.0.2
@@ -48,6 +51,7 @@ dependencies:
   react-toastify: 8.1.0_react-dom@17.0.2+react@17.0.2
   react-transition-group: 4.4.2_react-dom@17.0.2+react@17.0.2
   sharp: 0.29.3
+  short-unique-id: 4.4.4
   use-places-autocomplete: 1.10.0_react@17.0.2
   uuid: 8.3.2
 
@@ -2625,6 +2629,10 @@ packages:
     resolution: {integrity: sha512-O7Xe5dLaqvY/aF/MFWArsAM1J4j7w1CSZlPCX9uHgmb+6SbkPd8Q4YOvfvH/cZGvFlJFfHOZKxQtmMUOoZhc/w==}
     dev: false
     optional: true
+
+  /dayjs/1.10.7:
+    resolution: {integrity: sha512-P6twpd70BcPK34K26uJ1KT3wlhpuOAPoMwJzpsIWUxHZ7wpmbdZL/hQqBDfz7hGurYSa5PhzdhDHtt319hL3ig==}
+    dev: false
 
   /debug/2.6.9:
     resolution: {integrity: sha512-bC7ElrdJaJnPbAP+1EotYvqZsb3ecl5wi6Bfi6BJTUcNowp6cvspg0jXznRTKDjm/E7AdgFBVeAPVMNcKGsHMA==}
@@ -6200,6 +6208,11 @@ packages:
 
   /shell-quote/1.7.3:
     resolution: {integrity: sha512-Vpfqwm4EnqGdlsBFNmHhxhElJYrdfcxPThu+ryKS5J8L/fhAwLazFZtq+S+TWZ9ANj2piSQLGj6NQg+lKPmxrw==}
+    dev: false
+
+  /short-unique-id/4.4.4:
+    resolution: {integrity: sha512-oLF1NCmtbiTWl2SqdXZQbo5KM1b7axdp0RgQLq8qCBBLoq+o3A5wmLrNM6bZIh54/a8BJ3l69kTXuxwZ+XCYuw==}
+    hasBin: true
     dev: false
 
   /side-channel/1.0.4:
