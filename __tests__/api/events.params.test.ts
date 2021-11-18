@@ -1,14 +1,15 @@
 import { API_ERROR_MESSAGES } from "../../src/utils/errorMessages";
-import type { NextApiRequest, NextApiResponse } from "next";
 import paramsHandler from "./../../pages/api/events/[...params]";
-import { postEvent } from "./events.test";
-import httpMocks from "node-mocks-http";
-import { BoEvent } from "../../src/types";
+import {
+  mockCreateEvent,
+  mockNextApiHttp,
+} from "../../__mocks__/mockNextApiHttp";
+import { mockEvent } from "../../__mocks__/mockEvent";
 
 describe("GET api/events/[...params]/[id/link]", () => {
   let event: { [key: string]: any };
   beforeAll(async () => {
-    await postEvent(JSON.stringify(fakeEvent())).then((response) => {
+    await mockCreateEvent(JSON.stringify(mockEvent)).then((response) => {
       event = response._getJSONData();
     });
   });
@@ -58,26 +59,12 @@ describe("GET api/events/[...params]/[id/link]", () => {
 });
 
 async function getEvent(param1: string, param2: string) {
-  const request = httpMocks.createRequest<NextApiRequest>({
-    method: "GET",
-    url: "api/events/" + param1 + "/" + param2,
-    query: { params: [param1, param2] },
-  });
-
-  const response = httpMocks.createResponse<NextApiResponse>();
-  await paramsHandler(request, response).catch((err) => {
-    console.log(err);
-  });
-  return response;
-}
-
-function fakeEvent() {
-  return {
-    title: "test",
-    description: "test",
-    user_id: "test",
-    address: "test",
-    start_at: new Date().toDateString(),
-    end_at: new Date().toDateString(),
-  };
+  return mockNextApiHttp(
+    {
+      method: "GET",
+      url: "api/events/" + param1 + "/" + param2,
+      query: { params: [param1, param2] },
+    },
+    paramsHandler
+  );
 }

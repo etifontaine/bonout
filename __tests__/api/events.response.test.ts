@@ -1,12 +1,14 @@
 import { API_ERROR_MESSAGES } from "../../src/utils/errorMessages";
-import type { NextApiRequest, NextApiResponse } from "next";
 import {
   BoInvitationResponse,
   BoInvitationValidResponse,
 } from "../../src/types";
-import { postEvent } from "./events.test";
+import {
+  mockCreateEvent,
+  mockNextApiHttp,
+} from "../../__mocks__/mockNextApiHttp";
+import { mockEvent } from "../../__mocks__/mockEvent";
 import responseHandler from "./../../pages/api/events/invitations/response";
-import httpMocks from "node-mocks-http";
 
 type BoInvitationResponseTest = Omit<BoInvitationResponse, "response"> & {
   response: string;
@@ -57,7 +59,7 @@ describe("POST api/events/invitation/response", () => {
 
   let event: { [key: string]: any };
   beforeAll(async () => {
-    await postEvent(JSON.stringify(fakeEvent())).then((response) => {
+    await mockCreateEvent(JSON.stringify(mockEvent)).then((response) => {
       event = response._getJSONData();
     });
   });
@@ -110,24 +112,12 @@ describe("POST api/events/invitation/response", () => {
 });
 
 export async function postResponse(body: any) {
-  const request = httpMocks.createRequest<NextApiRequest>({
-    method: "POST",
-    url: "api/events/invitations/response",
-    body,
-  });
-
-  const response = httpMocks.createResponse<NextApiResponse>();
-  await responseHandler(request, response);
-  return response;
-}
-
-function fakeEvent() {
-  return {
-    title: "test",
-    description: "test",
-    user_id: "test",
-    address: "test",
-    start_at: new Date().toDateString(),
-    end_at: new Date().toDateString(),
-  };
+  return mockNextApiHttp(
+    {
+      method: "POST",
+      url: "api/events/invitations/response",
+      body,
+    },
+    responseHandler
+  );
 }
