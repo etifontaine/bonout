@@ -1,18 +1,21 @@
 import { API_ERROR_MESSAGES } from "../../src/utils/errorMessages";
 import eventsHandler from "../../pages/api/users/[id]/events";
 // import { postEvent } from "./events.test";
-import { BoEvent } from "../../src/types";
-import { mockNextApiHttp } from "../../__mocks__/mockNextApiHttp";
+import {
+  mockNextApiHttp,
+  mockCreateEvent,
+} from "../../__mocks__/mockNextApiHttp";
 import { mockEvent } from "../../__mocks__/mockEvent";
 import { RequestMethod } from "node-mocks-http";
 
 describe("GET api/users/[id]/events", () => {
-  // let event: { [key: string]: any };
-  // beforeAll(async () => {
-  //   await postEvent(JSON.stringify(fakeEvent())).then((response) => {
-  //     event = response._getJSONData();
-  //   });
-  // });
+  let event: { [key: string]: any };
+  beforeAll(async () => {
+    await mockCreateEvent(JSON.stringify(mockEvent)).then((response) => {
+      event = response._getJSONData();
+    });
+  });
+
   it("should be an error if not a get request", async () => {
     await mockGetEvents("", "POST").then((res) => {
       expect(res.statusCode).toBe(405);
@@ -34,6 +37,15 @@ describe("GET api/users/[id]/events", () => {
       expect(res._getJSONData()).toEqual({
         error: API_ERROR_MESSAGES.INVALID_PARAMETER,
       });
+    });
+  });
+
+  it("should be return an array of 1 event", async () => {
+    await mockGetEvents(event.user_id).then((res) => {
+      expect(res.statusCode).toBe(200);
+      const data = res._getJSONData();
+      expect(Array.isArray(data)).toBe(true);
+      expect(data[0].user_id).toBe(event.user_id);
     });
   });
 });
