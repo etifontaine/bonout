@@ -26,6 +26,18 @@ export async function getEventByID(id: string): Promise<BoEvent | null> {
 
   return eventData ? ({ ...eventData, id: eventQuery.id } as BoEvent) : null;
 }
+
+export async function getEventsByUserID(userID: string): Promise<BoEvent[]> {
+  return db
+    .collection(COLLECTION_NAME)
+    .where("user_id", "==", userID)
+    .get()
+    .then((querySnapshot) => {
+      const events = querySnapshot.docs.map((x) => x.data() as BoEvent);
+      return events || [];
+    });
+}
+
 export async function getEventByLink(link: string): Promise<BoEvent | null> {
   const eventsQuery = await db
     .collection(COLLECTION_NAME)
