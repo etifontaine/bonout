@@ -8,4 +8,6 @@ export const API_ERROR_MESSAGES = {
   UNKNOWN_PARAMETER: "unknown parameter",
   VALUE_MISSING: " value missing",
   METHOD_NOT_ALLOWED: "method not allowed",
+  MISSING_PARAMETER: "missing parameter",
+  INVALID_PARAMETER: "invalid parameter",
 };
