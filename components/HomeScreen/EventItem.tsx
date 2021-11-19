@@ -1,9 +1,15 @@
 import React from "react";
 import type { BoEvent } from "../../src/types";
 
-export default function EventItem({ event, ...props }: { event: BoEvent }) {
+export default function EventItem({
+  event,
+  ...props
+}: {
+  event: BoEvent;
+  onClick: () => void;
+}) {
   return (
-    <div className="bg-white overflow-hidden w-full" {...props}>
+    <div className="bg-white overflow-hidden w-full cursor-pointer" {...props}>
       <div className="flex flex-col p-4">
         <div className="flex flex-row justify-between">
           <div className="flex flex-col">
