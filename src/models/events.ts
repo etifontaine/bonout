@@ -33,7 +33,9 @@ export async function getEventsByUserID(userID: string): Promise<BoEvent[]> {
     .where("user_id", "==", userID)
     .get()
     .then((querySnapshot) => {
-      const events = querySnapshot.docs.map((x) => x.data() as BoEvent);
+      const events = querySnapshot.docs.map(
+        (x) => ({ ...x.data(), id: x.id } as BoEvent)
+      );
       return events || [];
     });
 }

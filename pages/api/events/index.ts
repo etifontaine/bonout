@@ -1,10 +1,9 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import ShortUniqueId from 'short-unique-id';
+import ShortUniqueId from "short-unique-id";
 import type { BoEvent } from "../../../src/types";
 import { RequestError } from "../../../src/utils/CustomErrors";
 import { API_ERROR_MESSAGES } from "../../../src/utils/errorMessages";
 import { getEvents, createEvent } from "../../../src/models/events";
-
 
 export default async function handler(
   req: NextApiRequest,
@@ -36,12 +35,24 @@ export default async function handler(
   }
 
   async function createEventHandler(): Promise<BoEvent> {
-    return await createEvent(setUniqLink(getBodyPayload()));
+    return await createEvent(setLink(setUserId(getBodyPayload())));
 
-    function setUniqLink(payload: BoEvent): BoEvent {
+    function setLink(payload: BoEvent): BoEvent {
       const uid = new ShortUniqueId({ length: 10 });
-      const uidString = uid() as string;
-      return { ...payload, link: uidString };
+      return {
+        ...payload,
+        link: uid(),
+        user_id: payload.user_id ? payload.user_id : uid(),
+      };
+    }
+
+    function setUserId(payload: BoEvent): BoEvent {
+      const uid = new ShortUniqueId({ length: 10 });
+      return {
+        ...payload,
+        link: uid(),
+        user_id: payload.user_id ? payload.user_id : uid(),
+      };
     }
 
     function getBodyPayload(): BoEvent {
