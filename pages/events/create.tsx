@@ -23,6 +23,7 @@ const Add: NextPage = () => {
         <meta name="theme-color" content="#000000" />
         <script
           async
+          defer
           src={`https://maps.googleapis.com/maps/api/js?key=AIzaSyAugCWPRmET1IH1TkplqNzrGMgK1yItKmM&libraries=places&callback=initMap`}
         ></script>
         <script>{"function initMap() {}"}</script>
@@ -64,11 +65,18 @@ function Form() {
   };
   const [title, setTitle] = useState(defaultInputState);
   const [description, setDescription] = useState(defaultInputState);
-  const [date, setDate] = useState({ start_at: defaultInputState, end_at: defaultInputState });
+  const [date, setDate] = useState({
+    start_at: defaultInputState,
+    end_at: defaultInputState,
+  });
   const [location, setLocation] = useState(defaultInputState);
 
   const isFormValid =
-    title.isValid && description.isValid && date['start_at'].isValid && date['end_at'].isValid && location.isValid;
+    title.isValid &&
+    description.isValid &&
+    date["start_at"].isValid &&
+    date["end_at"].isValid &&
+    location.isValid;
 
   const ref = useOnclickOutside(() => {
     // When user clicks outside of the component, we can dismiss
@@ -121,8 +129,8 @@ function Form() {
         isTouched: true,
         isValid,
         helperText: isValid ? "" : "La date doit être dans le futur",
-      }
-    })
+      },
+    });
   };
 
   const handleLocationChange = (value: string) => {
@@ -154,15 +162,19 @@ function Form() {
         method: "POST",
         body: JSON.stringify({
           title: title.value,
-          start_at: date['start_at'].value,
-          end_at: date['end_at'].value,
+          start_at: date["start_at"].value,
+          end_at: date["end_at"].value,
           address: location.value,
           description: description.value,
+          user_id: localStorage.getItem("user_id") || undefined,
         }),
       }).then(async (res) => {
         if (res.status === 201) {
-          const { message } = await res.json();
-          Router.push(`/invitation/${message}`);
+          const { link, user_id } = await res.json();
+          Router.push(`/invitation/${link}`);
+          if (localStorage.getItem("user_id") === null) {
+            localStorage.setItem("user_id", user_id);
+          }
         } else {
           res
             .json()
@@ -198,11 +210,11 @@ function Form() {
             id="start_at"
             label="À partir de quand ?"
             onChange={handleDateChange}
-            value={date['start_at'].value}
+            value={date["start_at"].value}
             type="datetime-local"
-            helperText={date['start_at'].helperText}
+            helperText={date["start_at"].helperText}
             required={true}
-            className={setInvalidClass(date['start_at'])}
+            className={setInvalidClass(date["start_at"])}
           />
         </div>
         <div className="w-full mb-2">
@@ -210,11 +222,11 @@ function Form() {
             id="end_at"
             label="Jusqu'à quand ?"
             onChange={handleDateChange}
-            value={date['end_at'].value}
+            value={date["end_at"].value}
             type="datetime-local"
-            helperText={date['end_at'].helperText}
+            helperText={date["end_at"].helperText}
             required={true}
-            className={setInvalidClass(date['end_at'])}
+            className={setInvalidClass(date["end_at"])}
           />
         </div>
         <div ref={ref} className="w-full mb-2">
