@@ -19,6 +19,7 @@ specifiers:
   eslint: 7.32.0
   eslint-config-next: 12.0.3
   firebase-admin: 10.0.0
+  fp-ts: ^2.11.5
   jest: 27.0.6
   next: 12.0.3
   node-mocks-http: ^1.11.0
@@ -44,6 +45,7 @@ dependencies:
   aos: 2.3.4
   dayjs: 1.10.7
   firebase-admin: 10.0.0
+  fp-ts: 2.11.5
   next: 12.0.3_0c41f19aae22112e9f1896e888ec7296
   react: 17.0.2
   react-cool-onclickoutside: 1.7.0_react@17.0.2
@@ -3411,6 +3413,10 @@ packages:
       combined-stream: 1.0.8
       mime-types: 2.1.34
     dev: true
+
+  /fp-ts/2.11.5:
+    resolution: {integrity: sha512-OqlwJq1BdpB83BZXTqI+dNcA6uYk6qk4u9Cgnt64Y+XS7dwdbp/mobx8S2KXf2AXH+scNmA/UVK3SEFHR3vHZA==}
+    dev: false
 
   /fraction.js/4.1.2:
     resolution: {integrity: sha512-o2RiJQ6DZaR/5+Si0qJUIy637QMRudSi9kU/FFzx9EZazrIdnBgpU+3sEWCxAVhH2RtxW2Oz+T4p2o8uOPVcgA==}
