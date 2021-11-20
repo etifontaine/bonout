@@ -48,6 +48,7 @@ jobs:
         token: "${{ env.GITHUB_TOKEN }}"
         target_url: https://staging.bonout.com
         environment: staging
+        state: "success"
 
     - name: Discord notification
       env:
