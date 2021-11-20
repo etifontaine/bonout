@@ -1,5 +1,4 @@
 // react component for a text input
-
 export interface InputProps {
   id: string;
   value: string;
@@ -43,15 +42,19 @@ export default function Input(props: InputProps) {
         onKeyDown={onKeyDown}
         required={required}
       />
-      <Label txt={helperText} isHelp={helperText? true : false} />
+      <Label txt={helperText} isHelp={helperText ? true : false} />
     </div>
   );
 }
 
-function Label(props: { txt?: string, isHelp?: boolean }) {
+function Label(props: { txt?: string; isHelp?: boolean }) {
   return props.txt ? (
     <label
-      className={`${props.isHelp ? 'text-red-500 text-xs' : 'text-gray-700 text-s font-bold'} block text-left tracking-wide`}
+      className={`${
+        props.isHelp
+          ? "text-red-500 text-xs help-label"
+          : "text-gray-700 text-s font-bold"
+      } block text-left tracking-wide`}
       htmlFor="grid-first-name"
     >
       {props.txt}
