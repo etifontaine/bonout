@@ -19,6 +19,14 @@ export async function getEvents(): Promise<BoEvent[]> {
   return events || [];
 }
 
+export async function getEventsCount(): Promise<number> {
+  const eventsQuery = await db
+    .collection(COLLECTION_NAME)
+    .get();
+
+  return eventsQuery.size || 0;
+}
+
 export async function getEventByID(id: string): Promise<BoEvent | null> {
   const eventQuery = await db.collection(COLLECTION_NAME).doc(id).get();
 

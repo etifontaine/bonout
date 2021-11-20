@@ -1,7 +1,11 @@
 import React from "react";
 import Image from "next/image";
 
-function Testimonials() {
+interface IProps {
+  countEvents: number
+}
+
+function Testimonials({ countEvents }: IProps) {
   return (
     <section className="relative">
       {/* Illustration behind content */}
@@ -43,7 +47,7 @@ function Testimonials() {
         <div className="py-12 md:py-20">
           {/* Section header */}
           <div className="max-w-3xl mx-auto text-center pb-12 md:pb-16">
-            <h2 className="h2 mb-4">Déjà 1 événement organisé avec Bonout</h2>
+            <h2 className="h2 mb-4">Déjà {countEvents > 1 ? `${countEvents} événements organisés` : `${countEvents} événement organisé`} avec Bonout</h2>
             <p className="text-xl text-gray-600">
               Toi aussi organise tes prochains événement sur Bonout
             </p>

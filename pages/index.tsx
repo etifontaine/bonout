@@ -6,8 +6,19 @@ import HeroHome from "../components/Landing/HeroHome";
 import FeaturesHome from "../components/Landing/Features";
 import Testimonials from "../components/Landing/Testimonials";
 import Footer from "../components/Footer";
+import { getEventsCount } from "src/models/events";
 
-const Home: NextPage = () => {
+export async function getServerSideProps() {
+  const res = await getEventsCount()
+  const data: Data = { countEvents: res }
+  return { props: { data } }
+}
+
+type Data = {
+  countEvents: number
+}
+
+const Home: NextPage<{ data: Data }> = ({ data }) => {
   return (
     <div className="flex flex-col min-h-screen overflow-hidden">
       <Head>
@@ -21,15 +32,13 @@ const Home: NextPage = () => {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="theme-color" content="#000000" />
       </Head>
-      {/*  Site header */}
       <Header />
 
       {/*  Page content */}
       <main className="flex-grow">
-        {/*  Page sections */}
         <HeroHome />
         <FeaturesHome />
-        <Testimonials />
+        <Testimonials countEvents={data.countEvents} />
       </main>
 
       {/*  Site footer */}
