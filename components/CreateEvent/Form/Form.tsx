@@ -4,7 +4,12 @@ import type { TdefaultInputState, Tform, TinputsStaticProps } from "./types";
 import { DATE_PASSED_ERROR, LENGTH_ERROR } from "./errors.text";
 import { pipe } from "fp-ts/lib/function";
 import { getDateTime, add1h } from "./utils";
-
+import {
+  LocationSuggestions,
+  withGooglePlacesAutocomplete,
+} from "./LocationSuggestions";
+const GMapsLocationSuggestions =
+  withGooglePlacesAutocomplete(LocationSuggestions);
 const defaultInputState: TdefaultInputState = {
   value: "",
   isValid: false,
@@ -20,9 +25,7 @@ export function Form() {
     startAt: { ...defaultInputState, value: getDateTime(new Date()) },
     endAt: { ...defaultInputState, value: getDateTime(add1h(new Date())) },
   } as Tform);
-  // useEffect(() => {
-  //   console.log(form);
-  // });
+
   return <form>{generateInputs(inputsStaticProps())}</form>;
 
   function generateInputs(inputsProps: TinputsStaticProps[]) {
@@ -36,8 +39,21 @@ export function Form() {
             helperText={form[props.id].helperText}
             className={setInvalidClass(form[props.id])}
           />
+          {props.id === "location" && (
+            <GMapsLocationSuggestions
+              onSelect={onSelectHandler}
+              inputValue={form.location.value}
+            />
+          )}
         </div>
       );
+    });
+  }
+
+  function onSelectHandler(value: string) {
+    setForm({
+      ...form,
+      location: { ...form.location, value, isValid: true },
     });
   }
 

@@ -10,8 +10,48 @@ import {
   DATE_PASSED_ERROR,
 } from "@components/CreateEvent/Form/errors.text";
 import { getDateTime, add1h } from "@components/CreateEvent/Form/utils";
+import usePlacesAutocomplete from "use-places-autocomplete";
+import type { HookArgs, HookReturn } from "use-places-autocomplete";
+import { act } from ".pnpm/@testing-library+react@12.0.0_react-dom@17.0.2+react@17.0.2/node_modules/@testing-library/react";
+const ok = "OK";
+const error = "ERROR";
+const data = [{ place_id: "0109" }];
+
+const okSuggestions = {
+  loading: false,
+  status: ok,
+  data,
+};
+const defaultSuggestions = {
+  loading: false,
+  status: "",
+  data: [],
+};
+const getPlacePredictions = jest.fn();
+const getMaps = (type = "success", d = data): any => ({
+  maps: {
+    places: {
+      AutocompleteService: class {
+        getPlacePredictions =
+          type === "opts"
+            ? getPlacePredictions
+            : (_: any, cb: (dataArg: any, status: string) => void) => {
+                setTimeout(() => {
+                  cb(
+                    type === "success" ? d : null,
+                    type === "success" ? ok : error
+                  );
+                }, 0);
+              };
+      },
+    },
+  },
+});
 
 describe("CreateEventPage <Form />", () => {
+  beforeAll(() => {
+    global.window.google = getMaps();
+  });
   describe("name input", () => {
     it("should exist", () => {
       const result = render(<Form />);
@@ -157,6 +197,56 @@ describe("CreateEventPage <Form />", () => {
         tomorow.setDate(tomorow.getDate() + 1);
         fireEvent.change(input, { target: { value: getDateTime(tomorow) } });
         expect(input).toHaveClass("valid");
+      }
+    });
+  });
+
+  describe("location Input", () => {
+    beforeAll(() => {
+      jest.useFakeTimers();
+    });
+    it("should exist", () => {
+      const result = render(<Form />);
+      const input = result.container.querySelector("#location");
+      expect(input).toBeInTheDocument();
+    });
+
+    it("should have a label", () => {
+      const result = render(<Form />);
+      const label = result.container.querySelector("label[for='location']");
+      expect(label).toBeInTheDocument();
+    });
+
+    it("should suggestion open onChange", () => {
+      const result = render(<Form />);
+      const input = result.container.querySelector("#location");
+      if (input) {
+        act(() => {
+          fireEvent.change(input, {
+            target: { value: "test" },
+          });
+        });
+        jest.runAllTimers();
+        const suggestions = result.container.querySelector(".suggestions");
+        expect(suggestions).toBeInTheDocument();
+        expect(input).toHaveClass("invalid");
+
+        const suggestion = result.container.querySelector("li");
+        if (suggestion) {
+          fireEvent.click(suggestion);
+          expect(input).toHaveClass("valid");
+        }
+
+        // const label = result.container.querySelector(".help-label");
+        // expect(label).toBeInTheDocument();
+        // expect(label).toHaveTextContent(
+        //   DATE_PASSED_ERROR("date de commencement")
+        // );
+
+        // const tomorow = new Date();
+        // tomorow.setDate(tomorow.getDate() + 1);
+        // fireEvent.change(input, { target: { value: getDateTime(tomorow) } });
+        // expect(input).toHaveClass("valid");
       }
     });
   });

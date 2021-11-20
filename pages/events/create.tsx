@@ -139,7 +139,7 @@ function Form() {
       isTouched: true,
       helperText: "Veuillez choisir une adresse",
     });
-    clearSuggestions();
+    // clearSuggestions();
   };
 
   const handleSelect = (suggestion: any) => {
