@@ -23,9 +23,9 @@ COPY --from=dependencies /app/node_modules ./node_modules
 ENV DB_ENV=build
 RUN npm install -g pnpm
 
+ENV NODE_ENV production
 RUN pnpm run build
 RUN rm -rf node_modules
-ENV NODE_ENV production
 RUN pnpm install --production --frozen-lockfile --ignore-scripts --prefer-offline
 
 # Production image, copy all the files and run next

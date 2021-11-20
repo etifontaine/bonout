@@ -31,7 +31,6 @@ function Features() {
             {/* Content */}
             <div
               className="max-w-xl md:max-w-none md:w-full mx-auto md:col-span-7 lg:col-span-6 md:mt-6"
-              data-aos="fade-right"
             >
               <div className="md:pr-4 lg:pr-12 xl:pr-16 mb-8">
                 <h3 className="h3 mb-3">Bonout est là pour t'aider</h3>
@@ -149,7 +148,6 @@ function Features() {
             {/* Tabs items */}
             <div
               className="max-w-xl md:max-w-none md:w-full mx-auto md:col-span-5 lg:col-span-6 mb-8 md:mb-0 md:order-1"
-              data-aos="zoom-y-out"
               ref={tabs}
             >
               <div className="relative flex flex-col text-center lg:text-right">
