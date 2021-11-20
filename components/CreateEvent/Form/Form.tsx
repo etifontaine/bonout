@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import Input from "../../Input";
 import type { TdefaultInputState, Tform, TinputsStaticProps } from "./types";
-import { LENGTH_ERROR } from "./errors.text";
+import { DATE_PASSED_ERROR, LENGTH_ERROR } from "./errors.text";
 import { pipe } from "fp-ts/lib/function";
+import { getDateTime, add1h } from "./utils";
 
 const defaultInputState: TdefaultInputState = {
   value: "",
@@ -16,8 +17,8 @@ export function Form() {
     name: defaultInputState,
     description: defaultInputState,
     location: defaultInputState,
-    startAt: defaultInputState,
-    endAt: defaultInputState,
+    startAt: { ...defaultInputState, value: getDateTime(new Date()) },
+    endAt: { ...defaultInputState, value: getDateTime(add1h(new Date())) },
   } as Tform);
   // useEffect(() => {
   //   console.log(form);
@@ -58,14 +59,26 @@ export function Form() {
             setHelperText(LENGTH_ERROR(5))
           )
         ),
+        isInput("startAt", (f) =>
+          pipe(
+            setProp("isValid", isNotPassedDate(value))(f),
+            setHelperText(DATE_PASSED_ERROR("aujourd'hui"))
+          )
+        ),
+        isInput("endAt", (f) =>
+          pipe(
+            setProp("isValid", isNotPassedDate(value, f.startAt.value))(f),
+            setHelperText(DATE_PASSED_ERROR("date de commencement"))
+          )
+        ),
         setForm
       );
     };
 
-    function isInput(inputName: string, editForm: (f: Tform) => Tform) {
+    function isInput(inputName: string, editedForm: (f: Tform) => Tform) {
       return (form: Tform) => {
         if (inputId !== inputName) return form;
-        return editForm(form);
+        return editedForm(form);
       };
     }
 
@@ -86,6 +99,10 @@ export function Form() {
 
     function isLongEnough(nth: Number, value: string) {
       return value.length >= nth;
+    }
+
+    function isNotPassedDate(date: string, to?: string) {
+      return new Date(date) > (to ? new Date(to) : new Date());
     }
   }
   function setInvalidClass(state: TdefaultInputState) {
