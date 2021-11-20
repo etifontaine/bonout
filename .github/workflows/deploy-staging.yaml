@@ -33,6 +33,14 @@ jobs:
         docker build -t eu.gcr.io/${{ env.PROJECT_ID }}/web-app/${{ env.SERVICE }}:${{  github.sha }} .
         docker push eu.gcr.io/${{ env.PROJECT_ID }}/web-app/${{ env.SERVICE }}:${{  github.sha }}
 
+    - uses: chrnorm/deployment-action@releases/v1
+      name: Create GitHub deployment on staging
+      id: deployment
+      with:
+        token: "${{ env.GITHUB_TOKEN }}"
+        target_url: https://staging.bonout.com
+        environment: staging
+
     - name: Deploy to Cloud Run
       run: |-
         gcloud run deploy ${{ env.SERVICE }} \
@@ -41,14 +49,14 @@ jobs:
           --platform "managed" \
           --quiet
 
-    - uses: chrnorm/deployment-action@releases/v1
-      name: Create GitHub deployment on staging
-      id: deployment
+    - name: Update deployment status (success)
+      if: success()
+      uses: chrnorm/deployment-status@releases/v1
       with:
         token: "${{ env.GITHUB_TOKEN }}"
         target_url: https://staging.bonout.com
-        environment: staging
         state: "success"
+        deployment_id: ${{ steps.deployment.outputs.deployment_id }}
 
     - name: Discord notification
       env:
