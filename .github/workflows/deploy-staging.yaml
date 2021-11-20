@@ -1,4 +1,4 @@
-name: build-deploy
+name: deploy-staging
 on:
   push:
     branches:
@@ -6,6 +6,7 @@ on:
 
 env:
   PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+  GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
   SERVICE: web-app-staging
   REGION: europe-west1
 
@@ -39,3 +40,18 @@ jobs:
           --image eu.gcr.io/${{ env.PROJECT_ID }}/web-app/${{ env.SERVICE }}:${{  github.sha }} \
           --platform "managed" \
           --quiet
+
+    - uses: chrnorm/deployment-action@releases/v1
+      name: Create GitHub deployment on staging
+      id: deployment
+      with:
+        token: "${{ env.GITHUB_TOKEN }}"
+        target_url: https://staging.bonout.com
+        environment: staging
+
+    - name: Discord notification
+      env:
+        DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+      uses: Ilshidur/action-discord@master
+      with:
+        args: 'The project {{ EVENT_PAYLOAD.repository.full_name }} has been deployed to staging.'
