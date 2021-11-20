@@ -22,11 +22,9 @@ const Add: NextPage = () => {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="theme-color" content="#000000" />
         <script
-          async
           defer
-          src={`https://maps.googleapis.com/maps/api/js?key=AIzaSyAugCWPRmET1IH1TkplqNzrGMgK1yItKmM&libraries=places&callback=initMap`}
+          src={`https://maps.googleapis.com/maps/api/js?key=AIzaSyAugCWPRmET1IH1TkplqNzrGMgK1yItKmM&libraries=places`}
         ></script>
-        <script>{"function initMap() {}"}</script>
       </Head>
       <Header />
       <main className="flex-grow">
