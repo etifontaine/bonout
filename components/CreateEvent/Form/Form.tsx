@@ -52,6 +52,12 @@ export function Form() {
             setHelperText(LENGTH_ERROR(3))
           )
         ),
+        isInput("description", (f) =>
+          pipe(
+            setProp("isValid", isLongEnough(5, value))(f),
+            setHelperText(LENGTH_ERROR(5))
+          )
+        ),
         setForm
       );
     };
