@@ -134,7 +134,7 @@ describe("CreateEventPage <Form />", () => {
       }
     });
 
-    it("should have datetime > startAt dateime onChange", () => {
+    it("should have datetime > startAt datetime onChange", () => {
       const result = render(<Form />);
       const input = result.container.querySelector("#endAt");
       const startAtInput = result.container.querySelector(
