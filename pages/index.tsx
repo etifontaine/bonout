@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import type { NextPage } from "next";
 import Head from "next/head";
 import Header from "../components/Header";
@@ -7,18 +7,7 @@ import FeaturesHome from "../components/Landing/Features";
 import Testimonials from "../components/Landing/Testimonials";
 import Footer from "../components/Footer";
 
-import AOS from "aos";
-
 const Home: NextPage = () => {
-  useEffect(() => {
-    AOS.init({
-      once: true,
-      disable: "phone",
-      duration: 500,
-      easing: "ease-out-cubic",
-    });
-  });
-
   return (
     <div className="flex flex-col min-h-screen overflow-hidden">
       <Head>
