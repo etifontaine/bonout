@@ -1,5 +1,5 @@
 import { firestore } from "firebase-admin";
-import { sortByDate } from "src/utils/array";
+import { filterBy, sortByDate } from "src/utils/array";
 const { FieldValue } = firestore;
 import db from "../db";
 import {
@@ -68,7 +68,7 @@ export async function getEventsByUserID(userID: string): Promise<BoEvent[]> {
 
   const userData = await Promise.all([userEvents, userEventsInvitations]);
 
-  return sortByDate(userData.flat(), "start_at");
+  return filterBy(sortByDate(userData.flat(), "start_at"), "id");
 }
 
 export async function getEventByLink(link: string): Promise<BoEvent | null> {
