@@ -11,7 +11,7 @@ const Add: NextPage = () => {
   return (
     <div className="flex flex-col min-h-screen overflow-hidden">
       <Head>
-        <title>Bonout - Invitation</title>
+        <title>Bonout</title>
         <meta
           name="description"
           content="Bonout t'aide à organiser ton prochain événement, un seul site avec toutes les fonctionnalités!"

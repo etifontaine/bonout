@@ -27,7 +27,7 @@ const Home: NextPage = () => {
   return (
     <div className="h-screen">
       <Head>
-        <title>Home</title>
+        <title>Bonout</title>
       </Head>
       <Header />
       <main className="flex-grow">
