@@ -3,10 +3,9 @@ import Input from "../../components/Input";
 import Head from "next/head";
 import Router from "next/router";
 import Header from "../../components/Header";
-import { MouseEventHandler, useState } from "react";
 import { toast } from "react-toastify";
-import usePlacesAutocomplete from "use-places-autocomplete";
-import useOnclickOutside from "react-cool-onclickoutside";
+import { Form } from "../../components/CreateEvent/Form/Form";
+import type { Tform } from "../../components/CreateEvent/Form/types";
 
 const Add: NextPage = () => {
   return (
@@ -38,7 +37,7 @@ const Add: NextPage = () => {
                   Création d'un événement
                 </h1>
                 <div className="max-w-3xl mx-auto">
-                  <Form />
+                  <Form onSubmit={handleSubmit} />
                 </div>
               </div>
             </div>
@@ -47,263 +46,43 @@ const Add: NextPage = () => {
       </main>
     </div>
   );
-};
-type defaultInputState = {
-  value: string;
-  isValid: boolean;
-  helperText: string;
-  isTouched: boolean;
-};
-function Form() {
-  const defaultInputState: defaultInputState = {
-    value: "",
-    isValid: false,
-    helperText: "",
-    isTouched: false,
-  };
-  const [title, setTitle] = useState(defaultInputState);
-  const [description, setDescription] = useState(defaultInputState);
-  const [date, setDate] = useState({
-    start_at: defaultInputState,
-    end_at: defaultInputState,
-  });
-  const [location, setLocation] = useState(defaultInputState);
 
-  const isFormValid =
-    title.isValid &&
-    description.isValid &&
-    date["start_at"].isValid &&
-    date["end_at"].isValid &&
-    location.isValid;
-
-  const ref = useOnclickOutside(() => {
-    // When user clicks outside of the component, we can dismiss
-    // the searched suggestions by calling this method
-    clearSuggestions();
-  });
-
-  const {
-    ready,
-    value,
-    suggestions: { status, data },
-    setValue,
-    clearSuggestions,
-  } = usePlacesAutocomplete({
-    requestOptions: {
-      /* Define search scope here */
-    },
-    debounce: 300,
-  });
-
-  const handleTitleChange = (value: string) => {
-    const isValid = isLongEnough(value);
-    setTitle({
-      value,
-      isTouched: true,
-      isValid,
-      helperText: isValid ? "" : "Le titre doit contenir au moins 5 caractères",
-    });
-  };
-
-  const handleDescriptionChange = (value: string) => {
-    const isValid = isLongEnough(value);
-    setDescription({
-      value,
-      isTouched: true,
-      isValid,
-      helperText: isValid
-        ? ""
-        : "La description doit contenir au moins 5 caractères",
-    });
-  };
-
-  const handleDateChange = (value: string, id: string) => {
-    const isValid = isNotPassedDate(value);
-
-    setDate({
-      ...date,
-      [id]: {
-        value,
-        isTouched: true,
-        isValid,
-        helperText: isValid ? "" : "La date doit être dans le futur",
-      },
-    });
-  };
-
-  const handleLocationChange = (value: string) => {
-    setValue(value);
-    setLocation({
-      ...location,
-      isValid: false,
-      isTouched: true,
-      helperText: "Veuillez choisir une adresse",
-    });
-    // clearSuggestions();
-  };
-
-  const handleSelect = (suggestion: any) => {
-    setValue(suggestion.description, false);
-    setLocation({
-      ...location,
-      value: suggestion.description,
-      helperText: "",
-      isValid: true,
-    });
-    clearSuggestions();
-  };
-
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  function handleSubmit(
+    e: React.FormEvent<HTMLFormElement>,
+    { name, startAt, endAt, location, description }: Tform,
+    isValid: boolean
+  ) {
     e.preventDefault();
-    if (isFormValid) {
-      fetch("/api/events", {
-        method: "POST",
-        body: JSON.stringify({
-          title: title.value,
-          start_at: date["start_at"].value,
-          end_at: date["end_at"].value,
-          address: location.value,
-          description: description.value,
-          user_id: localStorage.getItem("user_id") || undefined,
-        }),
-      }).then(async (res) => {
-        if (res.status === 201) {
-          const { link, user_id } = await res.json();
-          Router.push(`/invitation/${link}`);
-          if (localStorage.getItem("user_id") === null) {
-            localStorage.setItem("user_id", user_id);
-          }
-        } else {
-          res
-            .json()
-            .then((data) => {
-              toast.error(data.error ? data.error : "Une erreur est survenue");
-            })
-            .catch(() => {
-              toast.error("Une erreur est survenue");
-            });
+    if (!isValid) toast.error("Il y a des erreurs dans le formulaire");
+    fetch("/api/events", {
+      method: "POST",
+      body: JSON.stringify({
+        title: name.value,
+        start_at: startAt.value,
+        end_at: endAt.value,
+        address: location.value,
+        description: description.value,
+        user_id: localStorage.getItem("user_id") || undefined,
+      }),
+    }).then(async (res) => {
+      if (res.status === 201) {
+        const { link, user_id } = await res.json();
+        Router.push(`/invitation/${link}`);
+        if (localStorage.getItem("user_id") === null) {
+          localStorage.setItem("user_id", user_id);
         }
-      });
-    } else {
-      toast.error("Il y a des erreurs dans le formulaire");
-    }
-  };
-  return (
-    <form onSubmit={handleSubmit} className="pt-3">
-      <div className="flex flex-wrap">
-        <div className="w-full mb-2">
-          <Input
-            id="name"
-            label="Un nom ?"
-            placeholder="Nom de l'évenement"
-            onChange={handleTitleChange}
-            value={title.value}
-            helperText={title.helperText}
-            className={setInvalidClass(title)}
-            required={true}
-          />
-        </div>
-        <div className="w-full mb-2">
-          <Input
-            id="start_at"
-            label="À partir de quand ?"
-            onChange={handleDateChange}
-            value={date["start_at"].value}
-            type="datetime-local"
-            helperText={date["start_at"].helperText}
-            required={true}
-            className={setInvalidClass(date["start_at"])}
-          />
-        </div>
-        <div className="w-full mb-2">
-          <Input
-            id="end_at"
-            label="Jusqu'à quand ?"
-            onChange={handleDateChange}
-            value={date["end_at"].value}
-            type="datetime-local"
-            helperText={date["end_at"].helperText}
-            required={true}
-            className={setInvalidClass(date["end_at"])}
-          />
-        </div>
-        <div ref={ref} className="w-full mb-2">
-          <Input
-            id="location"
-            label="Un lieu ?"
-            placeholder="Lieu de l'évenement"
-            onChange={handleLocationChange}
-            value={value}
-            className={setInvalidClass(location)}
-            helperText={location.helperText}
-            required={true}
-          />
-          <SuggestionList handleSelect={handleSelect} suggestions={data} />
-        </div>
-        <div className="w-full mb-2">
-          <Input
-            id="description"
-            label="Et quelque infos ?"
-            placeholder="Description de l'évenement"
-            onChange={handleDescriptionChange}
-            helperText={description.helperText}
-            value={description.value}
-            type="textarea"
-            className={setInvalidClass(description)}
-            required={true}
-          />
-        </div>
-      </div>
-      <input
-        value="Créer"
-        // disabled={!isFormValid}
-        type="submit"
-        className={`
-        ${isFormValid ? "" : "cursor-not-allowed opacity-30"}
-        bg-yellow-600
-        hover:bg-yellow-700
-        btn
-        cursor-pointer
-        text-white
-        font-bold
-        py-2 px-4
-        float-right`}
-      />
-    </form>
-  );
-}
-
-function SuggestionList(props: {
-  suggestions: google.maps.places.AutocompletePrediction[];
-  handleSelect: CallableFunction;
-}) {
-  return props.suggestions.length > 0 ? (
-    <ul className="bg-white border border-gray-300 w-full -mt-10">
-      {props.suggestions.map((suggestion) => (
-        <li
-          onClick={(e) => props.handleSelect(suggestion)}
-          key={suggestion.place_id}
-          className="pl-2 pr-2 py-1 bg-white text-left border-b-2 border-gray-100 relative cursor-pointer hover:bg-yellow-600 hover:text-gray-900"
-        >
-          {suggestion.description}
-        </li>
-      ))}
-    </ul>
-  ) : null;
-}
-
-function isNotPassedDate(date: string) {
-  return new Date(date) > new Date();
-}
-
-function setInvalidClass(state: defaultInputState) {
-  return !state.isValid && state.isTouched
-    ? "focus:border-red-500 border-red-500"
-    : "";
-}
-
-function isLongEnough(value: string) {
-  return value.length > 4;
-}
+      } else {
+        res
+          .json()
+          .then((data) => {
+            toast.error(data.error ? data.error : "Une erreur est survenue");
+          })
+          .catch(() => {
+            toast.error("Une erreur est survenue");
+          });
+      }
+    });
+  }
+};
 
 export default Add;

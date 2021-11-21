@@ -2,7 +2,7 @@ import { string } from "fp-ts";
 import React, { useState, useEffect } from "react";
 import usePlacesAutocomplete from "use-places-autocomplete";
 
-type suggestion = { place_id: string; location: string };
+export type suggestion = { place_id: string; location: string };
 type suggestionsProps = {
   suggestions: Array<suggestion>;
   onSelect: (suggestion: suggestion) => void;

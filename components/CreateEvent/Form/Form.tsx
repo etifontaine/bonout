@@ -10,6 +10,8 @@ import {
   withGooglePlacesAutocomplete,
 } from "./LocationSuggestions";
 
+import type { suggestion } from "./LocationSuggestions";
+
 const GMapsLocationSuggestions =
   withGooglePlacesAutocomplete(LocationSuggestions);
 
@@ -20,7 +22,13 @@ const defaultInputState: TdefaultInputState = {
   isTouched: false,
 };
 
-export function Form() {
+export function Form(props: {
+  onSubmit: (
+    e: React.FormEvent<HTMLFormElement>,
+    form: Tform,
+    isValid: boolean
+  ) => void;
+}) {
   const [form, setForm] = useState({
     name: defaultInputState,
     description: defaultInputState,
@@ -29,11 +37,30 @@ export function Form() {
     endAt: { ...defaultInputState, value: getDateTime(add1h(new Date())) },
   } as Tform);
 
+  const isFormValid = Object.values(form).every((input) => input.isValid);
+
   const locationFieldsetRef = useOnclickOutside(() => {
     setForm({ ...form, location: { ...form.location, hideSuggestions: true } });
   });
 
-  return <form>{generateInputs(inputsStaticProps())}</form>;
+  return (
+    <form
+      onSubmit={(e) => props.onSubmit(e, form, isFormValid)}
+      className="pt-3"
+    >
+      <div className="flex flex-wrap">
+        <div className="w-full mb-2">{generateInputs(inputsStaticProps())}</div>
+      </div>
+      <input
+        value="Créer"
+        disabled={!isFormValid}
+        type="submit"
+        className={`${isFormValid ? "" : "cursor-not-allowed opacity-30"}
+        bg-yellow-600 hover:bg-yellow-700 btn cursor-pointer
+        text-white font-bold py-2 px-4 float-right`}
+      />
+    </form>
+  );
 
   function generateInputs(inputsProps: TinputsStaticProps[]) {
     return inputsProps.map((props) => {
@@ -70,8 +97,11 @@ export function Form() {
     };
   }
 
-  function onSuggestionSelectHandler(value: string) {
-    setForm({ ...form, location: { ...form.location, value, isValid: true } });
+  function onSuggestionSelectHandler(suggestion: suggestion) {
+    setForm({
+      ...form,
+      location: { ...form.location, value: suggestion.location, isValid: true },
+    });
   }
 
   function onChangeHandler(inputId: string) {
