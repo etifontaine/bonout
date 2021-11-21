@@ -48,8 +48,10 @@ export function withGooglePlacesAutocomplete(
     });
 
     useEffect(() => {
-      setValue(props.inputValue);
-    }, [props.inputValue]);
+      if (props.inputValue.length > 0) {
+        setValue(props.inputValue);
+      }
+    }, [props, setValue]);
 
     return <Component suggestions={getSuggestions(data)} onSelect={onSelect} />;
 
