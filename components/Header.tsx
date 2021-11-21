@@ -1,9 +1,9 @@
-import { Fragment } from 'react'
+import { Fragment } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { Disclosure, Menu, Transition } from '@headlessui/react'
-import { MenuIcon, XIcon } from '@heroicons/react/outline'
-import { getUserID } from 'src/utils/user';
+import { Disclosure, Menu, Transition } from "@headlessui/react";
+import { MenuIcon, XIcon } from "@heroicons/react/outline";
+import { getUserID } from "src/utils/user";
 
 export default function Header() {
   return (
@@ -39,8 +39,7 @@ export default function Header() {
               <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
                 <div className="hidden sm:block sm:ml-6">
                   <div className="flex space-x-4">
-                    <Link
-                      href="/home">
+                    <Link href="/home">
                       <a className="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md font-medium">
                         Mes événements
                       </a>
@@ -68,17 +67,15 @@ export default function Header() {
 
           <Disclosure.Panel className="sm:hidden">
             <div className="px-2 pt-2 pb-3 space-y-1">
-              {
-                getUserID() ? (
-                  <Disclosure.Button
-                    as="a"
-                    href="/home"
-                    className="text-gray-600 hover:bg-gray-800 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
-                  >
-                    Mes événements
-                  </Disclosure.Button>
-                ) : null
-              }
+              {getUserID() ? (
+                <Disclosure.Button
+                  as="a"
+                  href="/home"
+                  className="text-gray-600 hover:bg-gray-800 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+                >
+                  Mes événements
+                </Disclosure.Button>
+              ) : null}
               <Disclosure.Button
                 as="a"
                 href="/events/create"
@@ -91,5 +88,5 @@ export default function Header() {
         </>
       )}
     </Disclosure>
-  )
+  );
 }
