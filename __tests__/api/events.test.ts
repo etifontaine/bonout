@@ -18,7 +18,7 @@ describe("POST api/events", () => {
       expect(res.statusCode).toBe(400);
       expect(res._getJSONData()).toEqual({
         error:
-          "description, address, start_at, end_at, user_id" +
+          "description, address, start_at, end_at" +
           API_ERROR_MESSAGES.PROPERTY_NOT_FOUND,
       });
     });
