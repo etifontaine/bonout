@@ -9,14 +9,14 @@ import Footer from "../components/Footer";
 import { getEventsCount } from "src/models/events";
 
 export async function getServerSideProps() {
-  const res = await getEventsCount()
-  const data: Data = { countEvents: res }
-  return { props: { data } }
+  const res = await getEventsCount();
+  const data: Data = { countEvents: res };
+  return { props: { data } };
 }
 
 type Data = {
-  countEvents: number
-}
+  countEvents: number;
+};
 
 const Home: NextPage<{ data: Data }> = ({ data }) => {
   return (
