@@ -48,7 +48,7 @@ function calcHowManyUsers(users: Array<BoInvitationResponse>) {
 }
 
 function presenceSentences(users: Array<BoInvitationResponse>): string {
-  if (users.length === 0) {
+  if (!users || users.length === 0) {
     return "Personne n'a encore répondu";
   }
   const usersWhoAreComing = calcHowManyUsers(users);
