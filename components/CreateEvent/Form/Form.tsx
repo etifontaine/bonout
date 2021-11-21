@@ -33,15 +33,6 @@ export function Form() {
     setForm({ ...form, location: { ...form.location, hideSuggestions: true } });
   });
 
-  useEffect(() => {
-    if (form.location.isTouched) {
-      setForm((f) => ({
-        ...f,
-        location: { ...form.location, hideSuggestions: false },
-      }));
-    }
-  }, [form.location.isTouched]);
-
   return <form>{generateInputs(inputsStaticProps())}</form>;
 
   function generateInputs(inputsProps: TinputsStaticProps[]) {
@@ -73,7 +64,9 @@ export function Form() {
 
   function onFocusHandler(id: string) {
     return () => {
-      setForm({ ...form, [id]: { ...form[id], isTouched: true } });
+      if (id === "location") {
+        setForm({ ...form, [id]: { ...form[id], hideSuggestions: false } });
+      }
     };
   }
 
