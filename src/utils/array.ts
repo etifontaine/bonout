@@ -5,5 +5,5 @@ export function sortByDate(array: any[], key: string): any[] {
 }
 
 export function filterBy(array: any[], key: string): any[] {
-  return array.filter((v, i, a) => a.findIndex(t => (t[key] === v[key])) === i)
+  return array.filter((v, i, a) => a.findIndex((t) => t[key] === v[key]) === i);
 }
