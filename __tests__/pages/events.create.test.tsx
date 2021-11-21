@@ -246,15 +246,18 @@ describe("CreateEventPage <Form />", () => {
       ) as HTMLInputElement;
       fireLocationHelper(input);
       expect(input).toHaveClass("invalid");
-      const suggestion = result.container.querySelector("li");
+      const label = result.container.querySelector(".help-label");
+      expect(label).toBeInTheDocument();
+      expect(label).toHaveTextContent(
+        DATE_PASSED_ERROR("date de commencement")
+      );
+      const suggestion = result.container.querySelector(".suggestions li");
       if (suggestion) {
-        fireEvent.click(suggestion);
+        act(() => {
+          fireEvent.click(suggestion);
+        });
         expect(input).toHaveClass("valid");
-        const label = result.container.querySelector(".help-label");
-        expect(label).toBeInTheDocument();
-        expect(label).toHaveTextContent(
-          DATE_PASSED_ERROR("date de commencement")
-        );
+        expect(label).not.toBeInTheDocument();
       }
     });
 

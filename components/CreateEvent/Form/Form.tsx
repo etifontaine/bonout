@@ -100,7 +100,13 @@ export function Form(props: {
   function onSuggestionSelectHandler(suggestion: suggestion) {
     setForm({
       ...form,
-      location: { ...form.location, value: suggestion.location, isValid: true },
+      location: {
+        ...form.location,
+        value: suggestion.location,
+        isValid: true,
+        hideSuggestions: true,
+        helperText: "",
+      },
     });
   }
 
@@ -135,7 +141,10 @@ export function Form(props: {
           )
         ),
         isInput("location", (f) =>
-          setHelperText(DATE_PASSED_ERROR("date de commencement"))(f)
+          pipe(
+            setProp("isValid", false)(f),
+            setHelperText(DATE_PASSED_ERROR("date de commencement"))
+          )
         ),
         setForm
       );
