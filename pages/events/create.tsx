@@ -53,7 +53,10 @@ const Add: NextPage = () => {
     isValid: boolean
   ) {
     e.preventDefault();
-    if (!isValid) toast.error("Il y a des erreurs dans le formulaire");
+    if (!isValid) {
+      toast.error("Il y a des erreurs dans le formulaire");
+      return;
+    }
     fetch("/api/events", {
       method: "POST",
       body: JSON.stringify({

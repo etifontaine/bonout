@@ -19,6 +19,6 @@ export type TinputsStaticProps = {
   id: string;
   label: string;
   placeholder?: string;
-  required: true;
+  required?: true;
   type?: string;
 };

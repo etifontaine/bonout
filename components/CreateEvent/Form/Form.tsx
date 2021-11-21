@@ -11,6 +11,7 @@ import {
 } from "./LocationSuggestions";
 
 import type { suggestion } from "./LocationSuggestions";
+import { cp } from "fs/promises";
 
 const GMapsLocationSuggestions =
   withGooglePlacesAutocomplete(LocationSuggestions);
@@ -45,7 +46,10 @@ export function Form(props: {
 
   return (
     <form
-      onSubmit={(e) => props.onSubmit(e, form, isFormValid)}
+      onSubmit={(e) => {
+        checkUp();
+        props.onSubmit(e, form, isFormValid);
+      }}
       className="pt-3"
     >
       <div className="flex flex-wrap">
@@ -53,7 +57,7 @@ export function Form(props: {
       </div>
       <input
         value="Créer"
-        disabled={!isFormValid}
+        // disabled={!isFormValid}
         type="submit"
         className={`${isFormValid ? "" : "cursor-not-allowed opacity-30"}
         bg-yellow-600 hover:bg-yellow-700 btn cursor-pointer
@@ -72,8 +76,9 @@ export function Form(props: {
         >
           <Input
             {...props}
+            // required
             onFocus={onFocusHandler(props.id)}
-            onChange={onChangeHandler(props.id)}
+            onChange={onChangeHandler(props.id, form)}
             value={form[props.id].value}
             helperText={form[props.id].helperText}
             className={setInvalidClass(form[props.id])}
@@ -110,9 +115,9 @@ export function Form(props: {
     });
   }
 
-  function onChangeHandler(inputId: string) {
+  function onChangeHandler(inputId: string, form: Tform) {
     return (value: string) => {
-      pipe(
+      const newForm = pipe(
         form,
         setProp("value", value),
         setProp("isTouched", true),
@@ -145,9 +150,10 @@ export function Form(props: {
             setProp("isValid", false)(f),
             setHelperText(DATE_PASSED_ERROR("date de commencement"))
           )
-        ),
-        setForm
+        )
       );
+      setForm(newForm);
+      return newForm;
     };
 
     function isInput(inputName: string, editedForm: (f: Tform) => Tform) {
@@ -180,6 +186,15 @@ export function Form(props: {
       return new Date(date) > (to ? new Date(to) : new Date());
     }
   }
+
+  function checkUp() {
+    if (isFormValid) return;
+    Object.entries(form)
+      .filter(([id, data]) => !(id === "location" && data.isValid))
+      .reduce((f, [id, data]) => {
+        return onChangeHandler(id, f)(data.value);
+      }, form);
+  }
   function setInvalidClass(state: TdefaultInputState) {
     return !state.isValid && state.isTouched
       ? "focus:border-red-500 border-red-500 invalid"
@@ -193,32 +208,27 @@ export function inputsStaticProps(): TinputsStaticProps[] {
       id: "name",
       label: "Nom de l'événement",
       placeholder: "Nom de l'événement",
-      required: true,
     },
     {
       id: "description",
       label: "Et quelque infos ?",
       placeholder: "Description de l'événement",
-      required: true,
       type: "textarea",
     },
     {
       id: "startAt",
       label: "On commence quand ?",
       type: "datetime-local",
-      required: true,
     },
     {
       id: "endAt",
       label: "Jusqu'à quand ?",
       type: "datetime-local",
-      required: true,
     },
     {
       id: "location",
       label: "Un lieu ?",
       placeholder: "Lieu de l'événement",
-      required: true,
     },
   ];
 }
