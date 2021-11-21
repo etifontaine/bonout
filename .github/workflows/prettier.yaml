@@ -17,5 +17,5 @@ jobs:
       uses: creyD/prettier_action@v4.0
       with:
         # This part is also where you can pass other options, for example:
-        prettier_options: --write **/*.{js,md}
+        prettier_options: --write **/*.{ts,tsx,js,md}
         only_changed: True

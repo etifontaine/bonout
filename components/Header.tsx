@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { getUserID } from "src/utils/user";
 
 function Header() {
   const [top, setTop] = useState(true);
@@ -41,6 +42,14 @@ function Header() {
           {/* Site navigation */}
           <nav className="flex flex-grow">
             <ul className="flex flex-grow justify-end flex-wrap items-center">
+              <li>
+                <Link href="/home">
+                  <a className="font-medium text-gray-600 hover:text-gray-900 px-5 py-3 flex items-center transition duration-150 ease-in-out">
+                    Mes événements
+                    {getUserID() ? ` - ${getUserID()}` : null}
+                  </a>
+                </Link>
+              </li>
               <li>
                 <Link href="/events/create">
                   <a className="btn-sm text-gray-200 bg-gray-900 hover:bg-gray-800 ml-3">

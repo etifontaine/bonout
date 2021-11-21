@@ -2,6 +2,7 @@ import { Fragment, useEffect, useRef, useState } from "react";
 import Router from "next/router";
 import { Dialog, Transition } from "@headlessui/react";
 import { ExclamationIcon, ThumbUpIcon } from "@heroicons/react/outline";
+import { toast } from "react-toastify";
 import { BoInvitationValidResponse } from "../../src/types";
 import { IModal } from "../../pages/invitation/[link]";
 
@@ -63,9 +64,25 @@ export default function InvitationModal({ link, userResponse }: IModal) {
         name: formContent?.username,
         response: userResponse,
         link: link,
+        user_id: localStorage.getItem("user_id") || undefined,
       }),
-    }).then(() => {
-      Router.push("/home");
+    }).then(async (res) => {
+      if (res.status === 201) {
+        const { user_id } = await res.json();
+        if (localStorage.getItem("user_id") === null) {
+          localStorage.setItem("user_id", user_id);
+        }
+        Router.push("/home");
+      } else {
+        res
+          .json()
+          .then((data) => {
+            toast.error(data.error ? data.error : "Une erreur est survenue");
+          })
+          .catch(() => {
+            toast.error("Une erreur est survenue");
+          });
+      }
     });
   };
 

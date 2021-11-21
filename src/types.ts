@@ -26,6 +26,8 @@ export enum BoInvitationValidResponse {
 export type BoInvitationResponse = {
   name: string;
   link: string;
+  eventID: string;
+  user_id: string;
   response: BoInvitationValidResponse;
   created_at?: string;
 };

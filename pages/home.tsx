@@ -6,6 +6,7 @@ import Header from "../components/Header";
 import { BoEvent } from "../src/types";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import { getUserID } from "src/utils/user";
 
 const Home: NextPage = () => {
   const [events, setEvents] = useState<BoEvent[] | null>(null);
@@ -36,22 +37,19 @@ const Home: NextPage = () => {
             <div className="pt-32 pb-12 md:pt-40 md:pb-20">
               {/* Section header */}
               <div className=" pb-12 md:pb-16">
-                <h1 className="text-center text-4xl md:text-5xl font-extrabold leading-tighter tracking-tighter mb-4">
-                  Bienvenue !
-                </h1>
                 <div className="max-w-3xl mx-auto">
                   {todayEvents !== null &&
                     todayEvents.map((event) => (
                       <div key={event.id}>
                         <h2 className="text-2xl font-medium pt-4 pl-2 pb-2">
-                          C'est aujourd'hui !{" "}
+                          C'est aujourd'hui !
                         </h2>
                         <EventCard event={event} />
                       </div>
                     ))}
 
                   <h2 className="text-2xl font-medium pt-4 pl-2 pb-2">
-                    À venir{" "}
+                    Évenements à venir
                   </h2>
                   <section className="h-fullbg-gray-200">
                     {events &&
@@ -79,10 +77,6 @@ const Home: NextPage = () => {
       if (res.status !== 200) return [];
       return res.json();
     })) as Promise<BoEvent[]>;
-  }
-
-  function getUserID() {
-    return localStorage.getItem("user_id");
   }
 
   function getTodayEvents(events: BoEvent[]): BoEvent[] | null {

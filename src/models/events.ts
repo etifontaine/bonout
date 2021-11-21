@@ -1,4 +1,5 @@
 import { firestore } from "firebase-admin";
+import { sortByDate } from "src/utils/array";
 const { FieldValue } = firestore;
 import db from "../db";
 import {
@@ -7,11 +8,12 @@ import {
   BoInvitationValidResponse,
 } from "../types";
 
-const COLLECTION_NAME = `${process.env.DB_ENV}_events`;
+const COLLECTION_NAME_EVENTS = `${process.env.DB_ENV}_events`;
+const COLLECTION_NAME_INVITATIONS = `${process.env.DB_ENV}_invitations`;
 
 export async function getEvents(): Promise<BoEvent[]> {
   const eventsQuery = await db
-    .collection(COLLECTION_NAME)
+    .collection(COLLECTION_NAME_EVENTS)
     .orderBy("start_at")
     .get();
   const events = eventsQuery.docs.map((x) => x.data() as BoEvent);
@@ -20,15 +22,13 @@ export async function getEvents(): Promise<BoEvent[]> {
 }
 
 export async function getEventsCount(): Promise<number> {
-  const eventsQuery = await db
-    .collection(COLLECTION_NAME)
-    .get();
+  const eventsQuery = await db.collection(COLLECTION_NAME_EVENTS).get();
 
   return eventsQuery.size || 0;
 }
 
 export async function getEventByID(id: string): Promise<BoEvent | null> {
-  const eventQuery = await db.collection(COLLECTION_NAME).doc(id).get();
+  const eventQuery = await db.collection(COLLECTION_NAME_EVENTS).doc(id).get();
 
   const eventData = eventQuery.data() as BoEvent;
 
@@ -36,8 +36,8 @@ export async function getEventByID(id: string): Promise<BoEvent | null> {
 }
 
 export async function getEventsByUserID(userID: string): Promise<BoEvent[]> {
-  return db
-    .collection(COLLECTION_NAME)
+  const userEvents = await db
+    .collection(COLLECTION_NAME_EVENTS)
     .where("user_id", "==", userID)
     .get()
     .then((querySnapshot) => {
@@ -46,11 +46,34 @@ export async function getEventsByUserID(userID: string): Promise<BoEvent[]> {
       );
       return events || [];
     });
+
+  const userEventsInvitations = await db
+    .collection(COLLECTION_NAME_INVITATIONS)
+    .doc(userID)
+    .get()
+    .then(async (res) => {
+      const userInvitationsData = res.data();
+      if (userInvitationsData?.invitations) {
+        const event = await userInvitationsData.invitations.map(
+          async (invitation: BoInvitationResponse) => {
+            return await getEventByID(invitation.eventID);
+          }
+        );
+        const userData = (await Promise.all(event)) as BoEvent[];
+        return userData;
+      } else {
+        return [];
+      }
+    });
+
+  const userData = await Promise.all([userEvents, userEventsInvitations]);
+
+  return sortByDate(userData.flat(), "start_at");
 }
 
 export async function getEventByLink(link: string): Promise<BoEvent | null> {
   const eventsQuery = await db
-    .collection(COLLECTION_NAME)
+    .collection(COLLECTION_NAME_EVENTS)
     .where("link", "==", link)
     .get();
   if (eventsQuery.docs.length === 0) {
@@ -74,7 +97,7 @@ export async function getEventByLink(link: string): Promise<BoEvent | null> {
 }
 
 export async function createEvent(payload: BoEvent): Promise<BoEvent> {
-  const event = await db.collection(COLLECTION_NAME).add({
+  const event = await db.collection(COLLECTION_NAME_EVENTS).add({
     ...payload,
     created_at: new Date().toISOString(),
   });
@@ -85,18 +108,35 @@ export async function createEvent(payload: BoEvent): Promise<BoEvent> {
 }
 
 export async function deleteEventByID(id: string): Promise<void> {
-  await db.collection(COLLECTION_NAME).doc(id).delete();
+  await db.collection(COLLECTION_NAME_EVENTS).doc(id).delete();
 }
 
 export async function createInvitationResponse(
   eventID: BoEvent["id"],
   payload: BoInvitationResponse
 ) {
-  const eventRef = db.collection(COLLECTION_NAME).doc(eventID);
-
+  const eventRef = db.collection(COLLECTION_NAME_EVENTS).doc(eventID);
   const unionRes = await eventRef.update({
     invitations: FieldValue.arrayUnion(payload),
   });
+
+  // Check if user already have a key in the invitations table
+  const userInvitationsRef = db
+    .collection(COLLECTION_NAME_INVITATIONS)
+    .doc(payload.user_id);
+
+  if ((await userInvitationsRef.get()).exists) {
+    await userInvitationsRef.update({
+      invitations: FieldValue.arrayUnion({ ...payload, eventID }),
+    });
+  } else {
+    await db
+      .collection(COLLECTION_NAME_INVITATIONS)
+      .doc(payload.user_id)
+      .set({
+        invitations: FieldValue.arrayUnion({ ...payload, eventID }),
+      });
+  }
 
   return unionRes;
 }
@@ -105,7 +145,7 @@ export async function deleteInvitationResponse(
   eventID: BoEvent["id"],
   payload: BoInvitationResponse
 ) {
-  const eventRef = db.collection(COLLECTION_NAME).doc(eventID);
+  const eventRef = db.collection(COLLECTION_NAME_EVENTS).doc(eventID);
 
   const unionRes = await eventRef.update({
     invitations: FieldValue.arrayRemove(payload),
