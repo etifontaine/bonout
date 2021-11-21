@@ -3,7 +3,7 @@
  */
 
 import React from "react";
-import { render, fireEvent } from "../test-utils";
+import { render, fireEvent, act } from "../test-utils";
 import { Form } from "@components/CreateEvent/Form/Form";
 import {
   LENGTH_ERROR,
@@ -12,21 +12,11 @@ import {
 import { getDateTime, add1h } from "@components/CreateEvent/Form/utils";
 import usePlacesAutocomplete from "use-places-autocomplete";
 import type { HookArgs, HookReturn } from "use-places-autocomplete";
-import { act } from ".pnpm/@testing-library+react@12.0.0_react-dom@17.0.2+react@17.0.2/node_modules/@testing-library/react";
 const ok = "OK";
 const error = "ERROR";
 const data = [{ place_id: "0109" }];
+jest.useFakeTimers();
 
-const okSuggestions = {
-  loading: false,
-  status: ok,
-  data,
-};
-const defaultSuggestions = {
-  loading: false,
-  status: "",
-  data: [],
-};
 const getPlacePredictions = jest.fn();
 const getMaps = (type = "success", d = data): any => ({
   maps: {
@@ -41,7 +31,7 @@ const getMaps = (type = "success", d = data): any => ({
                     type === "success" ? d : null,
                     type === "success" ? ok : error
                   );
-                }, 0);
+                }, 500);
               };
       },
     },
@@ -50,6 +40,7 @@ const getMaps = (type = "success", d = data): any => ({
 
 describe("CreateEventPage <Form />", () => {
   beforeAll(() => {
+    jest.clearAllTimers();
     global.window.google = getMaps();
   });
   describe("name input", () => {
@@ -202,9 +193,6 @@ describe("CreateEventPage <Form />", () => {
   });
 
   describe("location Input", () => {
-    beforeAll(() => {
-      jest.useFakeTimers();
-    });
     it("should exist", () => {
       const result = render(<Form />);
       const input = result.container.querySelector("#location");
@@ -225,10 +213,23 @@ describe("CreateEventPage <Form />", () => {
           fireEvent.change(input, {
             target: { value: "test" },
           });
+          jest.runAllTimers();
         });
-        jest.runAllTimers();
         const suggestions = result.container.querySelector(".suggestions");
         expect(suggestions).toBeInTheDocument();
+      }
+    });
+    it("should be valid if an adress is selected", () => {
+      const result = render(<Form />);
+      const input = result.container.querySelector("#location");
+      if (input) {
+        act(() => {
+          fireEvent.change(input, {
+            target: { value: "test" },
+          });
+          jest.runAllTimers();
+        });
+
         expect(input).toHaveClass("invalid");
 
         const suggestion = result.container.querySelector("li");
@@ -236,17 +237,6 @@ describe("CreateEventPage <Form />", () => {
           fireEvent.click(suggestion);
           expect(input).toHaveClass("valid");
         }
-
-        // const label = result.container.querySelector(".help-label");
-        // expect(label).toBeInTheDocument();
-        // expect(label).toHaveTextContent(
-        //   DATE_PASSED_ERROR("date de commencement")
-        // );
-
-        // const tomorow = new Date();
-        // tomorow.setDate(tomorow.getDate() + 1);
-        // fireEvent.change(input, { target: { value: getDateTime(tomorow) } });
-        // expect(input).toHaveClass("valid");
       }
     });
   });
