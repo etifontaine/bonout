@@ -1,15 +1,18 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Input from "../../Input";
 import type { TdefaultInputState, Tform, TinputsStaticProps } from "./types";
 import { DATE_PASSED_ERROR, LENGTH_ERROR } from "./errors.text";
 import { pipe } from "fp-ts/lib/function";
 import { getDateTime, add1h } from "./utils";
+import useOnclickOutside from "react-cool-onclickoutside";
 import {
   LocationSuggestions,
   withGooglePlacesAutocomplete,
 } from "./LocationSuggestions";
+
 const GMapsLocationSuggestions =
   withGooglePlacesAutocomplete(LocationSuggestions);
+
 const defaultInputState: TdefaultInputState = {
   value: "",
   isValid: false,
@@ -21,40 +24,61 @@ export function Form() {
   const [form, setForm] = useState({
     name: defaultInputState,
     description: defaultInputState,
-    location: defaultInputState,
+    location: { ...defaultInputState, hideSuggestions: false },
     startAt: { ...defaultInputState, value: getDateTime(new Date()) },
     endAt: { ...defaultInputState, value: getDateTime(add1h(new Date())) },
   } as Tform);
+
+  const locationFieldsetRef = useOnclickOutside(() => {
+    setForm({ ...form, location: { ...form.location, hideSuggestions: true } });
+  });
+
+  useEffect(() => {
+    if (form.location.isTouched) {
+      setForm((f) => ({
+        ...f,
+        location: { ...form.location, hideSuggestions: false },
+      }));
+    }
+  }, [form.location.isTouched]);
 
   return <form>{generateInputs(inputsStaticProps())}</form>;
 
   function generateInputs(inputsProps: TinputsStaticProps[]) {
     return inputsProps.map((props) => {
       return (
-        <div key={props.id} className="w-full mb-2">
+        <div
+          ref={props.id === "location" ? locationFieldsetRef : null}
+          key={props.id}
+          className="w-full mb-2"
+        >
           <Input
             {...props}
+            onFocus={onFocusHandler(props.id)}
             onChange={onChangeHandler(props.id)}
             value={form[props.id].value}
             helperText={form[props.id].helperText}
             className={setInvalidClass(form[props.id])}
           />
-          {props.id === "location" && (
+          {props.id === "location" && !form.location.hideSuggestions ? (
             <GMapsLocationSuggestions
-              onSelect={onSelectHandler}
+              onSelect={onSuggestionSelectHandler}
               inputValue={form.location.value}
             />
-          )}
+          ) : null}
         </div>
       );
     });
   }
 
-  function onSelectHandler(value: string) {
-    setForm({
-      ...form,
-      location: { ...form.location, value, isValid: true },
-    });
+  function onFocusHandler(id: string) {
+    return () => {
+      setForm({ ...form, [id]: { ...form[id], isTouched: true } });
+    };
+  }
+
+  function onSuggestionSelectHandler(value: string) {
+    setForm({ ...form, location: { ...form.location, value, isValid: true } });
   }
 
   function onChangeHandler(inputId: string) {
@@ -86,6 +110,9 @@ export function Form() {
             setProp("isValid", isNotPassedDate(value, f.startAt.value))(f),
             setHelperText(DATE_PASSED_ERROR("date de commencement"))
           )
+        ),
+        isInput("location", (f) =>
+          setHelperText(DATE_PASSED_ERROR("date de commencement"))(f)
         ),
         setForm
       );

@@ -3,7 +3,7 @@
  */
 
 import React from "react";
-import { render, fireEvent, act } from "../test-utils";
+import { render, fireEvent, act, RenderResult } from "../test-utils";
 import { Form } from "@components/CreateEvent/Form/Form";
 import {
   LENGTH_ERROR,
@@ -208,36 +208,93 @@ describe("CreateEventPage <Form />", () => {
     it("should suggestion open onChange", () => {
       const result = render(<Form />);
       const input = result.container.querySelector("#location");
-      if (input) {
-        act(() => {
-          fireEvent.change(input, {
-            target: { value: "test" },
-          });
-          jest.runAllTimers();
-        });
-        const suggestions = result.container.querySelector(".suggestions");
-        expect(suggestions).toBeInTheDocument();
-      }
+      fireLocationHelper(input);
+      const suggestions = result.container.querySelector(".suggestions");
+      expect(suggestions).toBeInTheDocument();
     });
+
     it("should be valid if an adress is selected", () => {
       const result = render(<Form />);
       const input = result.container.querySelector("#location");
-      if (input) {
-        act(() => {
-          fireEvent.change(input, {
-            target: { value: "test" },
-          });
-          jest.runAllTimers();
-        });
-
-        expect(input).toHaveClass("invalid");
-
-        const suggestion = result.container.querySelector("li");
-        if (suggestion) {
-          fireEvent.click(suggestion);
-          expect(input).toHaveClass("valid");
-        }
+      fireLocationHelper(input);
+      expect(input).toHaveClass("invalid");
+      const suggestion = result.container.querySelector("li");
+      if (suggestion) {
+        fireEvent.click(suggestion);
+        expect(input).toHaveClass("valid");
       }
+    });
+
+    it("should be close suggestion if an adress is selected", () => {
+      const result = render(<Form />);
+      const input = result.container.querySelector(
+        "#location"
+      ) as HTMLInputElement;
+      fireLocationHelper(input);
+      const suggestions = result.container.querySelector(".suggestions");
+      const suggestion = result.container.querySelector("li");
+      if (suggestion) {
+        fireEvent.click(suggestion);
+        expect(suggestions).not.toBeInTheDocument();
+      }
+    });
+
+    it("should be valid if suggestion is cliked", () => {
+      const result = render(<Form />);
+      const input = result.container.querySelector(
+        "#location"
+      ) as HTMLInputElement;
+      fireLocationHelper(input);
+      expect(input).toHaveClass("invalid");
+      const suggestion = result.container.querySelector("li");
+      if (suggestion) {
+        fireEvent.click(suggestion);
+        expect(input).toHaveClass("valid");
+        const label = result.container.querySelector(".help-label");
+        expect(label).toBeInTheDocument();
+        expect(label).toHaveTextContent(
+          DATE_PASSED_ERROR("date de commencement")
+        );
+      }
+    });
+
+    it("should be close suggestion if user click outside", () => {
+      const result = render(<Form />);
+      const input = result.container.querySelector(
+        "#location"
+      ) as HTMLInputElement;
+      fireLocationHelper(input);
+
+      fireEvent.mouseDown(document.body);
+
+      const suggestions = result.container.querySelector(".suggestions");
+      expect(suggestions).not.toBeInTheDocument();
+    });
+
+    it("should be re-open suggestion if user focus", () => {
+      const result = render(<Form />);
+      const input = result.container.querySelector(
+        "#location"
+      ) as HTMLInputElement;
+      fireLocationHelper(input);
+      act(() => {
+        fireEvent.mouseDown(document.body);
+        fireEvent.focus(input);
+      });
+
+      const suggestions = result.container.querySelector(".suggestions");
+      expect(suggestions).toBeInTheDocument();
     });
   });
 });
+
+function fireLocationHelper(input: Element | null) {
+  if (input) {
+    act(() => {
+      fireEvent.change(input, {
+        target: { value: "test" },
+      });
+      jest.runAllTimers();
+    });
+  }
+}

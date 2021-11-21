@@ -3,6 +3,7 @@ export type TdefaultInputState = {
   isValid: boolean;
   helperText: string;
   isTouched: boolean;
+  hideSuggestions?: boolean;
 };
 
 export type Tform = {
