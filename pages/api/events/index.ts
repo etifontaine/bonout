@@ -42,7 +42,6 @@ export default async function handler(
       return {
         ...payload,
         link: uid(),
-        user_id: payload.user_id ? payload.user_id : uid(),
       };
     }
 
@@ -50,7 +49,6 @@ export default async function handler(
       const uid = new ShortUniqueId({ length: 10 });
       return {
         ...payload,
-        link: uid(),
         user_id: payload.user_id ? payload.user_id : uid(),
       };
     }
@@ -83,12 +81,17 @@ export default async function handler(
         return event;
 
         function isPropertyMissing(field: string): boolean {
-          return Object.keys(event).indexOf(field) === -1;
+          return (
+            Object.keys(event)
+              .filter((key) => fieldsToCheck().includes(key))
+              .indexOf(field) === -1
+          );
         }
       }
 
       function checkEventTypes(event: BoEvent): BoEvent {
         Object.entries(event)
+          .filter(([key]) => fieldsToCheck().includes(key))
           .map(([key, value]) => ({
             key,
             value,
@@ -114,14 +117,7 @@ export default async function handler(
         }
       }
       function fieldsToCheck() {
-        return [
-          "title",
-          "description",
-          "address",
-          "start_at",
-          "end_at",
-          "user_id",
-        ];
+        return ["title", "description", "address", "start_at", "end_at"];
       }
     }
   }
