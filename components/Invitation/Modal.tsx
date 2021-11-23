@@ -72,7 +72,8 @@ export default function InvitationModal({ link, userResponse }: IModal) {
         if (localStorage.getItem("user_id") === null) {
           localStorage.setItem("user_id", user_id);
         }
-        Router.push("/home");
+        setIsOpen(false);
+        Router.push(`/events/details/${link}`);
       } else {
         res
           .json()

@@ -39,6 +39,7 @@ export async function getEventsByUserID(userID: string): Promise<BoEvent[]> {
   const userEvents = await db
     .collection(COLLECTION_NAME_EVENTS)
     .where("user_id", "==", userID)
+    .where("start_at", ">=", new Date().getTime())
     .get()
     .then((querySnapshot) => {
       const events = querySnapshot.docs.map(
@@ -100,6 +101,8 @@ export async function createEvent(payload: BoEvent): Promise<BoEvent> {
   const event = await db.collection(COLLECTION_NAME_EVENTS).add({
     ...payload,
     created_at: new Date().toISOString(),
+    start_at: new Date(payload.start_at).getTime(),
+    end_at: new Date(payload.end_at).getTime()
   });
 
   const eventQuery = await event.get();
@@ -124,19 +127,7 @@ export async function createInvitationResponse(
   const userInvitationsRef = db
     .collection(COLLECTION_NAME_INVITATIONS)
     .doc(payload.user_id);
-
-  if ((await userInvitationsRef.get()).exists) {
-    await userInvitationsRef.update({
-      invitations: FieldValue.arrayUnion({ ...payload, eventID }),
-    });
-  } else {
-    await db
-      .collection(COLLECTION_NAME_INVITATIONS)
-      .doc(payload.user_id)
-      .set({
-        invitations: FieldValue.arrayUnion({ ...payload, eventID }),
-      });
-  }
+  await userInvitationsRef.set({ [eventID]: payload });
 
   return unionRes;
 }

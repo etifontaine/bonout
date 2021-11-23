@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Input from "../../Input";
 import type { TdefaultInputState, Tform, TinputsStaticProps } from "./types";
-import { DATE_PASSED_ERROR, LENGTH_ERROR } from "./errors.text";
+import { DATE_PASSED_ERROR, LENGTH_ERROR, INVALID_PLACE_ERROR } from "./errors.text";
 import { pipe } from "fp-ts/lib/function";
 import { getDateTime, add1h } from "./utils";
 import useOnclickOutside from "react-cool-onclickoutside";
@@ -11,7 +11,6 @@ import {
 } from "./LocationSuggestions";
 
 import type { suggestion } from "./LocationSuggestions";
-import { cp } from "fs/promises";
 
 const GMapsLocationSuggestions =
   withGooglePlacesAutocomplete(LocationSuggestions);
@@ -57,7 +56,6 @@ export function Form(props: {
       </div>
       <input
         value="Créer"
-        // disabled={!isFormValid}
         type="submit"
         className={`${isFormValid ? "" : "cursor-not-allowed opacity-30"}
         bg-yellow-600 hover:bg-yellow-700 btn cursor-pointer
@@ -142,13 +140,13 @@ export function Form(props: {
         isInput("endAt", (f) =>
           pipe(
             setProp("isValid", isNotPassedDate(value, f.startAt.value))(f),
-            setHelperText(DATE_PASSED_ERROR("date de commencement"))
+            setHelperText(DATE_PASSED_ERROR("la date de début"))
           )
         ),
         isInput("location", (f) =>
           pipe(
             setProp("isValid", false)(f),
-            setHelperText(DATE_PASSED_ERROR("date de commencement"))
+            setHelperText(INVALID_PLACE_ERROR(f.location.value))
           )
         )
       );
