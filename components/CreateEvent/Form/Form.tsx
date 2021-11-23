@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from "react";
 import Input from "../../Input";
 import type { TdefaultInputState, Tform, TinputsStaticProps } from "./types";
-import { DATE_PASSED_ERROR, LENGTH_ERROR, INVALID_PLACE_ERROR } from "./errors.text";
+import {
+  DATE_PASSED_ERROR,
+  LENGTH_ERROR,
+  INVALID_PLACE_ERROR,
+} from "./errors.text";
 import { pipe } from "fp-ts/lib/function";
 import { getDateTime, add1h } from "./utils";
 import useOnclickOutside from "react-cool-onclickoutside";

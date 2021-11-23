@@ -80,18 +80,20 @@ const EventDetails: NextPage<PageProps> = ({ event }) => {
 
   useEffect(() => {
     if (event.invitations.length > 0) {
-      const userInvitation = event.invitations.find(invitation => invitation.user_id === getUserID())
+      const userInvitation = event.invitations.find(
+        (invitation) => invitation.user_id === getUserID()
+      );
       if (userInvitation?.response === BoInvitationValidResponse.YES) {
-        setUserInvitationStatus('Vous avez prévu de venir')
+        setUserInvitationStatus("Vous avez prévu de venir");
       } else if (userInvitation?.response === BoInvitationValidResponse.MAYBE) {
-        setUserInvitationStatus('Vous avez peut-être prévu de venir')
+        setUserInvitationStatus("Vous avez peut-être prévu de venir");
       } else if (userInvitation?.response === BoInvitationValidResponse.NO) {
-        setUserInvitationStatus('Vous n\'avez pas prévu de venir')
+        setUserInvitationStatus("Vous n'avez pas prévu de venir");
       }
     } else {
-      setUserInvitationStatus('Vous n\'avez pas encore répondu à l\'invitation')
+      setUserInvitationStatus("Vous n'avez pas encore répondu à l'invitation");
     }
-  }, [event])
+  }, [event]);
 
   return (
     <div className="flex flex-col min-h-screen overflow-hidden">
@@ -152,7 +154,9 @@ const EventDetails: NextPage<PageProps> = ({ event }) => {
                   ) : null}
                 </div>
                 <div>
-                  <p className="text-m text-gray-600 mb-8">{userInvitationStatus}</p>
+                  <p className="text-m text-gray-600 mb-8">
+                    {userInvitationStatus}
+                  </p>
                   <button
                     onClick={() => setResponse(BoInvitationValidResponse.NO)}
                     className="btn-sm text-black bg-gray-300 hover:bg-gray-400 ml-3"

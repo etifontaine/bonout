@@ -49,26 +49,26 @@ const Home: NextPage = () => {
                       </div>
                     ))}
 
-                  {
-                    events && events?.length > 0 ? (
-                      <>
-                        <h2 className="text-2xl font-medium pt-4 pl-2 pb-2">
-                          Évenements à venir
-                        </h2>
-                        <section className="h-fullbg-gray-200">
-                          {events.map((event, index) => (
-                            <div key={event.id}>
-                              <EventItem
-                                onClick={() => Router.push(`/events/details/${event.link}`)}
-                                event={event}
-                              />
-                              {index !== events.length - 1 ? <Separator /> : null}
-                            </div>
-                          ))}
-                        </section>
-                      </>
-                    ) : null
-                  }
+                  {events && events?.length > 0 ? (
+                    <>
+                      <h2 className="text-2xl font-medium pt-4 pl-2 pb-2">
+                        Évenements à venir
+                      </h2>
+                      <section className="h-fullbg-gray-200">
+                        {events.map((event, index) => (
+                          <div key={event.id}>
+                            <EventItem
+                              onClick={() =>
+                                Router.push(`/events/details/${event.link}`)
+                              }
+                              event={event}
+                            />
+                            {index !== events.length - 1 ? <Separator /> : null}
+                          </div>
+                        ))}
+                      </section>
+                    </>
+                  ) : null}
                 </div>
               </div>
             </div>

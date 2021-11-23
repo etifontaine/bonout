@@ -102,7 +102,7 @@ export async function createEvent(payload: BoEvent): Promise<BoEvent> {
     ...payload,
     created_at: new Date().toISOString(),
     start_at: new Date(payload.start_at).getTime(),
-    end_at: new Date(payload.end_at).getTime()
+    end_at: new Date(payload.end_at).getTime(),
   });
 
   const eventQuery = await event.get();
