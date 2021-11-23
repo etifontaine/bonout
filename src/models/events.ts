@@ -1,6 +1,5 @@
-import { firestore } from "firebase-admin";
-import { filterBy, sortByDate } from "src/utils/array";
-const { FieldValue } = firestore;
+import { filterBy, sortByDate } from "../../src/utils/array";
+import { FieldValue } from "firebase-admin/firestore";
 import db from "../db";
 import {
   BoEvent,

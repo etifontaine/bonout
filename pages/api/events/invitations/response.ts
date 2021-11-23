@@ -80,6 +80,7 @@ export default async function handler(
         .json({ message: existingInvitation ? "updated" : "created" });
     })
     .catch((e: { message: string }) => {
+      console.log(e);
       return res.status(500).json({ error: e.message });
     });
 }
