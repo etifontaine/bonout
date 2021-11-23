@@ -1,5 +1,5 @@
-import { firestore } from "firebase-admin";
-const { FieldValue } = firestore;
+import { FieldValue } from "firebase-admin/firestore";
+// const FieldValue = firestore.FieldValue;
 import db from "../db";
 import {
   BoEvent,
@@ -20,9 +20,7 @@ export async function getEvents(): Promise<BoEvent[]> {
 }
 
 export async function getEventsCount(): Promise<number> {
-  const eventsQuery = await db
-    .collection(COLLECTION_NAME)
-    .get();
+  const eventsQuery = await db.collection(COLLECTION_NAME).get();
 
   return eventsQuery.size || 0;
 }

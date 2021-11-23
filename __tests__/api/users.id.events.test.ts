@@ -9,12 +9,12 @@ import { mockEvent } from "../../__mocks__/mockEvent";
 import { RequestMethod } from "node-mocks-http";
 
 describe("GET api/users/[id]/events", () => {
-  let event: { [key: string]: any };
-  beforeAll(async () => {
-    await mockCreateEvent(JSON.stringify(mockEvent)).then((response) => {
-      event = response._getJSONData();
-    });
-  });
+  const event: { [key: string]: any } = {
+    ...mockEvent,
+    id: "1",
+    user_id: "user1",
+    link: "test-link-1",
+  };
 
   it("should be an error if not a get request", async () => {
     await mockGetEvents("", "POST").then((res) => {

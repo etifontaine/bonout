@@ -57,12 +57,19 @@ describe("POST api/events/invitation/response", () => {
     });
   });
 
-  let event: { [key: string]: any };
-  beforeAll(async () => {
-    await mockCreateEvent(JSON.stringify(mockEvent)).then((response) => {
-      event = response._getJSONData();
-    });
-  });
+  const event: { [key: string]: any } = {
+    ...mockEvent,
+    id: "1",
+    user_id: "user1",
+    link: "test-link-1",
+  };
+
+  const event2: { [key: string]: any } = {
+    ...mockEvent,
+    id: "2",
+    user_id: "user2",
+    link: "test-link-2",
+  };
 
   it("should status 201 created", async () => {
     const test = async (body: BoInvitationResponse) =>
@@ -96,17 +103,17 @@ describe("POST api/events/invitation/response", () => {
     await test({
       response: BoInvitationValidResponse.YES,
       name: "test1",
-      link: event.link,
+      link: event2.link,
     });
     await test({
       response: BoInvitationValidResponse.NO,
       name: "test2",
-      link: event.link,
+      link: event2.link,
     });
     await test({
       response: BoInvitationValidResponse.MAYBE,
       name: "test3",
-      link: event.link,
+      link: event2.link,
     });
   });
 });

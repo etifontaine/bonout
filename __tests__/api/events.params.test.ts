@@ -1,18 +1,15 @@
 import { API_ERROR_MESSAGES } from "../../src/utils/errorMessages";
 import paramsHandler from "./../../pages/api/events/[...params]";
-import {
-  mockCreateEvent,
-  mockNextApiHttp,
-} from "../../__mocks__/mockNextApiHttp";
+import { mockNextApiHttp } from "../../__mocks__/mockNextApiHttp";
 import { mockEvent } from "../../__mocks__/mockEvent";
 
 describe("GET api/events/[...params]/[id/link]", () => {
-  let event: { [key: string]: any };
-  beforeAll(async () => {
-    await mockCreateEvent(JSON.stringify(mockEvent)).then((response) => {
-      event = response._getJSONData();
-    });
-  });
+  const event: { [key: string]: any } = {
+    ...mockEvent,
+    id: "1",
+    user_id: "user1",
+    link: "test-link-1",
+  };
 
   it("should be an error if params is not link or id", async () => {
     await getEvent("notIDorLINK", "value").then((res) => {
