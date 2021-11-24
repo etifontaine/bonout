@@ -61,7 +61,7 @@ const EventDetails: NextPage<PageProps> = ({ event }) => {
         .share({
           title: event.title,
           text: event.description,
-          url: `${window.location.host}/events/details/${event.link}`,
+          url: event.link,
         })
         .catch((error) => console.log("Error sharing", error));
     }
@@ -146,11 +146,10 @@ const EventDetails: NextPage<PageProps> = ({ event }) => {
             <div className="bg-gray-50 px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
               <dt className="text-sm font-medium text-gray-500">Lien</dt>
               <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                <button onClick={() => shareEvent()}>{`${
-                  typeof window !== "undefined"
+                <button onClick={() => shareEvent()}>{`${typeof window !== "undefined"
                     ? `${window.location.host}/events/details/`
                     : ""
-                }${event.link}`}</button>
+                  }${event.link}`}</button>
               </dd>
             </div>
             <div className="bg-gray-50 px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
