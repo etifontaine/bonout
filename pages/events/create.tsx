@@ -1,6 +1,4 @@
 import type { NextPage } from "next";
-import Input from "../../components/Input";
-import Head from "next/head";
 import Router from "next/router";
 import Header from "../../components/Header";
 import { toast } from "react-toastify";
@@ -10,21 +8,10 @@ import type { Tform } from "../../components/CreateEvent/Form/types";
 const Add: NextPage = () => {
   return (
     <div className="flex flex-col min-h-screen overflow-hidden">
-      <Head>
-        <title>Bonout</title>
-        <meta
-          name="description"
-          content="Bonout t'aide à organiser ton prochain événement, un seul site avec toutes les fonctionnalités!"
-        />
-        <meta charSet="utf-8" />
-        <link rel="icon" href="/images/logo.svg" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta name="theme-color" content="#000000" />
-      </Head>
       <Header />
       <main className="flex-grow">
         <section className="relative">
-          <div className="max-w-6xl mx-auto px-4 sm:px-6">
+          <div className="max-w-6xl mx-auto px-4 sm:px-6 sm:mt-10">
             {/* Hero content */}
             <div className="pb-12 pt-10 md:pb-20">
               {/* Section header */}
@@ -66,7 +53,7 @@ const Add: NextPage = () => {
     }).then(async (res) => {
       if (res.status === 201) {
         const { link, user_id } = await res.json();
-        Router.push(`/invitation/${link}`);
+        Router.push(`/events/details/${link}`);
         if (localStorage.getItem("user_id") === null) {
           localStorage.setItem("user_id", user_id);
         }

@@ -84,15 +84,19 @@ export async function getEventByLink(link: string): Promise<BoEvent | null> {
   event.id = eventsQuery.docs[0].id;
   let comingGuestAmount = 0;
   let maybeComingGuestAmount = 0;
+  let notComingGuestAmount = 0;
   event.invitations?.map((invitation) => {
     comingGuestAmount +=
       invitation.response === BoInvitationValidResponse.YES ? 1 : 0;
     maybeComingGuestAmount +=
       invitation.response === BoInvitationValidResponse.MAYBE ? 1 : 0;
+    notComingGuestAmount +=
+      invitation.response === BoInvitationValidResponse.NO ? 1 : 0;
   });
 
   event.comingGuestAmount = comingGuestAmount;
   event.maybeComingGuestAmount = maybeComingGuestAmount;
+  event.notComingGuestAmount = notComingGuestAmount;
 
   return event;
 }
@@ -127,7 +131,14 @@ export async function createInvitationResponse(
   const userInvitationsRef = db
     .collection(COLLECTION_NAME_INVITATIONS)
     .doc(payload.user_id);
-  await userInvitationsRef.set({ [eventID]: payload });
+
+  if (userInvitationsRef) {
+    await userInvitationsRef.set({ [eventID]: payload });
+  } else {
+    db
+      .collection(COLLECTION_NAME_INVITATIONS)
+      .doc(payload.user_id).set({ [eventID]: payload });
+  }
 
   return unionRes;
 }
@@ -138,9 +149,11 @@ export async function deleteInvitationResponse(
 ) {
   const eventRef = db.collection(COLLECTION_NAME_EVENTS).doc(eventID);
 
-  const unionRes = await eventRef.update({
-    invitations: FieldValue.arrayRemove(payload),
-  });
+  if (eventRef) {
+    const unionRes = await eventRef.update({
+      invitations: FieldValue.arrayRemove(payload),
+    });
+  }
 
-  return unionRes;
+  return eventRef;
 }
