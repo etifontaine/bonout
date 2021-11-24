@@ -9,6 +9,7 @@ import {
   deleteInvitationResponse,
   getEventByLink,
 } from "../../../../src/models/events";
+import ShortUniqueId from "short-unique-id";
 
 export default async function handler(
   req: NextApiRequest,
@@ -58,6 +59,11 @@ export default async function handler(
 
   payload.created_at = new Date().toUTCString();
 
+  if (!payload.user_id || payload.user_id === "undefined") {
+    const uid = new ShortUniqueId({ length: 10 });
+    payload.user_id = uid();
+  }
+
   const event = await getEventByLink(payload.link);
   if (!event) {
     return res
@@ -67,7 +73,7 @@ export default async function handler(
 
   // Response was already added with for name
   const existingInvitation = event.invitations?.find(
-    (invitation) => invitation.name === payload?.name
+    (invitation) => invitation.user_id === payload?.user_id
   );
   if (existingInvitation) {
     await deleteInvitationResponse(event.id, existingInvitation);
@@ -80,6 +86,7 @@ export default async function handler(
         .json({ message: existingInvitation ? "updated" : "created" });
     })
     .catch((e: { message: string }) => {
+      console.log(e);
       return res.status(500).json({ error: e.message });
     });
 }

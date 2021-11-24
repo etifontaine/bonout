@@ -29,8 +29,10 @@ export async function getServerSideProps(context: { query: { link: string } }) {
     end_at: event?.end_at,
     link: event?.link,
     title: event?.title,
+    user_id: event?.user_id,
     invitations: event?.invitations || [],
     comingGuestAmount: event?.comingGuestAmount,
+    notComingGuestAmount: event?.notComingGuestAmount,
     maybeComingGuestAmount: event?.maybeComingGuestAmount,
   };
 
@@ -59,7 +61,7 @@ const EventDetails: NextPage<PageProps> = ({ event }) => {
         .share({
           title: event.title,
           text: event.description,
-          url: event.link,
+          url: `${window.location.host}/events/details/${event.link}`,
         })
         .catch((error) => console.log("Error sharing", error));
     }
@@ -114,73 +116,111 @@ const EventDetails: NextPage<PageProps> = ({ event }) => {
       />
       {/*  Site header */}
       <Header />
-      {/*  Page content */}
-      <main className="flex-grow">
-        <section className="relative">
-          <div className="max-w-6xl mx-auto px-4 sm:px-6">
-            {/* Hero content */}
-            <div className="pt-10 pb-12 md:pb-20">
-              {/* Section header */}
-              <div className="text-center pb-12 md:pb-16">
-                <h1 className="text-4xl md:text-5xl font-extrabold leading-tighter tracking-tighter mb-4">
-                  {event.title}
-                </h1>
-                <div className="max-w-3xl mx-auto">
-                  <p className="text-xl text-gray-600 mb-8">
-                    {event.description}
-                  </p>
-                  <p className="text-xl text-gray-600 mb-8">
-                    Du {dayjs(event.start_at).format("DD/MM/YYYY")} à{" "}
-                    {dayjs(event.start_at).format("HH:mm")} au{" "}
-                    {dayjs(event.end_at).format("DD/MM/YYYY")} à{" "}
-                    {dayjs(event.end_at).format("HH:mm")}
-                  </p>
-                  <p className="text-xl text-gray-600 mb-8">
-                    Adresse:{" "}
-                    <button onClick={() => openAddress()}>
-                      {event.address}
-                    </button>
-                  </p>
-                  <p className="text-xl text-gray-600 mb-8">
-                    Lien:{" "}
-                    <button onClick={() => shareEvent()}>{event.link}</button>
-                  </p>
-                  {event.comingGuestAmount > 0 ? (
-                    <p className="text-xl text-gray-600 mb-8">
-                      Déjà {event.comingGuestAmount} personne
-                      {event.comingGuestAmount > 1 ? " s ont " : " à "} prévu de
-                      venir
-                    </p>
-                  ) : null}
-                </div>
-                <div>
-                  <p className="text-m text-gray-600 mb-8">
-                    {userInvitationStatus}
-                  </p>
-                  <button
-                    onClick={() => setResponse(BoInvitationValidResponse.NO)}
-                    className="btn-sm text-black bg-gray-300 hover:bg-gray-400 ml-3"
-                  >
-                    Refuser
-                  </button>
-                  <button
-                    onClick={() => setResponse(BoInvitationValidResponse.YES)}
-                    className="btn-sm text-green-600 bg-gray-300 hover:bg-gray-400 ml-3"
-                  >
-                    Accepter
-                  </button>
-                  <button
-                    onClick={() => setResponse(BoInvitationValidResponse.MAYBE)}
-                    className="btn-sm text-black bg-gray-300 hover:bg-gray-400 ml-3"
-                  >
-                    Peut-être
-                  </button>
-                </div>
-              </div>
+
+      <div className="bg-white overflow-hidden sm:rounded-lg flex-grow">
+        <div className="px-4 py-5 sm:px-6">
+          <h3 className="text-lg leading-6 font-medium text-gray-900">
+            {event.title}
+          </h3>
+          <p className="mt-1 max-w-2xl text-sm text-gray-500">
+            {event.description}
+          </p>
+        </div>
+        <div className="border-t border-gray-200">
+          <dl>
+            <div className="bg-gray-50 px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+              <dt className="text-sm font-medium text-gray-500">Date</dt>
+              <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                Du {dayjs(event.start_at).format("DD/MM/YYYY")} à{" "}
+                {dayjs(event.start_at).format("HH:mm")} au{" "}
+                {dayjs(event.end_at).format("DD/MM/YYYY")} à{" "}
+                {dayjs(event.end_at).format("HH:mm")}
+              </dd>
             </div>
-          </div>
-        </section>
-      </main>
+            <div className="bg-white px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+              <dt className="text-sm font-medium text-gray-500">Adresse</dt>
+              <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                <button onClick={() => openAddress()}>{event.address}</button>
+              </dd>
+            </div>
+            <div className="bg-gray-50 px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+              <dt className="text-sm font-medium text-gray-500">Lien</dt>
+              <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                <button onClick={() => shareEvent()}>{`${
+                  typeof window !== "undefined"
+                    ? `${window.location.host}/events/details/`
+                    : ""
+                }${event.link}`}</button>
+              </dd>
+            </div>
+            <div className="bg-gray-50 px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+              <dt className="text-sm font-medium text-gray-500">
+                Organisateur
+              </dt>
+              <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                {getUserID() === event.user_id
+                  ? "C'est votre événement"
+                  : "privé"}
+              </dd>
+            </div>
+            <div className="bg-white px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+              <dt className="text-sm font-medium text-gray-500">Invités</dt>
+              <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-1">
+                <p>
+                  Yes: {event.comingGuestAmount}, No:{" "}
+                  {event.notComingGuestAmount}, Maybe:{" "}
+                  {event.maybeComingGuestAmount}
+                </p>
+              </dd>
+              <dd className="mt-1 text-sm text-gray-900 mt-10 sm:col-span-1">
+                <ul
+                  role="list"
+                  className="border border-gray-200 rounded-md divide-y divide-gray-200 max-h-30 overflow-y-auto"
+                >
+                  {event.invitations.map((invitation, key) => {
+                    return (
+                      <li
+                        key={key}
+                        className="pl-3 pr-4 py-3 flex items-center justify-between text-sm"
+                      >
+                        <div className="w-0 flex-1 flex items-center">
+                          <span className="ml-2 flex-1 w-0 truncate">
+                            {invitation.name}
+                          </span>
+                        </div>
+                        <div className="ml-4 flex-shrink-0">
+                          {invitation.response}
+                        </div>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </dd>
+            </div>
+            <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+              <button
+                onClick={() => setResponse(BoInvitationValidResponse.NO)}
+                className="btn-sm text-black bg-gray-300 hover:bg-gray-400 ml-3"
+              >
+                Refuser
+              </button>
+              <button
+                onClick={() => setResponse(BoInvitationValidResponse.YES)}
+                className="btn-sm text-green-600 bg-gray-300 hover:bg-gray-400 ml-3"
+              >
+                Accepter
+              </button>
+              <button
+                onClick={() => setResponse(BoInvitationValidResponse.MAYBE)}
+                className="btn-sm text-black bg-gray-300 hover:bg-gray-400 ml-3"
+              >
+                Peut-être
+              </button>
+            </div>
+          </dl>
+        </div>
+      </div>
+      <footer className="h-5">user_id: {getUserID()}</footer>
     </div>
   );
 };

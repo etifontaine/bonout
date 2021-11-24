@@ -4,7 +4,7 @@ import { Dialog, Transition } from "@headlessui/react";
 import { ExclamationIcon, ThumbUpIcon } from "@heroicons/react/outline";
 import { toast } from "react-toastify";
 import { BoInvitationValidResponse } from "../../src/types";
-import { IModal } from "../../pages/invitation/[link]";
+import { IModal } from "../../pages/events/details/[link]";
 
 interface IModalContent {
   title: string;
@@ -19,6 +19,13 @@ export default function InvitationModal({ link, userResponse }: IModal) {
   let [isOpen, setIsOpen] = useState(false);
   const [formContent, setFormContent] = useState<IModalForm>();
   const [content, setContent] = useState<IModalContent>();
+
+  useEffect(() => {
+    const username = localStorage.getItem("user_pseudo");
+    if (username !== null) {
+      setFormContent({ username });
+    }
+  }, []);
 
   useEffect(() => {
     if (userResponse) {
@@ -56,12 +63,14 @@ export default function InvitationModal({ link, userResponse }: IModal) {
 
   const postInvitationResponse = () => {
     if (!formContent?.username) {
+      toast.error("Vous devez renseigner un pseudo");
       return;
     }
+    localStorage.setItem("user_pseudo", formContent.username);
     fetch("/api/events/invitations/response", {
       method: "POST",
       body: JSON.stringify({
-        name: formContent?.username,
+        name: formContent.username,
         response: userResponse,
         link: link,
         user_id: localStorage.getItem("user_id") || undefined,
@@ -172,11 +181,13 @@ export default function InvitationModal({ link, userResponse }: IModal) {
                         </label>
                         <input
                           autoComplete="off"
+                          value={formContent?.username}
                           onChange={(e) => {
                             setFormContent({ username: e.target.value });
                           }}
                           className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                           id="username"
+                          name="username"
                           type="text"
                           placeholder="Nom ou pseudo"
                         />

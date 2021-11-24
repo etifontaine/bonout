@@ -10,6 +10,7 @@ export type BoEvent = {
   link: string;
   comingGuestAmount?: number;
   maybeComingGuestAmount?: number;
+  notComingGuestAmount?: number;
   invitations: BoInvitationResponse[];
 };
 

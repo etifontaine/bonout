@@ -1,5 +1,4 @@
 import type { NextPage } from "next";
-import Head from "next/head";
 import EventItem from "../components/HomeScreen/EventItem";
 import EventCard from "../components/HomeScreen/EventCard";
 import Header from "../components/Header";
@@ -27,9 +26,6 @@ const Home: NextPage = () => {
 
   return (
     <div className="h-screen">
-      <Head>
-        <title>Bonout</title>
-      </Head>
       <Header />
       <main className="flex-grow">
         <section className="relative">
