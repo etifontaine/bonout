@@ -135,9 +135,9 @@ export async function createInvitationResponse(
   if (userInvitationsRef) {
     await userInvitationsRef.set({ [eventID]: payload });
   } else {
-    db
-      .collection(COLLECTION_NAME_INVITATIONS)
-      .doc(payload.user_id).set({ [eventID]: payload });
+    db.collection(COLLECTION_NAME_INVITATIONS)
+      .doc(payload.user_id)
+      .set({ [eventID]: payload });
   }
 
   return unionRes;

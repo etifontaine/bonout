@@ -61,7 +61,7 @@ export default async function handler(
 
   if (!payload.user_id || payload.user_id === "undefined") {
     const uid = new ShortUniqueId({ length: 10 });
-    payload.user_id = uid()
+    payload.user_id = uid();
   }
 
   const event = await getEventByLink(payload.link);
