@@ -1,12 +1,14 @@
 import React from "react";
 import { BoEvent, BoInvitationValidResponse } from "../../src/types";
 import type { BoInvitationResponse } from "../../src/types";
+import Router from "next/router";
 
 export default function EventCard({ event, ...props }: { event: BoEvent }) {
   return (
     <div
       className="bg-white overflow-hidden shadow-lg w-full cursor-pointer"
       {...props}
+      onClick={() => Router.push(`/events/details/${event.link}`)}
     >
       <div className="flex flex-col p-4">
         <div className="flex flex-row justify-between">
@@ -37,7 +39,7 @@ function getHoursAndMinuteLeft(date: string) {
   const hours = Math.floor(diff / (1000 * 60 * 60));
   const minutes = Math.floor(diff / (1000 * 60)) % 60;
   if (hours == 0) {
-    return `${minutes}min`;
+    return `${minutes} min`;
   }
   return `${hours}h${minutes}`;
 }

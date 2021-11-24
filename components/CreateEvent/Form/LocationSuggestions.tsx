@@ -10,7 +10,7 @@ type suggestionsProps = {
 
 export function LocationSuggestions(props: suggestionsProps) {
   return props.suggestions.length > 0 ? (
-    <ul className="suggestions bg-white border border-gray-300 w-full -mt-10">
+    <ul className="suggestions bg-white border border-gray-300 w-full -mt-5">
       {props.suggestions.map((suggestion) => (
         <li
           onClick={(e) => props.onSelect(suggestion)}

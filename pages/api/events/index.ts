@@ -1,4 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
+import { firestore } from "firebase-admin";
 import ShortUniqueId from "short-unique-id";
 import type { BoEvent } from "../../../src/types";
 import { RequestError } from "../../../src/utils/CustomErrors";
