@@ -50,7 +50,7 @@ export default async function handler(
       const uid = new ShortUniqueId({ length: 10 });
       return {
         ...payload,
-        user_id: payload.user_id ? payload.user_id : uid(),
+        user_id: payload.user_id && payload.user_id !== "undefined" ? payload.user_id : uid(),
       };
     }
 
