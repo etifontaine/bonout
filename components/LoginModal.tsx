@@ -1,10 +1,8 @@
-import { Fragment, useEffect, useRef, useState } from "react";
+import { Fragment, useState } from "react";
 import Router from "next/router";
 import { Dialog, Transition } from "@headlessui/react";
-import { ThumbUpIcon, LockOpenIcon } from "@heroicons/react/outline";
+import { LockOpenIcon } from "@heroicons/react/outline";
 import { toast } from "react-toastify";
-import { BoInvitationValidResponse } from "../src/types";
-
 interface IModal {
   isVisible: boolean;
   setLoginVisible: any;
@@ -17,7 +15,6 @@ export default function InvitationModal({
   isVisible,
   setLoginVisible,
 }: IModal) {
-  const cancelButtonRef = useRef(null);
   const [formContent, setFormContent] = useState<IModalForm>();
 
   const postInvitationResponse = () => {
@@ -35,8 +32,7 @@ export default function InvitationModal({
       <Dialog
         as="div"
         className="fixed z-40 inset-0 overflow-y-auto"
-        initialFocus={cancelButtonRef}
-        onClose={() => {}}
+        onClose={() => { }}
       >
         <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
           <Transition.Child
@@ -99,7 +95,8 @@ export default function InvitationModal({
                           Renseignez votre user_id (pas de pseudo)
                         </label>
                         <input
-                          autoComplete="off"
+                          autoFocus={true}
+                          autoComplete="on"
                           value={formContent?.user_id}
                           onChange={(e) => {
                             setFormContent({ user_id: e.target.value });
@@ -127,7 +124,6 @@ export default function InvitationModal({
                   type="button"
                   className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
                   onClick={() => setLoginVisible(false)}
-                  ref={cancelButtonRef}
                 >
                   Annuler
                 </button>

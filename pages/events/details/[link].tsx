@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import type { NextPage } from "next";
-import Head from "next/head";
 import Router from "next/router";
 import dayjs from "dayjs";
 import Header from "../../../components/Header";
@@ -8,6 +7,7 @@ import Modal from "../../../components/Invitation/Modal";
 import { BoEvent, BoInvitationValidResponse } from "../../../src/types";
 import { getEventByLink } from "../../../src/models/events";
 import { getUserID } from "src/utils/user";
+import { CalendarIcon, LinkIcon, LocationMarkerIcon, UserGroupIcon, UserIcon } from "@heroicons/react/outline";
 
 interface PageProps {
   event: BoEvent & { comingGuestAmount: number };
@@ -119,7 +119,8 @@ const EventDetails: NextPage<PageProps> = ({ event }) => {
             <div>
               <div className="bg-gray-50 px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                 <div className="text-sm font-medium text-gray-500">Date</div>
-                <div className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                <div className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2 flex items-center">
+                  <CalendarIcon className="block h-3 w-3 mr-2" aria-hidden="true" />
                   Du {dayjs(event.start_at).format("DD/MM/YYYY")} à{" "}
                   {dayjs(event.start_at).format("HH:mm")} au{" "}
                   {dayjs(event.end_at).format("DD/MM/YYYY")} à{" "}
@@ -128,25 +129,27 @@ const EventDetails: NextPage<PageProps> = ({ event }) => {
               </div>
               <div className="bg-white px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                 <dt className="text-sm font-medium text-gray-500">Adresse</dt>
-                <div className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                  <button onClick={() => openAddress()}>{event.address}</button>
+                <div className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2 flex items-center">
+                  <LocationMarkerIcon className="block h-3 w-3 mr-2" aria-hidden="true" />
+                  <button className="underline" onClick={() => openAddress()}>{event.address}</button>
                 </div>
               </div>
               <div className="bg-gray-50 px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                 <dt className="text-sm font-medium text-gray-500">Lien</dt>
-                <div className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                  <button onClick={() => shareEvent()}>{`${
-                    typeof window !== "undefined"
-                      ? `${window.location.host}/events/details/`
-                      : ""
-                  }${event.link}`}</button>
+                <div className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2 flex items-center">
+                  <LinkIcon className="block h-3 w-3 mr-2" aria-hidden="true" />
+                  <button className="underline" onClick={() => shareEvent()}>{`${typeof window !== "undefined"
+                    ? `${window.location.host}/events/details/`
+                    : ""
+                    }${event.link}`}</button>
                 </div>
               </div>
               <div className="bg-white px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                 <dt className="text-sm font-medium text-gray-500">
                   Organisateur
                 </dt>
-                <div className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                <div className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2 flex items-center">
+                  <UserIcon className="block h-3 w-3 mr-2" aria-hidden="true" />
                   {getUserID() === event.user_id
                     ? "C'est votre événement"
                     : "privé"}
@@ -154,7 +157,8 @@ const EventDetails: NextPage<PageProps> = ({ event }) => {
               </div>
               <div className="bg-gray-50 px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                 <dt className="text-sm font-medium text-gray-500">Invités</dt>
-                <div className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-1">
+                <div className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-1  flex items-center">
+                  <UserGroupIcon className="block h-3 w-3 mr-2" aria-hidden="true" />
                   <p>
                     Yes: {event.comingGuestAmount}, No:{" "}
                     {event.notComingGuestAmount}, Maybe:{" "}
