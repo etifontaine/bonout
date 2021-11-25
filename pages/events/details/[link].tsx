@@ -67,16 +67,16 @@ const EventDetails: NextPage<PageProps> = ({ event }) => {
     }
   };
 
-  const openAdivress = () => {
-    let adivress = event.address.replace(/\s\s+/g, " "); // remove spaces
-    adivress = encodeURIComponent(adivress);
+  const openAddress = () => {
+    let address = event.address.replace(/\s\s+/g, " "); // remove spaces
+    address = encodeURIComponent(address);
 
     const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
     if (isSafari) {
-      window.open("http://maps.apple.com/?q=" + adivress);
+      window.open("http://maps.apple.com/?q=" + address);
     } else {
       /* else use Google */
-      window.open("https://maps.google.com/maps?q=" + adivress);
+      window.open("https://maps.google.com/maps?q=" + address);
     }
   };
 
@@ -129,7 +129,7 @@ const EventDetails: NextPage<PageProps> = ({ event }) => {
               <div className="bg-white px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                 <dt className="text-sm font-medium text-gray-500">Adresse</dt>
                 <div className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                  <button onClick={() => openAdivress()}>{event.address}</button>
+                  <button onClick={() => openAddress()}>{event.address}</button>
                 </div>
               </div>
               <div className="bg-gray-50 px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
