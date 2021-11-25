@@ -7,20 +7,22 @@ import { getUserID } from "src/utils/user";
 import LoginModal from "./LoginModal";
 
 export default function Header() {
-
-  const [user, setUser] = useState("")
-  const [isLoginVisible, setLoginVisible] = useState(false)
+  const [user, setUser] = useState("");
+  const [isLoginVisible, setLoginVisible] = useState(false);
 
   useEffect(() => {
-    const user = getUserID()
+    const user = getUserID();
     if (user) {
       setUser(user);
     }
-  }, [])
+  }, []);
 
   return (
     <>
-      <LoginModal isVisible={isLoginVisible} setLoginVisible={setLoginVisible} />
+      <LoginModal
+        isVisible={isLoginVisible}
+        setLoginVisible={setLoginVisible}
+      />
       <Disclosure as="nav" className="bg-white-800">
         {({ open }) => (
           <>
@@ -60,11 +62,13 @@ export default function Header() {
                           </a>
                         </Link>
                       ) : (
-                        <button onClick={() => setLoginVisible(true)} className="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md font-medium">
+                        <button
+                          onClick={() => setLoginVisible(true)}
+                          className="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md font-medium"
+                        >
                           Connexion
                         </button>
-                      )
-                      }
+                      )}
                       <Link href="/events/create">
                         <a className="btn-sm text-gray-200 bg-gray-900 hover:bg-gray-800 ml-3">
                           <span>Créer un événement</span>
@@ -107,9 +111,8 @@ export default function Header() {
               </div>
             </Disclosure.Panel>
           </>
-        )
-        }
-      </Disclosure >
+        )}
+      </Disclosure>
     </>
   );
 }
