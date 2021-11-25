@@ -59,7 +59,9 @@ export default function Header() {
                     <div className="flex space-x-4">
                       {user.length > 0 ? (
                         <>
-                          <p className="text-gray-600 px-3 py-2 mr-10 rounded-md font-small">user_id: {user}</p>
+                          <p className="text-gray-600 px-3 py-2 mr-10 rounded-md font-small">
+                            user_id: {user}
+                          </p>
                           <Link href="/home">
                             <a className="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md font-medium">
                               Mes événements
@@ -114,18 +116,18 @@ export default function Header() {
                     >
                       Mes événements
                     </Disclosure.Button>
-                    <p className="text-gray-600 block px-3 py-2 rounded-md text-xs font-small">user_id: {user}</p>
+                    <p className="text-gray-600 block px-3 py-2 rounded-md text-xs font-small">
+                      user_id: {user}
+                    </p>
                   </>
-                ) :
-                  (
-                    <button
-                      onClick={() => setLoginVisible(true)}
-                      className="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md font-medium"
-                    >
-                      Connexion
-                    </button>
-                  )
-                }
+                ) : (
+                  <button
+                    onClick={() => setLoginVisible(true)}
+                    className="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md font-medium"
+                  >
+                    Connexion
+                  </button>
+                )}
               </div>
             </Disclosure.Panel>
             {/* End mobile menu */}

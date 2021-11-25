@@ -63,7 +63,10 @@ const Add: NextPage = () => {
       if (res.status === 201) {
         const { link, user_id } = await res.json();
         Router.push(`/events/details/${link}`);
-        if (localStorage.getItem("user_id") === null || localStorage.getItem("user_id") === "undefined") {
+        if (
+          localStorage.getItem("user_id") === null ||
+          localStorage.getItem("user_id") === "undefined"
+        ) {
           localStorage.setItem("user_id", user_id);
         }
       } else {
