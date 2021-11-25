@@ -177,11 +177,10 @@ const EventDetails: NextPage<PageProps> = ({ event }) => {
                   <button
                     className="underline"
                     onClick={() => shareEvent()}
-                  >{`${
-                    typeof window !== "undefined"
-                      ? `${window.location.host}/events/details/`
-                      : ""
-                  }${event.link}`}</button>
+                  >{`${typeof window !== "undefined"
+                    ? `${window.location.host}/events/details/`
+                    : ""
+                    }${event.link}`}</button>
                 </div>
               </div>
               <div className="bg-white px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
@@ -198,12 +197,18 @@ const EventDetails: NextPage<PageProps> = ({ event }) => {
               <div className="bg-gray-50 px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                 <div className="text-sm flex justify-between	font-medium text-gray-500">
                   <span>Invités</span>
-                  <button
-                    className="text-yellow-500 text-sm"
-                    onClick={() => setGuestListVisible(true)}
-                  >
-                    Voir la liste
-                  </button>
+                  {
+                    event.invitations.length > 0 ?
+                      (
+                        <button
+                          className="text-yellow-500 text-sm"
+                          onClick={() => setGuestListVisible(true)}
+                        >
+                          Voir la liste
+                        </button>
+                      )
+                      : null
+                  }
                 </div>
                 <div className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-1  flex items-center">
                   <UserGroupIcon

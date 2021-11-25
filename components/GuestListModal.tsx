@@ -31,20 +31,20 @@ export default function GuestListModal({
         <h4 className="text-l leading-8 font-medium text-gray-900 text-left">
           Oui
         </h4>
-        {guestsGroup.yes.map((g) => {
-          return <p>{g}</p>;
+        {guestsGroup.yes.map((g, key) => {
+          return <p key={key}>{g}</p>;
         })}
         <h4 className="text-l leading-8 font-medium text-gray-900 text-left mt-5">
           Peut-être
         </h4>
-        {guestsGroup.maybe.map((g) => {
-          return <p>{g}</p>;
+        {guestsGroup.maybe.map((g, key) => {
+          return <p key={key}>{g}</p>;
         })}
         <h4 className="text-l leading-8 font-medium text-gray-900 text-left mt-5">
           Non
         </h4>
-        {guestsGroup.no.map((g) => {
-          return <p>{g}</p>;
+        {guestsGroup.no.map((g, key) => {
+          return <p key={key}>{g}</p>;
         })}
       </>
     );
@@ -55,7 +55,7 @@ export default function GuestListModal({
       <Dialog
         as="div"
         className="fixed z-40 inset-0 overflow-y-auto"
-        onClose={() => {}}
+        onClose={() => { }}
       >
         <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
           <Transition.Child
@@ -103,9 +103,9 @@ export default function GuestListModal({
                     >
                       Invités
                     </Dialog.Title>
-                    <Dialog.Description className="max-h-72 filter drop-shadow-lg overflow-y-auto">
+                    <div className="max-h-72 filter drop-shadow-lg overflow-y-auto">
                       {renderGuestsList()}
-                    </Dialog.Description>
+                    </div>
                   </div>
                 </div>
               </div>
