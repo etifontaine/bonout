@@ -6,57 +6,56 @@ import { BoInvitationResponse } from "src/types";
 interface IModal {
   isVisible: boolean;
   setGuestListVisible: any;
-  guests: BoInvitationResponse[]
+  guests: BoInvitationResponse[];
 }
 
 interface guestsGroup {
-  yes: string[]
-  no: string[]
-  maybe: string[]
+  yes: string[];
+  no: string[];
+  maybe: string[];
 }
 
 export default function GuestListModal({
   isVisible,
   setGuestListVisible,
-  guests
+  guests,
 }: IModal) {
-
   const renderGuestsList = () => {
-    const guestsGroup: guestsGroup = { yes: [], no: [], maybe: [] }
-    guests.map(g => {
+    const guestsGroup: guestsGroup = { yes: [], no: [], maybe: [] };
+    guests.map((g) => {
       return guestsGroup[g.response].push(g.name);
-    })
+    });
 
     return (
       <>
-        <h4 className="text-l leading-8 font-medium text-gray-900 text-left">Oui</h4>
-        {
-          guestsGroup.yes.map(g => {
-            return <p>{g}</p>
-          })
-        }
-        <h4 className="text-l leading-8 font-medium text-gray-900 text-left mt-5">Peut-être</h4>
-        {
-          guestsGroup.maybe.map(g => {
-            return <p>{g}</p>
-          })
-        }
-        <h4 className="text-l leading-8 font-medium text-gray-900 text-left mt-5">Non</h4>
-        {
-          guestsGroup.no.map(g => {
-            return <p>{g}</p>
-          })
-        }
+        <h4 className="text-l leading-8 font-medium text-gray-900 text-left">
+          Oui
+        </h4>
+        {guestsGroup.yes.map((g) => {
+          return <p>{g}</p>;
+        })}
+        <h4 className="text-l leading-8 font-medium text-gray-900 text-left mt-5">
+          Peut-être
+        </h4>
+        {guestsGroup.maybe.map((g) => {
+          return <p>{g}</p>;
+        })}
+        <h4 className="text-l leading-8 font-medium text-gray-900 text-left mt-5">
+          Non
+        </h4>
+        {guestsGroup.no.map((g) => {
+          return <p>{g}</p>;
+        })}
       </>
-    )
-  }
+    );
+  };
 
   return (
     <Transition.Root show={isVisible} as={Fragment}>
       <Dialog
         as="div"
         className="fixed z-40 inset-0 overflow-y-auto"
-        onClose={() => { }}
+        onClose={() => {}}
       >
         <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
           <Transition.Child

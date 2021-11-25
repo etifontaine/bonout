@@ -133,9 +133,11 @@ const EventDetails: NextPage<PageProps> = ({ event }) => {
             </div>
             {getUserID() === event.user_id ? (
               <div className="flex justify-end items-center">
-                <button onClick={() => {
-                  toast.info("Tu ne peux pas encore éditer un événement 😕")
-                }}>
+                <button
+                  onClick={() => {
+                    toast.info("Tu ne peux pas encore éditer un événement 😕");
+                  }}
+                >
                   <PencilIcon className="block h-4 w-4" aria-hidden="true" />
                 </button>
               </div>
@@ -175,10 +177,11 @@ const EventDetails: NextPage<PageProps> = ({ event }) => {
                   <button
                     className="underline"
                     onClick={() => shareEvent()}
-                  >{`${typeof window !== "undefined"
-                    ? `${window.location.host}/events/details/`
-                    : ""
-                    }${event.link}`}</button>
+                  >{`${
+                    typeof window !== "undefined"
+                      ? `${window.location.host}/events/details/`
+                      : ""
+                  }${event.link}`}</button>
                 </div>
               </div>
               <div className="bg-white px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
@@ -195,7 +198,10 @@ const EventDetails: NextPage<PageProps> = ({ event }) => {
               <div className="bg-gray-50 px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                 <div className="text-sm flex justify-between	font-medium text-gray-500">
                   <span>Invités</span>
-                  <button className="text-yellow-500 text-sm" onClick={() => setGuestListVisible(true)}>
+                  <button
+                    className="text-yellow-500 text-sm"
+                    onClick={() => setGuestListVisible(true)}
+                  >
                     Voir la liste
                   </button>
                 </div>
