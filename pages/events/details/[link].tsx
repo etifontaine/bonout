@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import type { NextPage } from "next";
 import Router from "next/router";
+import Head from "next/head";
 import dayjs from "dayjs";
 import Header from "../../../components/Header";
 import Modal from "../../../components/Invitation/Modal";
@@ -109,6 +110,10 @@ const EventDetails: NextPage<PageProps> = ({ event }) => {
 
   return (
     <>
+      <Head>
+        <meta property="og:title" content={`Bonout - ${event.title}`} />
+        <meta property="og:description" content={`${event.description}`} />
+      </Head>
       <Modal
         link={modalContent.link}
         userResponse={modalContent.userResponse}
