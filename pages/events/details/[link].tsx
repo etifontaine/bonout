@@ -98,118 +98,116 @@ const EventDetails: NextPage<PageProps> = ({ event }) => {
   }, [event]);
 
   return (
-    <div className="flex flex-col min-h-screen overflow-hidden">
+    <>
       <Modal
         link={modalContent.link}
         userResponse={modalContent.userResponse}
       />
       {/*  Site header */}
       <Header />
-
-      <div className="bg-white overflow-hidden sm:rounded-lg flex-grow">
-        <div className="px-4 py-5 sm:px-6">
-          <h3 className="text-lg leading-6 font-medium text-gray-900">
-            {event.title}
-          </h3>
-          <p className="mt-1 max-w-2xl text-sm text-gray-500">
-            {event.description}
-          </p>
-        </div>
-        <div className="border-t border-gray-200">
-          <dl>
-            <div className="bg-gray-50 px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-              <dt className="text-sm font-medium text-gray-500">Date</dt>
-              <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                Du {dayjs(event.start_at).format("DD/MM/YYYY")} à{" "}
-                {dayjs(event.start_at).format("HH:mm")} au{" "}
-                {dayjs(event.end_at).format("DD/MM/YYYY")} à{" "}
-                {dayjs(event.end_at).format("HH:mm")}
-              </dd>
-            </div>
-            <div className="bg-white px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-              <dt className="text-sm font-medium text-gray-500">Adresse</dt>
-              <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                <button onClick={() => openAddress()}>{event.address}</button>
-              </dd>
-            </div>
-            <div className="bg-gray-50 px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-              <dt className="text-sm font-medium text-gray-500">Lien</dt>
-              <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                <button onClick={() => shareEvent()}>{`${typeof window !== "undefined"
-                    ? `${window.location.host}/events/details/`
-                    : ""
+      <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
+        <div className="bg-white overflow-hidiven sm:rounded-lg flex-grow">
+          <div className="px-4 py-5 sm:px-6">
+            <h3 className="text-lg leading-6 font-medium text-gray-900">
+              {event.title}
+            </h3>
+            <p className="mt-1 max-w-2xl text-sm text-gray-500">
+              {event.description}
+            </p>
+          </div>
+          <div className="border-t border-gray-200">
+            <div>
+              <div className="bg-gray-50 px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                <div className="text-sm font-medium text-gray-500">Date</div>
+                <div className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                  Du {dayjs(event.start_at).format("div/MM/YYYY")} à{" "}
+                  {dayjs(event.start_at).format("HH:mm")} au{" "}
+                  {dayjs(event.end_at).format("div/MM/YYYY")} à{" "}
+                  {dayjs(event.end_at).format("HH:mm")}
+                </div>
+              </div>
+              <div className="bg-white px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                <dt className="text-sm font-medium text-gray-500">Adresse</dt>
+                <div className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                  <button onClick={() => openAddress()}>{event.address}</button>
+                </div>
+              </div>
+              <div className="bg-gray-50 px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                <dt className="text-sm font-medium text-gray-500">Lien</dt>
+                <div className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                  <button onClick={() => shareEvent()}>{`${
+                    typeof window !== "undefined"
+                      ? `${window.location.host}/events/details/`
+                      : ""
                   }${event.link}`}</button>
-              </dd>
-            </div>
-            <div className="bg-gray-50 px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-              <dt className="text-sm font-medium text-gray-500">
-                Organisateur
-              </dt>
-              <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                {getUserID() === event.user_id
-                  ? "C'est votre événement"
-                  : "privé"}
-              </dd>
-            </div>
-            <div className="bg-white px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-              <dt className="text-sm font-medium text-gray-500">Invités</dt>
-              <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-1">
-                <p>
-                  Yes: {event.comingGuestAmount}, No:{" "}
-                  {event.notComingGuestAmount}, Maybe:{" "}
-                  {event.maybeComingGuestAmount}
-                </p>
-              </dd>
-              <dd className="mt-1 text-sm text-gray-900 mt-10 sm:col-span-1">
+                </div>
+              </div>
+              <div className="bg-white px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                <dt className="text-sm font-medium text-gray-500">
+                  Organisateur
+                </dt>
+                <div className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                  {getUserID() === event.user_id
+                    ? "C'est votre événement"
+                    : "privé"}
+                </div>
+              </div>
+              <div className="bg-gray-50 px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                <dt className="text-sm font-medium text-gray-500">Invités</dt>
+                <div className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-1">
+                  <p>
+                    Yes: {event.comingGuestAmount}, No:{" "}
+                    {event.notComingGuestAmount}, Maybe:{" "}
+                    {event.maybeComingGuestAmount}
+                  </p>
+                </div>
+              </div>
+              <div className="bg-gray-50 px-4 py-4 sm:grid sm:grid-cols-4 sm:gap-4 sm:px-6">
                 <ul
                   role="list"
-                  className="border border-gray-200 rounded-md divide-y divide-gray-200 max-h-30 overflow-y-auto"
+                  className="overflow-x-auto flex flex-row w-full"
                 >
-                  {event.invitations.map((invitation, key) => {
+                  {event.invitations.sort().map((invitation, key) => {
                     return (
                       <li
                         key={key}
-                        className="pl-3 pr-4 py-3 flex items-center justify-between text-sm"
+                        className="border border-gray-200 pl-3 pr-4 py-3 mr-5 flex items-center justify-between text-sm flex-grow"
                       >
-                        <div className="w-0 flex-1 flex items-center">
-                          <span className="ml-2 flex-1 w-0 truncate">
-                            {invitation.name}
+                        <div className="flex-1 flex items-center">
+                          <span className="ml-2 flex-1 truncate">
+                            {invitation.name}: {invitation.response}
                           </span>
-                        </div>
-                        <div className="ml-4 flex-shrink-0">
-                          {invitation.response}
                         </div>
                       </li>
                     );
                   })}
                 </ul>
-              </dd>
+              </div>
+              <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 flex justify-between">
+                <button
+                  onClick={() => setResponse(BoInvitationValidResponse.NO)}
+                  className="btn-sm text-black bg-gray-300 hover:bg-gray-400"
+                >
+                  Refuser
+                </button>
+                <button
+                  onClick={() => setResponse(BoInvitationValidResponse.YES)}
+                  className="btn-sm text-green-600 bg-gray-300 hover:bg-gray-400 ml-3"
+                >
+                  Accepter
+                </button>
+                <button
+                  onClick={() => setResponse(BoInvitationValidResponse.MAYBE)}
+                  className="btn-sm text-black bg-gray-300 hover:bg-gray-400 ml-3"
+                >
+                  Peut-être
+                </button>
+              </div>
             </div>
-            <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-              <button
-                onClick={() => setResponse(BoInvitationValidResponse.NO)}
-                className="btn-sm text-black bg-gray-300 hover:bg-gray-400 ml-3"
-              >
-                Refuser
-              </button>
-              <button
-                onClick={() => setResponse(BoInvitationValidResponse.YES)}
-                className="btn-sm text-green-600 bg-gray-300 hover:bg-gray-400 ml-3"
-              >
-                Accepter
-              </button>
-              <button
-                onClick={() => setResponse(BoInvitationValidResponse.MAYBE)}
-                className="btn-sm text-black bg-gray-300 hover:bg-gray-400 ml-3"
-              >
-                Peut-être
-              </button>
-            </div>
-          </dl>
+          </div>
         </div>
       </div>
-      <footer className="h-5">user_id: {getUserID()}</footer>
-    </div>
+    </>
   );
 };
 
