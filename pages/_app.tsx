@@ -17,6 +17,9 @@ function MyApp({ Component, pageProps }: AppProps) {
         <link rel="icon" href="/images/logo.svg" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="theme-color" content="#ffffff" />
+        <meta property="og:title" content="Bonout" />
+        <meta property="og:type" content="siteweb" />
+        <meta property="og:description" content="Organise ton prochain événement sans prise de tête, un seul site avec toutes les fonctionnalités!" />
       </Head>
       <ToastContainer
         position="top-right"
