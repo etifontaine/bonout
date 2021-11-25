@@ -4,6 +4,7 @@ import Router from "next/router";
 import dayjs from "dayjs";
 import Header from "../../../components/Header";
 import Modal from "../../../components/Invitation/Modal";
+import GuestListModal from "../../../components/GuestListModal";
 import { BoEvent, BoInvitationValidResponse } from "../../../src/types";
 import { getEventByLink } from "../../../src/models/events";
 import { getUserID } from "src/utils/user";
@@ -15,7 +16,6 @@ import {
   UserGroupIcon,
   UserIcon,
 } from "@heroicons/react/outline";
-import { Toast } from "react-toastify/dist/components";
 import { toast } from "react-toastify";
 
 interface PageProps {
@@ -58,6 +58,7 @@ const EventDetails: NextPage<PageProps> = ({ event }) => {
   }
 
   const [modalContent, setModal] = useState<IModal>({});
+  const [isGuestListVisible, setGuestListVisible] = useState(false);
   const [userInvitationStatus, setUserInvitationStatus] = useState<string>();
 
   const setResponse = (userResponse: BoInvitationValidResponse) => {
@@ -112,6 +113,11 @@ const EventDetails: NextPage<PageProps> = ({ event }) => {
         link={modalContent.link}
         userResponse={modalContent.userResponse}
       />
+      <GuestListModal
+        isVisible={isGuestListVisible}
+        setGuestListVisible={setGuestListVisible}
+        guests={event.invitations}
+      />
       {/*  Site header */}
       <Header />
       <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
@@ -151,7 +157,7 @@ const EventDetails: NextPage<PageProps> = ({ event }) => {
                 </div>
               </div>
               <div className="bg-white px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                <dt className="text-sm font-medium text-gray-500">Adresse</dt>
+                <div className="text-sm font-medium text-gray-500">Adresse</div>
                 <div className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2 flex items-center">
                   <LocationMarkerIcon
                     className="block h-3 w-3 mr-2"
@@ -163,7 +169,7 @@ const EventDetails: NextPage<PageProps> = ({ event }) => {
                 </div>
               </div>
               <div className="bg-gray-50 px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                <dt className="text-sm font-medium text-gray-500">Lien</dt>
+                <div className="text-sm font-medium text-gray-500">Lien</div>
                 <div className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2 flex items-center">
                   <LinkIcon className="block h-3 w-3 mr-2" aria-hidden="true" />
                   <button
@@ -176,9 +182,9 @@ const EventDetails: NextPage<PageProps> = ({ event }) => {
                 </div>
               </div>
               <div className="bg-white px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                <dt className="text-sm font-medium text-gray-500">
+                <div className="text-sm font-medium text-gray-500">
                   Organisateur
-                </dt>
+                </div>
                 <div className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2 flex items-center">
                   <UserIcon className="block h-3 w-3 mr-2" aria-hidden="true" />
                   {getUserID() === event.user_id
@@ -187,7 +193,12 @@ const EventDetails: NextPage<PageProps> = ({ event }) => {
                 </div>
               </div>
               <div className="bg-gray-50 px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                <dt className="text-sm font-medium text-gray-500">Invités</dt>
+                <div className="text-sm flex justify-between	font-medium text-gray-500">
+                  <span>Invités</span>
+                  <button className="text-yellow-500 text-sm" onClick={() => setGuestListVisible(true)}>
+                    Voir la liste
+                  </button>
+                </div>
                 <div className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-1  flex items-center">
                   <UserGroupIcon
                     className="block h-3 w-3 mr-2"
@@ -199,27 +210,6 @@ const EventDetails: NextPage<PageProps> = ({ event }) => {
                     {event.maybeComingGuestAmount}
                   </p>
                 </div>
-              </div>
-              <div className="bg-gray-50 px-4 py-4 sm:px-6">
-                <ul
-                  role="list"
-                  className="overflow-x-auto flex flex-row w-full"
-                >
-                  {event.invitations.sort().map((invitation, key) => {
-                    return (
-                      <li
-                        key={key}
-                        className="border border-gray-200 pl-3 pr-4 py-3 mr-5 flex items-center justify-between text-sm flex-grow"
-                      >
-                        <div className="flex-1 flex items-center">
-                          <span className="ml-2 flex-1 truncate">
-                            {invitation.name}: {invitation.response}
-                          </span>
-                        </div>
-                      </li>
-                    );
-                  })}
-                </ul>
               </div>
               <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 flex justify-between">
                 <button
