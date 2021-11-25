@@ -42,13 +42,15 @@ export default function Header() {
                 <div className="flex-1 flex items-center justify-center sm:items-stretch sm:justify-start">
                   <div className="flex-shrink-0 flex items-center cursor-pointer">
                     <Link href={user.length > 0 ? "/home" : "/"}>
-                      <Image
-                        alt="logo"
-                        src="/images/logo.svg"
-                        width="40"
-                        height="40"
-                        priority={true}
-                      />
+                      <a>
+                        <Image
+                          alt="logo"
+                          src="/images/logo.svg"
+                          width="40"
+                          height="40"
+                          priority={true}
+                        />
+                      </a>
                     </Link>
                   </div>
                 </div>

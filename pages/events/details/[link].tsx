@@ -7,7 +7,7 @@ import Modal from "../../../components/Invitation/Modal";
 import { BoEvent, BoInvitationValidResponse } from "../../../src/types";
 import { getEventByLink } from "../../../src/models/events";
 import { getUserID } from "src/utils/user";
-import { CalendarIcon, LinkIcon, LocationMarkerIcon, UserGroupIcon, UserIcon } from "@heroicons/react/outline";
+import { CalendarIcon, LinkIcon, LocationMarkerIcon, PencilIcon, UserGroupIcon, UserIcon } from "@heroicons/react/outline";
 
 interface PageProps {
   event: BoEvent & { comingGuestAmount: number };
@@ -107,13 +107,18 @@ const EventDetails: NextPage<PageProps> = ({ event }) => {
       <Header />
       <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
         <div className="bg-white overflow-hidiven sm:rounded-lg flex-grow">
-          <div className="px-4 py-5 sm:px-6">
-            <h3 className="text-lg leading-6 font-medium text-gray-900">
-              {event.title}
-            </h3>
-            <p className="mt-1 max-w-2xl text-sm text-gray-500">
-              {event.description}
-            </p>
+          <div className="px-4 py-5 sm:px-6 grid grid-cols-5">
+            <div className="col-span-4">
+              <h3 className="text-lg leading-6 font-medium text-gray-900">
+                {event.title}
+              </h3>
+              <p className="mt-1 max-w-2xl text-sm text-gray-500">
+                {event.description}
+              </p>
+            </div>
+            <div className="flex justify-end items-center">
+              <button><PencilIcon className="block h-4 w-4" aria-hidden="true" /></button>
+            </div>
           </div>
           <div className="border-t border-gray-200">
             <div>
@@ -166,7 +171,7 @@ const EventDetails: NextPage<PageProps> = ({ event }) => {
                   </p>
                 </div>
               </div>
-              <div className="bg-gray-50 px-4 py-4 sm:grid sm:grid-cols-4 sm:gap-4 sm:px-6">
+              <div className="bg-gray-50 px-4 py-4 sm:px-6">
                 <ul
                   role="list"
                   className="overflow-x-auto flex flex-row w-full"
