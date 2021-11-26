@@ -9,8 +9,11 @@ export default function EventItem({
   onClick: () => void;
 }) {
   return (
-    <div className="bg-white overflow-hidden w-full cursor-pointer" {...props}>
-      <div className="flex flex-col p-4">
+    <div
+      className="bg-secondary overflow-hidden w-full cursor-pointer"
+      {...props}
+    >
+      <div className="flex flex-col pt-4 pb-4">
         <div className="flex flex-row justify-between">
           <div className="flex flex-col">
             <div className="text-lg font-bold">{event.title}</div>

@@ -125,9 +125,9 @@ const EventDetails: NextPage<PageProps> = ({ event }) => {
       />
       {/*  Site header */}
       <Header />
-      <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
-        <div className="bg-white overflow-hidiven sm:rounded-lg flex-grow">
-          <div className="px-4 py-5 sm:px-6 grid grid-cols-5">
+      <section className="pt-24 md:mt-0 h-screen flex justify-center md:flex-row md:justify-between lg:px-48 md:px-12 px-4 bg-secondary">
+        <div className="md:max-w-3xl mx-auto w-full text-left">
+          <div className="py-5 sm:px-4 grid grid-cols-5">
             <div className="col-span-4">
               <h3 className="text-lg leading-6 font-medium text-gray-900">
                 {event.title}
@@ -149,108 +149,100 @@ const EventDetails: NextPage<PageProps> = ({ event }) => {
             ) : null}
           </div>
           <div className="border-t border-gray-200">
-            <div>
-              <div className="bg-gray-50 px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                <div className="text-sm font-medium text-gray-500">Date</div>
-                <div className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2 flex items-center">
-                  <CalendarIcon
-                    className="block h-3 w-3 mr-2"
-                    aria-hidden="true"
-                  />
-                  Du {dayjs(event.start_at).format("DD/MM/YYYY")} à{" "}
-                  {dayjs(event.start_at).format("HH:mm")} au{" "}
-                  {dayjs(event.end_at).format("DD/MM/YYYY")} à{" "}
-                  {dayjs(event.end_at).format("HH:mm")}
-                </div>
+            <div className="bg-gray-50 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+              <div className="text-sm font-medium text-gray-500">Date</div>
+              <div className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2 flex items-center">
+                <CalendarIcon
+                  className="block h-3 w-3 mr-2"
+                  aria-hidden="true"
+                />
+                Du {dayjs(event.start_at).format("DD/MM/YYYY")} à{" "}
+                {dayjs(event.start_at).format("HH:mm")} au{" "}
+                {dayjs(event.end_at).format("DD/MM/YYYY")} à{" "}
+                {dayjs(event.end_at).format("HH:mm")}
               </div>
-              <div className="bg-white px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                <div className="text-sm font-medium text-gray-500">Adresse</div>
-                <div className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2 flex items-center">
-                  <LocationMarkerIcon
-                    className="block h-3 w-3 mr-2"
-                    aria-hidden="true"
-                  />
-                  <button className="underline" onClick={() => openAddress()}>
-                    {event.address}
-                  </button>
-                </div>
-              </div>
-              <div className="bg-gray-50 px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                <div className="text-sm font-medium text-gray-500">Lien</div>
-                <div className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2 flex items-center">
-                  <LinkIcon className="block h-3 w-3 mr-2" aria-hidden="true" />
-                  <button
-                    className="underline"
-                    onClick={() => shareEvent()}
-                  >{`${typeof window !== "undefined"
-                    ? `${window.location.host}/events/details/`
-                    : ""
-                    }${event.link}`}</button>
-                </div>
-              </div>
-              <div className="bg-white px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                <div className="text-sm font-medium text-gray-500">
-                  Organisateur
-                </div>
-                <div className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2 flex items-center">
-                  <UserIcon className="block h-3 w-3 mr-2" aria-hidden="true" />
-                  {getUserID() === event.user_id
-                    ? "C'est votre événement"
-                    : "privé"}
-                </div>
-              </div>
-              <div className="bg-gray-50 px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                <div className="text-sm flex justify-between	font-medium text-gray-500">
-                  <span>Invités</span>
-                  {
-                    event.invitations.length > 0 ?
-                      (
-                        <button
-                          className="text-yellow-500 text-sm"
-                          onClick={() => setGuestListVisible(true)}
-                        >
-                          Voir la liste
-                        </button>
-                      )
-                      : null
-                  }
-                </div>
-                <div className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-1  flex items-center">
-                  <UserGroupIcon
-                    className="block h-3 w-3 mr-2"
-                    aria-hidden="true"
-                  />
-                  <p>
-                    Yes: {event.comingGuestAmount}, No:{" "}
-                    {event.notComingGuestAmount}, Maybe:{" "}
-                    {event.maybeComingGuestAmount}
-                  </p>
-                </div>
-              </div>
-              <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 flex justify-between">
-                <button
-                  onClick={() => setResponse(BoInvitationValidResponse.NO)}
-                  className="btn-sm text-black bg-gray-300 hover:bg-gray-400"
-                >
-                  Refuser
-                </button>
-                <button
-                  onClick={() => setResponse(BoInvitationValidResponse.YES)}
-                  className="btn-sm text-green-600 bg-gray-300 hover:bg-gray-400 ml-3"
-                >
-                  Accepter
-                </button>
-                <button
-                  onClick={() => setResponse(BoInvitationValidResponse.MAYBE)}
-                  className="btn-sm text-black bg-gray-300 hover:bg-gray-400 ml-3"
-                >
-                  Peut-être
+            </div>
+            <div className="py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+              <div className="text-sm font-medium text-gray-500">Adresse</div>
+              <div className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2 flex items-center">
+                <LocationMarkerIcon
+                  className="block h-3 w-3 mr-2"
+                  aria-hidden="true"
+                />
+                <button className="underline" onClick={() => openAddress()}>
+                  {event.address}
                 </button>
               </div>
             </div>
+            <div className="bg-gray-50 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+              <div className="text-sm font-medium text-gray-500">Lien</div>
+              <div className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2 flex items-center">
+                <LinkIcon className="block h-3 w-3 mr-2" aria-hidden="true" />
+                <button className="underline" onClick={() => shareEvent()}>{`${
+                  typeof window !== "undefined"
+                    ? `${window.location.host}/events/details/`
+                    : ""
+                }${event.link}`}</button>
+              </div>
+            </div>
+            <div className="py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+              <div className="text-sm font-medium text-gray-500">
+                Organisateur
+              </div>
+              <div className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2 flex items-center">
+                <UserIcon className="block h-3 w-3 mr-2" aria-hidden="true" />
+                {getUserID() === event.user_id
+                  ? "C'est votre événement"
+                  : "privé"}
+              </div>
+            </div>
+            <div className="bg-gray-50 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+              <div className="text-sm flex justify-between	font-medium text-gray-500">
+                <span>Invités</span>
+                {event.invitations.length > 0 ? (
+                  <button
+                    className="text-yellow-500 text-sm underline"
+                    onClick={() => setGuestListVisible(true)}
+                  >
+                    Voir la liste
+                  </button>
+                ) : null}
+              </div>
+              <div className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-1  flex items-center">
+                <UserGroupIcon
+                  className="block h-3 w-3 mr-2"
+                  aria-hidden="true"
+                />
+                <p>
+                  Yes: {event.comingGuestAmount}, No:{" "}
+                  {event.notComingGuestAmount}, Maybe:{" "}
+                  {event.maybeComingGuestAmount}
+                </p>
+              </div>
+            </div>
+            <div className="py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 flex justify-between">
+              <button
+                onClick={() => setResponse(BoInvitationValidResponse.NO)}
+                className="btn border p-2 btn-sm text-black hover:text-white hover:border-black hover:bg-black"
+              >
+                Refuser
+              </button>
+              <button
+                onClick={() => setResponse(BoInvitationValidResponse.YES)}
+                className="btn border p-2 btn-sm text-green-600 ml-3 hover:text-white hover:border-black hover:bg-black"
+              >
+                Accepter
+              </button>
+              <button
+                onClick={() => setResponse(BoInvitationValidResponse.MAYBE)}
+                className="btn border p-2 btn-sm text-black ml-3 hover:text-white hover:border-black hover:bg-black"
+              >
+                Peut-être
+              </button>
+            </div>
           </div>
         </div>
-      </div>
+      </section>
     </>
   );
 };

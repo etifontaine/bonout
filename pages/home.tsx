@@ -25,52 +25,42 @@ const Home: NextPage = () => {
   }, []);
 
   return (
-    <div className="h-screen">
+    <div>
       <Header />
-      <main className="flex-grow">
-        <section className="relative">
-          <div className="max-w-6xl mx-auto px-4 sm:px-6">
-            {/* Hero content */}
-            <div className="pt-10 pb-12 md:pb-20">
-              {/* Section header */}
-              <div className=" pb-12 md:pb-16">
-                <div className="max-w-3xl mx-auto">
-                  {todayEvents !== null &&
-                    todayEvents.map((event) => (
-                      <div key={event.id}>
-                        <h2 className="text-2xl font-medium pt-4 pl-2 pb-2">
-                          C'est aujourd'hui !
-                        </h2>
-                        <EventCard event={event} />
-                      </div>
-                    ))}
-
-                  {events && events?.length > 0 ? (
-                    <>
-                      <h2 className="text-2xl font-medium pt-4 pl-2 pb-2">
-                        Évenements à venir
-                      </h2>
-                      <section className="h-fullbg-gray-200">
-                        {events.map((event, index) => (
-                          <div key={event.id}>
-                            <EventItem
-                              onClick={() =>
-                                Router.push(`/events/details/${event.link}`)
-                              }
-                              event={event}
-                            />
-                            {index !== events.length - 1 ? <Separator /> : null}
-                          </div>
-                        ))}
-                      </section>
-                    </>
-                  ) : null}
-                </div>
+      <section className="pt-24 md:mt-0 h-screen flex justify-center md:flex-row md:justify-between lg:px-48 md:px-12 px-4 bg-secondary">
+        <div className="md:max-w-3xl mx-auto w-full text-left">
+          {todayEvents !== null &&
+            todayEvents.map((event) => (
+              <div key={event.id}>
+                <h2 className="text-2xl font-medium pt-4 pl-2 pb-2">
+                  C'est aujourd'hui !
+                </h2>
+                <EventCard event={event} />
               </div>
-            </div>
-          </div>
-        </section>
-      </main>
+            ))}
+
+          {events && events?.length > 0 ? (
+            <>
+              <h2 className="text-2xl font-medium mt-4 pb-2">
+                Évenements à venir
+              </h2>
+              <section className="h-full bg-gray-200">
+                {events.map((event, index) => (
+                  <div key={event.id}>
+                    <EventItem
+                      onClick={() =>
+                        Router.push(`/events/details/${event.link}`)
+                      }
+                      event={event}
+                    />
+                    {index !== events.length - 1 ? <Separator /> : null}
+                  </div>
+                ))}
+              </section>
+            </>
+          ) : null}
+        </div>
+      </section>
     </div>
   );
 

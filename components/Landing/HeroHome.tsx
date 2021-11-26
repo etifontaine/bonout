@@ -1,109 +1,43 @@
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
-// import Modal from '../utils/Modal';
 
 function HeroHome() {
-  //const [videoModalOpen, setVideoModalOpen] = useState(false);
-
   return (
-    <section className="relative">
-      {/* Illustration behind hero content */}
-      <div
-        className="absolute left-1/2 transform -translate-x-1/2 bottom-0 pointer-events-none"
-        aria-hidden="true"
-      >
-        <svg
-          width="1360"
-          height="578"
-          viewBox="0 0 1360 578"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <defs>
-            <linearGradient
-              x1="50%"
-              y1="0%"
-              x2="50%"
-              y2="100%"
-              id="illustration-01"
-            >
-              <stop stopColor="#FFF" offset="0%" />
-              <stop stopColor="#EAEAEA" offset="77.402%" />
-              <stop stopColor="#DFDFDF" offset="100%" />
-            </linearGradient>
-          </defs>
-          <g fill="url(#illustration-01)" fillRule="evenodd">
-            <circle cx="1232" cy="128" r="128" />
-            <circle cx="155" cy="443" r="64" />
-          </g>
-        </svg>
+    <section className="pt-24 md:mt-0 md:h-screen flex flex-col justify-center text-center md:text-left md:flex-row md:justify-between md:items-center lg:px-48 md:px-12 px-4 bg-secondary">
+      <div className="md:flex-1 md:mr-10">
+        <h1 className="font-pt-serif text-5xl font-bold mb-7">
+          Bonout, organise tes
+          <span className="bg-underline1 bg-left-bottom bg-no-repeat pb-2 bg-100%">
+            {" "}
+            événements!
+          </span>
+        </h1>
+        <p className="font-pt-serif font-normal mb-7">
+          Bonout t'aide à organiser ton prochain événement, gratuit et sans
+          inscription!
+        </p>
+        <div className="font-montserrat">
+          <Link href="/events/create">
+            <a className="bg-black px-6 py-4 rounded-lg border-2 border-black border-solid text-white mr-2 mb-2">
+              Créer un événement
+            </a>
+          </Link>
+        </div>
       </div>
-
-      <div className="max-w-6xl mx-auto px-4 sm:px-6">
-        {/* Hero content */}
-        <div className="pt-32 pb-12 md:pt-40 md:pb-20">
-          {/* Section header */}
-          <div className="text-center pb-12 md:pb-16">
-            <h1
-              className="text-5xl md:text-6xl font-extrabold leading-tighter tracking-tighter mb-4"
-            >
-              Bonout, organise tes{" "}
-              <span className="bg-clip-text text-transparent bg-gradient-to-r from-yellow-600 to-red-600">
-                événements
-              </span>
-            </h1>
-            <div className="max-w-3xl mx-auto">
-              <p
-                className="text-xl text-gray-600 mb-8"
-              >
-                Bonout t'aide à organiser ton prochain événement, un seul site
-                avec toutes les fonctionnalités!
-              </p>
-              <div
-                className="max-w-xs mx-auto sm:max-w-none sm:flex sm:justify-center"
-              >
-                <div>
-                  <Link href="/events/create">
-                    <a className="btn text-white bg-yellow-600 hover:bg-yellow-700 w-full mb-4 sm:w-auto sm:mb-0">
-                      <span>Créer un événement</span>
-                    </a>
-                  </Link>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Hero image */}
-          <div>
-            <div
-              className="relative flex justify-center mb-8"
-            >
-              <div className="flex flex-col justify-center">
-                <Image
-                  className="mx-auto"
-                  src="/images/hero-image.png"
-                  width="768"
-                  height="432"
-                  alt="Hero"
-                  priority={true}
-                />
-              </div>
-              {/* <button className="absolute top-full flex items-center transform -translate-y-1/2 bg-white rounded-full font-medium group p-4 shadow-lg" onClick={(e) => { e.preventDefault(); e.stopPropagation(); setVideoModalOpen(true); }} aria-controls="modal">
-                <svg className="w-6 h-6 fill-current text-gray-400 group-hover:text-blue-600 flex-shrink-0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10zm0 2C5.373 24 0 18.627 0 12S5.373 0 12 0s12 5.373 12 12-5.373 12-12 12z" />
-                  <path d="M10 17l6-5-6-5z" />
-                </svg>
-                <span className="ml-3">Regarder la vidéo (2 min)</span>
-              </button> */}
-            </div>
-
-            {/* Modal */}
-            {/* <Modal id="modal" ariaLabel="modal-headline" show={videoModalOpen} handleClose={() => setVideoModalOpen(false)}>
-              <div className="relative pb-9/16">
-                <iframe className="absolute w-full h-full" src="https://player.vimeo.com/video/174002812" title="Video" allowFullScreen></iframe>
-              </div>
-            </Modal> */}
-          </div>
+      <div className="flex justify-around md:block mt-8 md:mt-0 md:flex-1">
+        <div className="relative">
+          <img
+            src="/images/Highlight1.svg"
+            className="absolute -top-16 -left-10"
+          />
+        </div>
+        <img src="/images/MacBookPro.png" alt="Macbook" />
+        <div className="relative">
+          <img
+            src="/images/Highlight2.svg"
+            className="absolute -bottom-10 -right-6"
+          />
         </div>
       </div>
     </section>

@@ -3,9 +3,10 @@ import type { NextPage } from "next";
 import Header from "../components/Header";
 import HeroHome from "../components/Landing/HeroHome";
 import FeaturesHome from "../components/Landing/Features";
-import Testimonials from "../components/Landing/Testimonials";
 import Footer from "../components/Footer";
 import { getEventsCount } from "src/models/events";
+import HowItWorks from "@components/Landing/HowItWorks";
+import FAQ from "@components/Landing/FAQ";
 
 export async function getServerSideProps() {
   const res = await getEventsCount();
@@ -23,11 +24,10 @@ const Home: NextPage<{ data: Data }> = ({ data }) => {
       <Header />
 
       {/*  Page content */}
-      <main className="flex-grow">
-        <HeroHome />
-        <FeaturesHome />
-        <Testimonials countEvents={data.countEvents} />
-      </main>
+      <HeroHome />
+      <HowItWorks />
+      <FeaturesHome />
+      <FAQ />
 
       {/*  Site footer */}
       <Footer />
