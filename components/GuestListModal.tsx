@@ -1,6 +1,5 @@
 import { Fragment } from "react";
 import { Dialog, Transition } from "@headlessui/react";
-import { UserGroupIcon } from "@heroicons/react/outline";
 import { BoInvitationResponse } from "src/types";
 
 interface IModal {
@@ -89,13 +88,6 @@ export default function GuestListModal({
             <div className="inline-block align-bottom bg-white rounded-lg sm:w-96 w-screen text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle">
               <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                 <div className="sm:flex sm:items-start">
-                  <div className="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-green-100 sm:mx-0 sm:h-10 sm:w-10">
-                    <UserGroupIcon
-                      className="h-6 w-6 text-green-600"
-                      aria-hidden="true"
-                    />
-                  </div>
-
                   <div className="mt-3 sm:mt-0 sm:ml-4 w-full sm:text-left">
                     <Dialog.Title
                       as="h3"

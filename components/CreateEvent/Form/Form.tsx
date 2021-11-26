@@ -62,7 +62,7 @@ export function Form(props: {
         value="Créer"
         type="submit"
         className={`${isFormValid ? "" : "cursor-not-allowed opacity-30"}
-        bg-yellow-600 hover:bg-yellow-700 btn cursor-pointer
+        btn bg-black cursor-pointer
         text-white font-bold py-2 px-4 float-right`}
       />
     </form>
