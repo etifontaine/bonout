@@ -1,8 +1,6 @@
 import React from "react";
 
 function Question() {
-
-
   // toggle.addEventListener("click", function (event) {
   //   console.log(toggle);
   //   const answerElement = toggle.querySelector("[answer]");
@@ -24,7 +22,11 @@ function Question() {
           <div className="font-montserrat font-medium mr-auto">
             En quoi Bonout est différent?
           </div>
-          <img src='images/CaretRight.svg' alt="" className="transform transition-transform" />
+          <img
+            src="images/CaretRight.svg"
+            alt=""
+            className="transform transition-transform"
+          />
         </div>
         <div className="font-montserrat text-sm font-extralight pb-8 hidden">
           You can download it on Gumroad.com
@@ -32,11 +34,10 @@ function Question() {
       </div>
       <hr className="w-full bg-white" />
     </>
-  )
+  );
 }
 
 function FAQ() {
-
   return (
     <section className="sectionSize items-start pt-8 md:pt-36 bg-black text-white">
       <div>
@@ -46,7 +47,6 @@ function FAQ() {
       </div>
 
       <Question />
-
     </section>
   );
 }
