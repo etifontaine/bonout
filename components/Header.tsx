@@ -24,11 +24,15 @@ export default function Header() {
         <span className="mr-1">user_id:</span>
         <span>{isUserIDVisible ? user : "**********"}</span>
         <button onClick={() => setUserIDVisible(!isUserIDVisible)}>
-          {isUserIDVisible ? <EyeOffIcon className="ml-2 block h-6 w-6" aria-hidden="true" /> : <EyeIcon className="ml-2 block h-6 w-6" aria-hidden="true" />}
+          {isUserIDVisible ? (
+            <EyeOffIcon className="ml-2 block h-6 w-6" aria-hidden="true" />
+          ) : (
+            <EyeIcon className="ml-2 block h-6 w-6" aria-hidden="true" />
+          )}
         </button>
       </div>
-    )
-  }
+    );
+  };
 
   return (
     <>
