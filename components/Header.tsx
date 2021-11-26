@@ -1,14 +1,15 @@
-import { Fragment, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { Disclosure, Menu, Transition } from "@headlessui/react";
-import { MenuIcon, XIcon } from "@heroicons/react/outline";
+import { Disclosure } from "@headlessui/react";
+import { EyeIcon, EyeOffIcon, MenuIcon, XIcon } from "@heroicons/react/outline";
 import { getUserID } from "src/utils/user";
 import LoginModal from "./LoginModal";
 
 export default function Header() {
   const [user, setUser] = useState("");
   const [isLoginVisible, setLoginVisible] = useState(false);
+  const [isUserIDVisible, setUserIDVisible] = useState(false);
 
   useEffect(() => {
     const user = getUserID();
@@ -16,6 +17,18 @@ export default function Header() {
       setUser(user);
     }
   }, []);
+
+  const toggleUserID = (user: string) => {
+    return (
+      <div className="flex items-center">
+        <span className="mr-1">user_id:</span>
+        <span>{isUserIDVisible ? user : "**********"}</span>
+        <button onClick={() => setUserIDVisible(!isUserIDVisible)}>
+          {isUserIDVisible ? <EyeOffIcon className="ml-2 block h-6 w-6" aria-hidden="true" /> : <EyeIcon className="ml-2 block h-6 w-6" aria-hidden="true" />}
+        </button>
+      </div>
+    )
+  }
 
   return (
     <>
@@ -60,7 +73,7 @@ export default function Header() {
                       {user.length > 0 ? (
                         <>
                           <p className="text-gray-600 px-3 py-2 mr-10 rounded-md font-small">
-                            user_id: {user}
+                            {toggleUserID(user)}
                           </p>
                           <Link href="/home">
                             <a className="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md font-medium">
@@ -117,7 +130,7 @@ export default function Header() {
                       Mes événements
                     </Disclosure.Button>
                     <p className="text-gray-600 block px-3 py-2 rounded-md text-xs font-small">
-                      user_id: {user}
+                      {toggleUserID(user)}
                     </p>
                   </>
                 ) : (
