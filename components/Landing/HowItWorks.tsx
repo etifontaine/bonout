@@ -4,7 +4,7 @@ function HowItWorks() {
   return (
     <section className="bg-black text-white sectionSize">
       <div>
-        <h2 className="secondaryTitle bg-underline2 bg-100%">How it works</h2>
+        <h2 className="secondaryTitle bg-underline2 bg-100%">Comment ça marche</h2>
       </div>
       <div className="flex flex-col md:flex-row">
         <div className="flex-1 mx-8 flex flex-col items-center my-4">

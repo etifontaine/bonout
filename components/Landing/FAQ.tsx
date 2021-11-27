@@ -1,35 +1,32 @@
-import React from "react";
+import React, {useState} from "react";
+import Image from "next/image"
+import { questions } from "content/faq";
 
-function Question() {
-  // toggle.addEventListener("click", function (event) {
-  //   console.log(toggle);
-  //   const answerElement = toggle.querySelector("[answer]");
-  //   const caretElement = toggle.querySelector("img");
-  //   console.log(answerElement);
-  //   if (answerElement.classList.contains("hidden")) {
-  //     answerElement.classList.remove("hidden");
-  //     caretElement.classList.add("rotate-90");
-  //   } else {
-  //     answerElement.classList.add("hidden");
-  //     caretElement.classList.remove("rotate-90");
-  //   }
-  // });
+interface questionContent {
+    title: string,
+    answer: string
+}
+
+function Question({title, answer}: questionContent) {
+  const [isOpen, setIsOpen] = useState(false)
 
   return (
     <>
-      <div onClick={() => console.log("test")} className="w-full py-4">
-        <div className="flex justify-between items-center">
+      <div onClick={() => setIsOpen(!isOpen)} className="w-full py-4">
+        <div className="flex justify-between items-center cursor-pointer">
           <div className="font-montserrat font-medium mr-auto">
-            En quoi Bonout est différent?
+          {title}
           </div>
-          <img
-            src="images/CaretRight.svg"
-            alt=""
-            className="transform transition-transform"
+          <Image
+            src="/images/CaretRight.svg"
+            alt="Caret"
+            height="58"
+            width="58"
+            className={`transform transition-transform ${isOpen ? 'rotate-90' :  ''}`}
           />
         </div>
-        <div className="font-montserrat text-sm font-extralight pb-8 hidden">
-          You can download it on Gumroad.com
+        <div className={`font-montserrat text-sm font-extralight pb-8 ${isOpen ? '' :  'hidden'}`}>
+          {answer}
         </div>
       </div>
       <hr className="w-full bg-white" />
@@ -45,8 +42,12 @@ function FAQ() {
           FAQ
         </h2>
       </div>
-
-      <Question />
+    {
+        questions.map((question, key) => {
+            return <Question key={key} answer={question.answer} title={question.title} />
+        })
+    }
+      
     </section>
   );
 }
