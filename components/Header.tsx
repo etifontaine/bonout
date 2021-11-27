@@ -58,9 +58,9 @@ export default function Header() {
             <div className="flex space-x-4">
               {user.length > 0 ? (
                 <>
-                  <p className="text-gray-600 px-3 py-2 mr-10 rounded-md font-small">
+                  <div className="text-gray-600 px-3 py-2 mr-10 rounded-md font-small inline">
                     {toggleUserID(user)}
-                  </p>
+                  </div>
                   <Link href="/home">
                     <a className="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md font-medium">
                       Mes événements
