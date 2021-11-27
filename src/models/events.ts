@@ -53,10 +53,10 @@ export async function getEventsByUserID(userID: string): Promise<BoEvent[]> {
     .get()
     .then(async (res) => {
       const userInvitationsData = res.data();
-      if (userInvitationsData?.invitations) {
-        const event = await userInvitationsData.invitations.map(
+      if (userInvitationsData) {
+        const event = Object.values(userInvitationsData).map(
           async (invitation: BoInvitationResponse) => {
-            return await getEventByID(invitation.eventID);
+            return await getEventByLink(invitation.link);
           }
         );
         const userData = (await Promise.all(event)) as BoEvent[];
@@ -65,10 +65,11 @@ export async function getEventsByUserID(userID: string): Promise<BoEvent[]> {
         return [];
       }
     });
-
   const userData = await Promise.all([userEvents, userEventsInvitations]);
 
-  return filterBy(sortByDate(userData.flat(), "start_at"), "id");
+  return filterBy(sortByDate(userData.flat(), "start_at"), "id").filter(
+    ({ start_at }) => start_at >= new Date().getTime()
+  );
 }
 
 export async function getEventByLink(link: string): Promise<BoEvent | null> {
