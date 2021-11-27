@@ -7,7 +7,7 @@ import {
   INVALID_PLACE_ERROR,
 } from "./errors.text";
 import { pipe } from "fp-ts/lib/function";
-import { getDateTime, add1h } from "./utils";
+import { getDateTime, add1h, add10min } from "./utils";
 import useOnclickOutside from "react-cool-onclickoutside";
 import {
   LocationSuggestions,
@@ -37,8 +37,16 @@ export function Form(props: {
     name: defaultInputState,
     description: defaultInputState,
     location: { ...defaultInputState, hideSuggestions: false },
-    startAt: { ...defaultInputState, value: getDateTime(new Date()) },
-    endAt: { ...defaultInputState, value: getDateTime(add1h(new Date())) },
+    startAt: {
+      ...defaultInputState,
+      value: getDateTime(add10min(new Date())),
+      isValid: true,
+    },
+    endAt: {
+      ...defaultInputState,
+      value: getDateTime(add1h(add10min(new Date()))),
+      isValid: true,
+    },
   } as Tform);
 
   const isFormValid = Object.values(form).every((input) => input.isValid);

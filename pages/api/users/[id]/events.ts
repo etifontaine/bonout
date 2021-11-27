@@ -16,6 +16,7 @@ export default async function handler(
     if (err instanceof RequestError) {
       res.status(400).json({ error: err.message });
     } else {
+      console.log(err);
       res.status(500).json({ error: "Internal server error" });
     }
   }
