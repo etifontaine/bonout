@@ -32,7 +32,7 @@ export default function InvitationModal({
       <Dialog
         as="div"
         className="fixed z-40 inset-0 overflow-y-auto"
-        onClose={() => { }}
+        onClose={() => {}}
       >
         <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
           <Transition.Child
@@ -73,7 +73,7 @@ export default function InvitationModal({
                     />
                   </div>
 
-                  <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                  <div className="mt-3 w-full text-center sm:mt-0 sm:ml-4 sm:text-left">
                     <Dialog.Title
                       as="h3"
                       className="text-lg leading-6 font-medium text-gray-900"
@@ -115,7 +115,7 @@ export default function InvitationModal({
               <div className="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
                 <button
                   type="button"
-                  className={`w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-green-600 hover:bg-green-700 focus:ring-green-500 text-base font-medium text-white focus:outline-none focus:ring-2 focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm`}
+                  className={`w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-black text-base font-medium text-white sm:ml-3 sm:w-auto sm:text-sm`}
                   onClick={() => postInvitationResponse()}
                 >
                   Confirmer
