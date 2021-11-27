@@ -17,8 +17,6 @@ const Add: NextPage = () => {
   return (
     <>
       <Script
-        // ref={scriptGmap}
-        // onLoadStart={() => setGmapIsLoad(false)}
         onLoad={() => setGmapIsLoad(true)}
         defer
         src={`https://maps.googleapis.com/maps/api/js?key=AIzaSyAugCWPRmET1IH1TkplqNzrGMgK1yItKmM&libraries=places`}
