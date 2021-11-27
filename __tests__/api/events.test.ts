@@ -1,7 +1,11 @@
 import { API_ERROR_MESSAGES } from "../../src/utils/errorMessages";
 import { mockCreateEvent } from "../../__mocks__/mockNextApiHttp";
 import { mockEvent } from "../../__mocks__/mockEvent";
+import * as EventModel from "../../src/models/events";
 
+jest.mock("../../src/models/events.ts", () => ({
+  createEvent: jest.fn((d) => d),
+}));
 describe("POST api/events", () => {
   it("should be an error if body is not a JSON", () => {
     mockCreateEvent({}).then((res) => {
@@ -44,15 +48,29 @@ describe("POST api/events", () => {
     });
   });
 
-  it("should receive created event", async () => {
+  it("should receive created event with link", async () => {
     const body = mockEvent;
     await mockCreateEvent(JSON.stringify(body)).then((res) => {
       expect(res.statusCode).toBe(201);
-      const { id, created_at, link, ...rest } = res._getJSONData();
-      expect(id).toBeDefined();
-      expect(created_at).toBeDefined();
-      expect(link).toBeDefined();
-      expect(rest).toEqual(body);
+      const spy = jest.spyOn(EventModel, "createEvent");
+      expect(spy).toHaveBeenCalled();
+      const call = spy.mock.calls[0][0];
+      expect(call.link).toBeDefined();
+      expect(call.link).toHaveLength(10);
+      spy.mockClear();
+    });
+  });
+
+  it("should receive created event with user_id if not set", async () => {
+    const body = { ...mockEvent, user_id: undefined };
+    await mockCreateEvent(JSON.stringify(body)).then((res) => {
+      expect(res.statusCode).toBe(201);
+      const spy = jest.spyOn(EventModel, "createEvent");
+      expect(spy).toHaveBeenCalled();
+      const call = spy.mock.calls[0][0];
+      expect(call.user_id).toBeDefined();
+      expect(call.user_id).toHaveLength(10);
+      spy.mockClear();
     });
   });
 });

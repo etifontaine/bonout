@@ -25,7 +25,11 @@ module.exports = {
     // "^@hooks(.*)$": "<rootDir>/hooks$1",
   },
   setupFilesAfterEnv: ["<rootDir>/jest.setup.js"],
-  testPathIgnorePatterns: ["<rootDir>/node_modules/", "<rootDir>/.next/"],
+  testPathIgnorePatterns: [
+    "<rootDir>/node_modules/",
+    "<rootDir>/.next/<rootDir>",
+    "<rootDir>/__tests__/test-utils.ts",
+  ],
   transform: {
     // Use babel-jest to transpile tests with the next/babel preset
     // https://jestjs.io/docs/configuration#transform-objectstring-pathtotransformer--pathtotransformer-object
