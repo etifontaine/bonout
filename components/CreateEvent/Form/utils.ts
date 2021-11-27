@@ -9,6 +9,6 @@ export function add1h(date: Date): Date {
 }
 
 export function add10min(date: Date): Date {
-  date.setHours(date.getMinutes() + 10);
+  date.setMinutes(date.getMinutes() + 10);
   return date;
 }
