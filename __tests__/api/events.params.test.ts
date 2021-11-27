@@ -1,16 +1,23 @@
 import { API_ERROR_MESSAGES } from "../../src/utils/errorMessages";
 import paramsHandler from "./../../pages/api/events/[...params]";
 import { mockNextApiHttp } from "../../__mocks__/mockNextApiHttp";
-import { mockEvent } from "../../__mocks__/mockEvent";
+import { mockEvent as fakeEvent } from "../../__mocks__/mockEvent";
+import * as EventModel from "../../src/models/events";
+
+const mockEvent: { [key: string]: any } = {
+  ...fakeEvent,
+  id: "1",
+  user_id: "user1",
+  link: "test-link-1",
+};
+jest.mock("../../src/models/events.ts", () => ({
+  getEventByID: jest.fn((id) => (mockEvent.id === id ? mockEvent : null)),
+  getEventByLink: jest.fn((link) =>
+    mockEvent.link === link ? mockEvent : null
+  ),
+}));
 
 describe("GET api/events/[...params]/[id/link]", () => {
-  const event: { [key: string]: any } = {
-    ...mockEvent,
-    id: "1",
-    user_id: "user1",
-    link: "test-link-1",
-  };
-
   it("should be an error if params is not link or id", async () => {
     await getEvent("notIDorLINK", "value").then((res) => {
       expect(res.statusCode).toBe(400);
@@ -46,9 +53,9 @@ describe("GET api/events/[...params]/[id/link]", () => {
 
   it("should get event by link and id", async () => {
     const test = async (param: string) =>
-      await getEvent(param, event[param]).then((res) => {
+      await getEvent(param, mockEvent[param]).then((res) => {
         expect(res.statusCode).toBe(200);
-        expect(res._getJSONData()[param]).toEqual(event[param]);
+        expect(res._getJSONData()[param]).toEqual(mockEvent[param]);
       });
     await test("id");
     await test("link");

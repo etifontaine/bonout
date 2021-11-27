@@ -7,12 +7,60 @@ import {
   mockCreateEvent,
   mockNextApiHttp,
 } from "../../__mocks__/mockNextApiHttp";
-import { mockEvent } from "../../__mocks__/mockEvent";
+import { mockEvent as fakeEvent } from "../../__mocks__/mockEvent";
 import responseHandler from "./../../pages/api/events/invitations/response";
 
-type BoInvitationResponseTest = Omit<BoInvitationResponse, "response"> & {
-  response: string;
+type BoInvitationResponseTest = Omit<
+  BoInvitationResponse,
+  "response" | "user_id" | "eventID"
+> & {
+  response: string | BoInvitationValidResponse;
+  user_id?: string;
+  eventID?: string;
 };
+
+const mockEvent: { [key: string]: any } = {
+  ...fakeEvent,
+  id: "1",
+  user_id: "user1",
+  link: "test-link-1",
+};
+const mockEvent2: { [key: string]: any } = {
+  ...fakeEvent,
+  id: "2",
+  user_id: "user2",
+  link: "test-link-2",
+  invitations: [
+    {
+      response: BoInvitationValidResponse.YES,
+      name: "test1",
+      link: "test-link-2",
+    },
+    {
+      response: BoInvitationValidResponse.YES,
+      name: "test2",
+      link: "test-link-2",
+    },
+    {
+      response: BoInvitationValidResponse.YES,
+      name: "test3",
+      link: "test-link-2",
+    },
+  ] as BoInvitationResponseTest[],
+};
+jest.mock("../../src/models/events.ts", () => ({
+  createInvitationResponse: jest.fn(
+    (id, reponse) => new Promise((resolve) => resolve(id))
+  ),
+  deleteInvitationResponse: jest.fn(),
+  getEventByLink: jest.fn((link) =>
+    mockEvent.link === link
+      ? mockEvent
+      : mockEvent2.link === link
+      ? mockEvent2
+      : null
+  ),
+}));
 
 describe("POST api/events/invitation/response", () => {
   it("should be an error if body is not a JSON", () => {
@@ -57,22 +105,8 @@ describe("POST api/events/invitation/response", () => {
     });
   });
 
-  const event: { [key: string]: any } = {
-    ...mockEvent,
-    id: "1",
-    user_id: "user1",
-    link: "test-link-1",
-  };
-
-  const event2: { [key: string]: any } = {
-    ...mockEvent,
-    id: "2",
-    user_id: "user2",
-    link: "test-link-2",
-  };
-
   it("should status 201 created", async () => {
-    const test = async (body: BoInvitationResponse) =>
+    const test = async (body: BoInvitationResponseTest) =>
       await postResponse(JSON.stringify(body)).then((res) => {
         expect(res.statusCode).toBe(201);
         expect(res._getJSONData()).toEqual({ message: "created" });
@@ -80,17 +114,17 @@ describe("POST api/events/invitation/response", () => {
     await test({
       response: BoInvitationValidResponse.YES,
       name: "test1",
-      link: event.link,
+      link: mockEvent.link,
     });
     await test({
       response: BoInvitationValidResponse.NO,
       name: "test2",
-      link: event.link,
+      link: mockEvent.link,
     });
     await test({
       response: BoInvitationValidResponse.MAYBE,
       name: "test3",
-      link: event.link,
+      link: mockEvent.link,
     });
   });
 
@@ -100,21 +134,9 @@ describe("POST api/events/invitation/response", () => {
         expect(res.statusCode).toBe(201);
         expect(res._getJSONData()).toEqual({ message: "updated" });
       });
-    await test({
-      response: BoInvitationValidResponse.YES,
-      name: "test1",
-      link: event2.link,
-    });
-    await test({
-      response: BoInvitationValidResponse.NO,
-      name: "test2",
-      link: event2.link,
-    });
-    await test({
-      response: BoInvitationValidResponse.MAYBE,
-      name: "test3",
-      link: event2.link,
-    });
+    await test(mockEvent2.invitations[0]);
+    await test(mockEvent2.invitations[1]);
+    await test(mockEvent2.invitations[2]);
   });
 });
 

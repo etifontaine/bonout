@@ -3,15 +3,13 @@
  */
 
 import React from "react";
-import { render, fireEvent, act, RenderResult } from "../test-utils";
+import { render, fireEvent, act } from "../test-utils";
 import { Form } from "@components/CreateEvent/Form/Form";
 import {
   LENGTH_ERROR,
   DATE_PASSED_ERROR,
 } from "@components/CreateEvent/Form/errors.text";
 import { getDateTime, add1h } from "@components/CreateEvent/Form/utils";
-import usePlacesAutocomplete from "use-places-autocomplete";
-import type { HookArgs, HookReturn } from "use-places-autocomplete";
 const ok = "OK";
 const error = "ERROR";
 const data = [{ place_id: "0109", description: "test" }];
