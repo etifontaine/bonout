@@ -8,8 +8,13 @@ import { Form } from "@components/CreateEvent/Form/Form";
 import {
   LENGTH_ERROR,
   DATE_PASSED_ERROR,
+  INVALID_PLACE_ERROR,
 } from "@components/CreateEvent/Form/errors.text";
-import { getDateTime, add1h } from "@components/CreateEvent/Form/utils";
+import {
+  getDateTime,
+  add1h,
+  add10min,
+} from "@components/CreateEvent/Form/utils";
 const ok = "OK";
 const error = "ERROR";
 const data = [{ place_id: "0109", description: "test" }];
@@ -110,11 +115,14 @@ describe("CreateEventPage <Form />", () => {
       expect(label).toBeInTheDocument();
     });
 
-    it("should have today datetime set", () => {
+    it("should have today datetime set + 10min", () => {
       const result = render(<Form onSubmit={() => {}} />);
       const input = result.container.querySelector("#startAt");
       if (input) {
-        expect(input).toHaveAttribute("value", getDateTime(new Date()));
+        expect(input).toHaveAttribute(
+          "value",
+          getDateTime(add10min(new Date()))
+        );
       }
     });
 
@@ -131,8 +139,13 @@ describe("CreateEventPage <Form />", () => {
         expect(input).toHaveClass("invalid");
 
         const label = result.container.querySelector(".help-label");
-        expect(label).toBeInTheDocument();
-        expect(label).toHaveTextContent(DATE_PASSED_ERROR("aujourd'hui"));
+        if (label && label.textContent) {
+          expect(
+            label.textContent.startsWith(DATE_PASSED_ERROR(""))
+          ).toBeTruthy();
+        } else {
+          expect(label).toBeInTheDocument();
+        }
 
         const tomorow = new Date();
         tomorow.setDate(tomorow.getDate() + 1);
@@ -159,7 +172,10 @@ describe("CreateEventPage <Form />", () => {
       const result = render(<Form onSubmit={() => {}} />);
       const input = result.container.querySelector("#endAt");
       if (input) {
-        expect(input).toHaveAttribute("value", getDateTime(add1h(new Date())));
+        expect(input).toHaveAttribute(
+          "value",
+          getDateTime(add1h(add10min(new Date())))
+        );
       }
     });
 
@@ -177,10 +193,13 @@ describe("CreateEventPage <Form />", () => {
         expect(input).toHaveClass("invalid");
 
         const label = result.container.querySelector(".help-label");
-        expect(label).toBeInTheDocument();
-        expect(label).toHaveTextContent(
-          DATE_PASSED_ERROR("date de commencement")
-        );
+        if (label && label.textContent) {
+          expect(
+            label.textContent.startsWith(DATE_PASSED_ERROR(""))
+          ).toBeTruthy();
+        } else {
+          expect(label).toBeInTheDocument();
+        }
 
         const tomorow = new Date();
         tomorow.setDate(tomorow.getDate() + 1);
@@ -246,9 +265,7 @@ describe("CreateEventPage <Form />", () => {
       expect(input).toHaveClass("invalid");
       const label = result.container.querySelector(".help-label");
       expect(label).toBeInTheDocument();
-      expect(label).toHaveTextContent(
-        DATE_PASSED_ERROR("date de commencement")
-      );
+      expect(label).toHaveTextContent(INVALID_PLACE_ERROR("test"));
       const suggestion = result.container.querySelector(".suggestions li");
       if (suggestion) {
         act(() => {
