@@ -37,10 +37,15 @@ export function Form(props: {
     name: defaultInputState,
     description: defaultInputState,
     location: { ...defaultInputState, hideSuggestions: false },
-    startAt: { ...defaultInputState, value: getDateTime(add10min(new Date())) },
+    startAt: {
+      ...defaultInputState,
+      value: getDateTime(add10min(new Date())),
+      isValid: true,
+    },
     endAt: {
       ...defaultInputState,
       value: getDateTime(add1h(add10min(new Date()))),
+      isValid: true,
     },
   } as Tform);
 
