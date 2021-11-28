@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { Disclosure } from "@headlessui/react";
-import { EyeIcon, EyeOffIcon, MenuIcon, XIcon } from "@heroicons/react/outline";
+import { EyeIcon, EyeOffIcon } from "@heroicons/react/outline";
 import { getUserID } from "src/utils/user";
 import LoginModal from "./LoginModal";
 
@@ -110,9 +109,8 @@ export default function Header() {
       {/* Mobile menu */}
       <div
         id="mobileNav"
-        className={`${
-          showMobileMenu ? "block" : "hidden"
-        } px-4 py-6 fixed top-0 left-0 h-full w-full bg-secondary z-20 animate-fade-in-down`}
+        className={`${showMobileMenu ? "block" : "hidden"
+          } px-4 py-6 fixed top-0 left-0 h-full w-full bg-secondary z-20 animate-fade-in-down`}
       >
         <div
           onClick={() => setShowMobileMenu(false)}
