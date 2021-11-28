@@ -1,5 +1,5 @@
 import type { NextPage } from "next";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Router from "next/router";
 import Header from "@components/Header";
 import { toast } from "react-toastify";
@@ -37,9 +37,16 @@ export async function getServerSideProps(context: { query: { link: string } }) {
 }
 
 const EditEvent: NextPage<PageProps> = ({ event }) => {
-  const { isOrganizer, isLoading, userChecked } = useIsOrganizerOfEvent(
-    event.id
-  );
+  const [isLoading, setIsLoading] = useState(false);
+  const {
+    isOrganizer,
+    userChecked,
+    isLoading: ILC,
+  } = useIsOrganizerOfEvent(event.id);
+
+  useEffect(() => {
+    setIsLoading(ILC);
+  }, [ILC]);
 
   return (
     <>
