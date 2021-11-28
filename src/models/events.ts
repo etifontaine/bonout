@@ -125,7 +125,7 @@ export async function updateEvent(event: BoEvent): Promise<void> {
   await db
     .collection(COLLECTION_NAME_EVENTS)
     .doc(event.id)
-    .set({
+    .update({
       title: event.title,
       description: event.description,
       address: event.address,
