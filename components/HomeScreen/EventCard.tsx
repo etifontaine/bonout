@@ -41,7 +41,7 @@ function getHoursAndMinuteLeft(date: string) {
   if (hours == 0) {
     return `${minutes} min`;
   }
-  return `${hours}h${minutes}`;
+  return `${hours}h${("0" + minutes).slice(-2)}`;
 }
 
 function calcHowManyUsers(users: Array<BoInvitationResponse>) {
