@@ -29,7 +29,7 @@ const Home: NextPage = () => {
       <Header />
       <section className="pt-24 md:mt-0 h-screen flex justify-center md:flex-row md:justify-between lg:px-48 md:px-12 px-4 bg-secondary">
         <div className="md:max-w-3xl mx-auto w-full text-left">
-          {todayEvents !== null && (
+          {todayEvents !== null && todayEvents.length > 0 && (
             <>
               <h2 className="text-2xl font-medium pt-4 pb-2">
                 C'est aujourd'hui !

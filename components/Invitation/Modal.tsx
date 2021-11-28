@@ -5,6 +5,7 @@ import { ExclamationIcon, ThumbUpIcon } from "@heroicons/react/outline";
 import { toast } from "react-toastify";
 import { BoInvitationValidResponse } from "../../src/types";
 import { IModal } from "../../pages/events/details/[link]";
+import Loader from "@components/Loader";
 
 interface IModalContent {
   title: string;
