@@ -81,9 +81,10 @@ export default async function handler(
 
   return await createInvitationResponse(event.id, payload)
     .then(() => {
-      return res
-        .status(201)
-        .json({ message: existingInvitation ? "updated" : "created" });
+      return res.status(201).json({
+        message: existingInvitation ? "updated" : "created",
+        user_id: payload?.user_id,
+      });
     })
     .catch((e: { message: string }) => {
       console.log(e);

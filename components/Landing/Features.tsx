@@ -10,7 +10,13 @@ function Features() {
       </div>
       <div className="md:grid md:grid-cols-2 md:grid-rows-2">
         <div className="flex items-start font-montserrat my-6 mr-10">
-          <img src="images/Heart.svg" alt="" className="h-7 mr-4" />
+          <img
+            src="images/Heart.svg"
+            alt="Heart"
+            width="24"
+            height="24"
+            className="h-7 mr-4"
+          />
           <div>
             <h3 className="font-semibold text-2xl">Prépare un événement</h3>
             <p>
@@ -24,7 +30,13 @@ function Features() {
         </div>
 
         <div className="flex items-start font-montserrat my-6 mr-10">
-          <img src="images/Heart.svg" alt="" className="h-7 mr-4" />
+          <img
+            src="images/Heart.svg"
+            alt="Heart"
+            width="24"
+            height="24"
+            className="h-7 mr-4"
+          />
           <div>
             <h3 className="font-semibold text-2xl">Invitations</h3>
             <p>
@@ -36,7 +48,13 @@ function Features() {
         </div>
 
         <div className="flex items-start font-montserrat my-6 mr-10">
-          <img src="images/Heart.svg" alt="" className="h-7 mr-4" />
+          <img
+            src="images/Heart.svg"
+            alt="Heart"
+            width="24"
+            height="24"
+            className="h-7 mr-4"
+          />
           <div>
             <h3 className="font-semibold text-2xl">
               Vie privée & respect de l'utilisateur
@@ -50,7 +68,13 @@ function Features() {
         </div>
 
         <div className="flex items-start font-montserrat my-6 mr-10">
-          <img src="images/Heart.svg" alt="" className="h-7 mr-4" />
+          <img
+            src="images/Heart.svg"
+            alt="Heart"
+            width="24"
+            height="24"
+            className="h-7 mr-4"
+          />
           <div>
             <h3 className="font-semibold text-2xl">Organisation</h3>
             <p>

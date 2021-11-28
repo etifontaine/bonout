@@ -41,9 +41,15 @@ export async function getEventsByUserID(userID: string): Promise<BoEvent[]> {
     .where("start_at", ">=", new Date().getTime())
     .get()
     .then((querySnapshot) => {
-      const events = querySnapshot.docs.map(
-        (x) => ({ ...x.data(), id: x.id } as BoEvent)
-      );
+      const events = querySnapshot.docs.map((x) => {
+        const event = { ...x.data(), id: x.id } as BoEvent;
+        if (event.invitations) {
+          event.invitations.forEach((invitation) => {
+            delete invitation.user_id;
+          });
+        }
+        return event;
+      });
       return events || [];
     });
 
@@ -92,6 +98,7 @@ export async function getEventByLink(link: string): Promise<BoEvent | null> {
       invitation.response === BoInvitationValidResponse.MAYBE ? 1 : 0;
     notComingGuestAmount +=
       invitation.response === BoInvitationValidResponse.NO ? 1 : 0;
+    delete invitation.user_id;
   });
 
   event.comingGuestAmount = comingGuestAmount;

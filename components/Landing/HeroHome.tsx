@@ -29,13 +29,21 @@ function HeroHome() {
         <div className="relative">
           <img
             src="/images/Highlight1.svg"
+            alt="Highlight1"
             className="absolute -top-16 -left-10"
           />
         </div>
-        <img src="/images/MacBookPro.png" alt="Macbook" />
+        <Image
+          src="/images/MacBookPro.webp"
+          height="216"
+          width="352"
+          priority={true}
+          alt="Macbook"
+        />
         <div className="relative">
           <img
             src="/images/Highlight2.svg"
+            alt="Highlight2"
             className="absolute -bottom-10 -right-6"
           />
         </div>

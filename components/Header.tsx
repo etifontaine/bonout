@@ -24,7 +24,10 @@ export default function Header() {
       <div className="flex items-center">
         <span className="mr-1">Identifiant:</span>
         <span>{isUserIDVisible ? user : "**********"}</span>
-        <button onClick={() => setUserIDVisible(!isUserIDVisible)}>
+        <button
+          onClick={() => setUserIDVisible(!isUserIDVisible)}
+          aria-label="Toggle Identifiant"
+        >
           {isUserIDVisible ? (
             <EyeOffIcon className="ml-2 block h-6 w-6" aria-hidden="true" />
           ) : (
