@@ -5,7 +5,7 @@ import HeroHome from "../components/Landing/HeroHome";
 import FeaturesHome from "../components/Landing/Features";
 import Footer from "../components/Footer";
 import { getEventsCount } from "src/models/events";
-import HowItWorks from "@components/Landing/HowItWorks";
+import HowItWorks from "../components/Landing/HowItWorks";
 import FAQ from "@components/Landing/FAQ";
 
 export async function getServerSideProps() {

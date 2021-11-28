@@ -22,7 +22,7 @@ export default function Header() {
   const toggleUserID = (user: string) => {
     return (
       <div className="flex items-center">
-        <span className="mr-1">user_id:</span>
+        <span className="mr-1">Identifiant:</span>
         <span>{isUserIDVisible ? user : "**********"}</span>
         <button onClick={() => setUserIDVisible(!isUserIDVisible)}>
           {isUserIDVisible ? (
