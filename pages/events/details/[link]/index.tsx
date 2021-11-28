@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import type { NextPage } from "next";
+import Link from "next/link";
 import Router from "next/router";
 import Head from "next/head";
 import dayjs from "dayjs";
@@ -138,13 +139,14 @@ const EventDetails: NextPage<PageProps> = ({ event }) => {
             </div>
             {getUserID() === event.user_id ? (
               <div className="flex justify-end items-center">
-                <button
-                  onClick={() => {
-                    toast.info("Tu ne peux pas encore éditer un événement 😕");
-                  }}
+                <Link
+                  href="/events/details/[link]/edit"
+                  as={`/events/details/${event.link}/edit`}
                 >
-                  <PencilIcon className="block h-4 w-4" aria-hidden="true" />
-                </button>
+                  <a>
+                    <PencilIcon className="block h-4 w-4" aria-hidden="true" />
+                  </a>
+                </Link>
               </div>
             ) : null}
           </div>
