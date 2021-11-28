@@ -10,4 +10,5 @@ export const API_ERROR_MESSAGES = {
   METHOD_NOT_ALLOWED: "method not allowed",
   MISSING_PARAMETER: "missing parameter",
   INVALID_PARAMETER: "invalid parameter",
+  EVENT_ID_REQUIRED: "event id required",
 };

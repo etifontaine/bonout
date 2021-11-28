@@ -16,6 +16,7 @@ import {
 } from "./LocationSuggestions";
 
 import type { suggestion } from "./LocationSuggestions";
+import { BoEvent } from "src/types";
 
 const GMapsLocationSuggestions =
   withGooglePlacesAutocomplete(LocationSuggestions);
@@ -33,22 +34,54 @@ export function Form(props: {
     form: Tform,
     isValid: boolean
   ) => void;
+  event?: BoEvent;
 }) {
-  const [form, setForm] = useState({
-    name: defaultInputState,
-    description: defaultInputState,
-    location: { ...defaultInputState, hideSuggestions: false },
-    startAt: {
-      ...defaultInputState,
-      value: getDateTime(add10min(new Date())),
-      isValid: true,
-    },
-    endAt: {
-      ...defaultInputState,
-      value: getDateTime(add1h(add10min(new Date()))),
-      isValid: true,
-    },
-  } as Tform);
+  const [form, setForm] = useState(
+    props.event
+      ? {
+          name: {
+            ...defaultInputState,
+            value: props.event.title,
+            isValid: true,
+          },
+          description: {
+            ...defaultInputState,
+            value: props.event.description,
+            isValid: true,
+          },
+          location: {
+            ...defaultInputState,
+            hideSuggestions: false,
+            value: props.event.address,
+            isValid: true,
+          },
+          startAt: {
+            ...defaultInputState,
+            value: getDateTime(new Date(props.event.start_at)),
+            isValid: true,
+          },
+          endAt: {
+            ...defaultInputState,
+            value: getDateTime(new Date(props.event.end_at)),
+            isValid: true,
+          },
+        }
+      : ({
+          name: defaultInputState,
+          description: defaultInputState,
+          location: { ...defaultInputState, hideSuggestions: false },
+          startAt: {
+            ...defaultInputState,
+            value: getDateTime(add10min(new Date())),
+            isValid: true,
+          },
+          endAt: {
+            ...defaultInputState,
+            value: getDateTime(add1h(add10min(new Date()))),
+            isValid: true,
+          },
+        } as Tform)
+  );
 
   const [gmapIsLoad, setGmapIsLoad] = useState(false);
   if (typeof window !== "undefined") {

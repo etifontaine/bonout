@@ -121,6 +121,19 @@ export async function createEvent(payload: BoEvent): Promise<BoEvent> {
   return { ...eventQuery.data(), id: eventQuery.id } as BoEvent;
 }
 
+export async function updateEvent(event: BoEvent): Promise<void> {
+  await db
+    .collection(COLLECTION_NAME_EVENTS)
+    .doc(event.id)
+    .set({
+      title: event.title,
+      description: event.description,
+      address: event.address,
+      start_at: new Date(event.start_at).getTime(),
+      end_at: new Date(event.end_at).getTime(),
+    });
+}
+
 export async function deleteEventByID(id: string): Promise<void> {
   await db.collection(COLLECTION_NAME_EVENTS).doc(id).delete();
 }
