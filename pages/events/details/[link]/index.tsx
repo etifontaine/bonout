@@ -3,11 +3,11 @@ import type { NextPage } from "next";
 import Router from "next/router";
 import Head from "next/head";
 import dayjs from "dayjs";
-import Header from "../../../components/Header";
-import Modal from "../../../components/Invitation/Modal";
-import GuestListModal from "../../../components/GuestListModal";
-import { BoEvent, BoInvitationValidResponse } from "../../../src/types";
-import { getEventByLink } from "../../../src/models/events";
+import Header from "@components/Header";
+import Modal from "@components/Invitation/Modal";
+import GuestListModal from "@components/GuestListModal";
+import { BoEvent, BoInvitationValidResponse } from "src/types";
+import { getEventByLink } from "src/models/events";
 import { getUserID } from "src/utils/user";
 import {
   CalendarIcon,
