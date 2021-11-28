@@ -57,8 +57,8 @@ jest.mock("../../src/models/events.ts", () => ({
     mockEvent.link === link
       ? mockEvent
       : mockEvent2.link === link
-        ? mockEvent2
-        : null
+      ? mockEvent2
+      : null
   ),
 }));
 
