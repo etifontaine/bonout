@@ -120,7 +120,6 @@ const EditEvent: NextPage<PageProps> = ({ event }) => {
       return;
     }
     setIsLoading(true);
-    console.log(event);
     fetch("/api/events", {
       method: "PUT",
       body: JSON.stringify({

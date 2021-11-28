@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import type { NextPage } from "next";
 import Link from "next/link";
 import Router from "next/router";
@@ -18,7 +18,6 @@ import {
   UserGroupIcon,
   UserIcon,
 } from "@heroicons/react/outline";
-import { toast } from "react-toastify";
 
 interface PageProps {
   event: BoEvent & { comingGuestAmount: number };
@@ -61,7 +60,6 @@ const EventDetails: NextPage<PageProps> = ({ event }) => {
 
   const [modalContent, setModal] = useState<IModal>({});
   const [isGuestListVisible, setGuestListVisible] = useState(false);
-  const [userInvitationStatus, setUserInvitationStatus] = useState<string>();
 
   const setResponse = (userResponse: BoInvitationValidResponse) => {
     setModal({ userResponse, link: event.link });
@@ -91,23 +89,6 @@ const EventDetails: NextPage<PageProps> = ({ event }) => {
       window.open("https://maps.google.com/maps?q=" + address);
     }
   };
-
-  useEffect(() => {
-    if (event.invitations.length > 0) {
-      const userInvitation = event.invitations.find(
-        (invitation) => invitation.user_id === getUserID()
-      );
-      if (userInvitation?.response === BoInvitationValidResponse.YES) {
-        setUserInvitationStatus("Vous avez prévu de venir");
-      } else if (userInvitation?.response === BoInvitationValidResponse.MAYBE) {
-        setUserInvitationStatus("Vous avez peut-être prévu de venir");
-      } else if (userInvitation?.response === BoInvitationValidResponse.NO) {
-        setUserInvitationStatus("Vous n'avez pas prévu de venir");
-      }
-    } else {
-      setUserInvitationStatus("Vous n'avez pas encore répondu à l'invitation");
-    }
-  }, [event]);
 
   return (
     <>
@@ -180,11 +161,10 @@ const EventDetails: NextPage<PageProps> = ({ event }) => {
               <div className="text-sm font-medium text-gray-500">Lien</div>
               <div className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2 flex items-center">
                 <LinkIcon className="block h-3 w-3 mr-2" aria-hidden="true" />
-                <button className="underline" onClick={() => shareEvent()}>{`${
-                  typeof window !== "undefined"
-                    ? `${window.location.host}/events/details/`
-                    : ""
-                }${event.link}`}</button>
+                <button className="underline" onClick={() => shareEvent()}>{`${typeof window !== "undefined"
+                  ? `${window.location.host}/events/details/`
+                  : ""
+                  }${event.link}`}</button>
               </div>
             </div>
             <div className="py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
