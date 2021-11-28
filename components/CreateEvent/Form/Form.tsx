@@ -116,7 +116,7 @@ export function Form(props: {
           </div>
         </div>
         <input
-          value="Créer"
+          value={props.event ? "Modifier" : "Créer"}
           type="submit"
           className={`${isFormValid ? "" : "cursor-not-allowed opacity-30"}
         btn bg-black cursor-pointer
