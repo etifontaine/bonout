@@ -7,12 +7,12 @@ export const questions = [
   {
     title: "Comment inviter des gens à mon événement?",
     answer:
-      "Une fois ton évènement crée, tu vas obtenir un lien unique. Partage ton lien par messagerie ou transforme le en QRCode afin d'inviter toutes les personnes que tu veux.",
+      "Une fois ton évènement crée, tu vas obtenir un lien unique. Partage ton lien par messagerie ou transforme le en QRCode afin d'inviter qui tu veux.",
   },
   {
-    title: "Comment êtes-vous rémunéré?",
+    title: "Comment Bonout est financé?",
     answer:
-      "Tu peux faire des dons, et plus tard on proposera des fonctionnalitées payantes. Toujours sans tracking et en respectant votre vie privée.",
+      "Tu peux faire des dons, plus tard on proposera des fonctionnalitées payantes. Toujours sans tracking et en respectant votre vie privée.",
   },
   {
     title: "Mes invités doivent-ils avoit un compte Bonout?",
