@@ -1,0 +1,30 @@
+name: Jest tests
+
+on: [pull_request]
+
+jobs:
+  jest-tests:
+    name: Jest test:ci
+    runs-on: ubuntu-20.04
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: Cache pnpm modules
+      uses: actions/cache@v2
+      with:
+        path: ~/.pnpm-store
+        key: ${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
+        restore-keys: |
+          ${{ runner.os }}-
+    - uses: pnpm/action-setup@v2.0.1
+      with:
+        version: 6.0.2
+        run_install: true
+    - name: run build
+      run: pnpm run build
+      env:
+        DB_ENV: staging
+    - name: run test:ci
+      run: pnpm run test:ci
+      env:
+        DB_ENV: staging
