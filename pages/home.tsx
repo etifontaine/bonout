@@ -29,15 +29,21 @@ const Home: NextPage = () => {
       <Header />
       <section className="pt-24 md:mt-0 h-screen flex justify-center md:flex-row md:justify-between lg:px-48 md:px-12 px-4 bg-secondary">
         <div className="md:max-w-3xl mx-auto w-full text-left">
-          {todayEvents !== null &&
-            todayEvents.map((event) => (
-              <div key={event.id}>
-                <h2 className="text-2xl font-medium pt-4 pl-2 pb-2">
-                  C'est aujourd'hui !
-                </h2>
-                <EventCard event={event} />
-              </div>
-            ))}
+          {todayEvents !== null && (
+            <>
+              <h2 className="text-2xl font-medium pt-4 pb-2">
+                C'est aujourd'hui !
+              </h2>
+              {todayEvents.map((event, index) => (
+                <div key={event.id}>
+                  <EventCard event={event} />
+                  {index !== todayEvents.length - 1 ? (
+                    <Separator color="blue-400" />
+                  ) : null}
+                </div>
+              ))}
+            </>
+          )}
 
           {events && events?.length > 0 ? (
             <>
@@ -90,9 +96,9 @@ const Home: NextPage = () => {
   }
 };
 
-function Separator() {
+function Separator({ color }: { color?: string }) {
   return (
-    <div className="bg-white">
+    <div className={`bg-${color || "white"}`}>
       <div className="m-auto w-100 h-0.5 bg-blue-400"></div>
     </div>
   );
