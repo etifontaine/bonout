@@ -12,7 +12,9 @@ import {
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<BoEvent[] | { error: string } | BoEvent>
+  res: NextApiResponse<
+    BoEvent[] | { error: string } | { message: string } | BoEvent
+  >
 ) {
   try {
     if (isGetRequest())
@@ -25,7 +27,7 @@ export default async function handler(
 
     if (isPutRequest())
       await updateEventHandler().then(() => {
-        return res.status(201);
+        return res.status(201).json({ message: "Event updated" });
       });
   } catch (err: any) {
     if (err instanceof RequestError) {
