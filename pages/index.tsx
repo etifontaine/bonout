@@ -1,12 +1,13 @@
 import React from "react";
 import type { NextPage } from "next";
+import dynamic from 'next/dynamic'
 import Header from "@components/Header";
 import HeroHome from "@components/Landing/HeroHome";
-import FeaturesHome from "@components/Landing/Features";
-import Footer from "@components/Footer";
-import { getEventsCount } from "src/models/events";
-import FAQ from "@components/Landing/FAQ";
 import HowItWorks from "@components/Landing/HowItWorks";
+const FeaturesHome = dynamic(() => import('@components/Landing/Features'))
+const FAQ = dynamic(() => import('@components/Landing/FAQ'))
+const Footer = dynamic(() => import('@components/Footer'))
+import { getEventsCount } from "src/models/events";
 
 export async function getServerSideProps() {
   const res = await getEventsCount();

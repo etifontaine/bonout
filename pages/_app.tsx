@@ -1,8 +1,9 @@
+import type { AppProps } from "next/app";
+import Head from "next/head";
+import { ToastContainer } from "react-toastify";
+import NextNprogress from 'nextjs-progressbar';
 import "../styles/style.scss";
 import "react-toastify/dist/ReactToastify.css";
-import type { AppProps } from "next/app";
-import { ToastContainer } from "react-toastify";
-import Head from "next/head";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
@@ -32,6 +33,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         draggable
         pauseOnHover
       ></ToastContainer>
+      <NextNprogress color="#000000"/>
       <Component {...pageProps} />
     </>
   );
