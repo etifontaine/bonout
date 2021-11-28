@@ -6,6 +6,7 @@ import {
   BoInvitationResponse,
   BoInvitationValidResponse,
 } from "../types";
+import { responses } from "content/responses";
 
 const COLLECTION_NAME_EVENTS = `${process.env.DB_ENV}_events`;
 const COLLECTION_NAME_INVITATIONS = `${process.env.DB_ENV}_invitations`;
@@ -78,7 +79,10 @@ export async function getEventsByUserID(userID: string): Promise<BoEvent[]> {
   );
 }
 
-export async function getEventByLink(link: string): Promise<BoEvent | null> {
+export async function getEventByLink(
+  link: string,
+  options?: { withUserIDs: boolean }
+): Promise<BoEvent | null> {
   const eventsQuery = await db
     .collection(COLLECTION_NAME_EVENTS)
     .where("link", "==", link)
@@ -98,7 +102,9 @@ export async function getEventByLink(link: string): Promise<BoEvent | null> {
       invitation.response === BoInvitationValidResponse.MAYBE ? 1 : 0;
     notComingGuestAmount +=
       invitation.response === BoInvitationValidResponse.NO ? 1 : 0;
-    delete invitation.user_id;
+    if (!options?.withUserIDs) {
+      delete invitation.user_id;
+    }
   });
 
   event.comingGuestAmount = comingGuestAmount;
@@ -143,6 +149,18 @@ export async function isOrganizerOf(
   return event?.user_id === userID;
 }
 
+export async function isUserComing(
+  userID: string,
+  eventID: string
+): Promise<string | undefined> {
+  const event = await getEventByID(eventID);
+
+  const userInvitation = event?.invitations.find(
+    (invitation) => invitation.user_id === userID
+  );
+  return userInvitation ? responses[userInvitation?.response] : undefined;
+}
+
 export async function deleteEventByID(id: string): Promise<void> {
   await db.collection(COLLECTION_NAME_EVENTS).doc(id).delete();
 }
@@ -151,7 +169,6 @@ export async function createInvitationResponse(
   eventID: BoEvent["id"],
   payload: BoInvitationResponse
 ) {
-
   const user_id = payload.user_id ? payload.user_id : "";
   if (user_id.length === 0) {
     throw new Error("user_id is undefined");

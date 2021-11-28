@@ -15,7 +15,7 @@ function HowItWorks() {
           </div>
           <h3 className="font-montserrat font-medium text-xl mb-2">Crée</h3>
           <p className="text-center font-montserrat">
-            Crée ton événements en quelques clics, sans inscrition et
+            Crée ton événement en quelques clics, sans inscription et
             gratuitement!
           </p>
         </div>
