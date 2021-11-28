@@ -129,21 +129,25 @@ export async function createInvitationResponse(
   eventID: BoEvent["id"],
   payload: BoInvitationResponse
 ) {
+
+  const user_id = payload.user_id ? payload.user_id : "";
+  if (user_id.length === 0) {
+    throw new Error("user_id is undefined");
+  }
   const eventRef = db.collection(COLLECTION_NAME_EVENTS).doc(eventID);
   const unionRes = await eventRef.update({
     invitations: FieldValue.arrayUnion(payload),
   });
-
   // Check if user already have a key in the invitations table
   const userInvitationsRef = db
     .collection(COLLECTION_NAME_INVITATIONS)
-    .doc(payload.user_id);
+    .doc(user_id);
 
   if (userInvitationsRef) {
     await userInvitationsRef.set({ [eventID]: payload });
   } else {
     db.collection(COLLECTION_NAME_INVITATIONS)
-      .doc(payload.user_id)
+      .doc(user_id)
       .set({ [eventID]: payload });
   }
 

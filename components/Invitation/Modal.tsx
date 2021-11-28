@@ -183,7 +183,7 @@ export default function InvitationModal({ link, userResponse }: IModal) {
                           Nom ou pseudo
                         </label>
                         <input
-                          autoComplete="off"
+                          autoComplete="on"
                           value={formContent?.username}
                           onChange={(e) => {
                             setFormContent({ username: e.target.value });
