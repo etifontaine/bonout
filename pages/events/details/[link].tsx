@@ -6,7 +6,7 @@ import Head from "next/head";
 import dayjs from "dayjs";
 import Header from "@components/Header";
 import Modal from "@components/Invitation/Modal";
-import useIsOrganizerOfEvent from "@components/useIsOrganizerOf";
+import useIsOrganizerOfEvent from "@components/useIsEventOrganiser";
 import GuestListModal from "@components/GuestListModal";
 import { BoEvent, BoInvitationValidResponse } from "src/types";
 import { getEventByLink } from "src/models/events";

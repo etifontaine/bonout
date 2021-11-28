@@ -6,7 +6,7 @@ import { toast } from "react-toastify";
 import { Form } from "@components/CreateEvent/Form/Form";
 import type { Tform } from "@components/CreateEvent/Form/types";
 import Loader from "@components/Loader";
-import useIsOrganizerOfEvent from "@components/useIsOrganizerOf";
+import useIsOrganizerOfEvent from "@components/useIsEventOrganiser";
 import { BoEvent } from "src/types";
 import { getEventByLink } from "src/models/events";
 import { getUserID } from "src/utils/user";

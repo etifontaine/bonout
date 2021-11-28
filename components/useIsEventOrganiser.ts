@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { getUserID } from "src/utils/user";
 import { toast } from "react-toastify";
 
-export default function useIsOrganizerOfEvent(eventID: string) {
+export default function useIsEventOrganiser(eventID: string) {
   const [isLoading, setIsLoading] = useState(false);
   const [userChecked, setUserChecked] = useState(false);
   const [isOrganizer, setIsOrganizer] = useState(false);
