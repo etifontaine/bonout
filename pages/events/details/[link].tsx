@@ -6,6 +6,7 @@ import Head from "next/head";
 import dayjs from "dayjs";
 import Header from "@components/Header";
 import Modal from "@components/Invitation/Modal";
+import useIsOrganizerOfEvent from "@components/IsOrganizerOf";
 import GuestListModal from "@components/GuestListModal";
 import { BoEvent, BoInvitationValidResponse } from "src/types";
 import { getEventByLink } from "src/models/events";
@@ -33,13 +34,13 @@ export async function getServerSideProps(context: { query: { link: string } }) {
   const event = await getEventByLink(link);
 
   const cleanedEvent = {
+    id: event?.id,
     address: event?.address,
     description: event?.description,
     start_at: event?.start_at,
     end_at: event?.end_at,
     link: event?.link,
     title: event?.title,
-    user_id: event?.user_id,
     invitations: event?.invitations || [],
     comingGuestAmount: event?.comingGuestAmount,
     notComingGuestAmount: event?.notComingGuestAmount,
@@ -57,6 +58,7 @@ const EventDetails: NextPage<PageProps> = ({ event }) => {
   if (!event) {
     Router.push("/home");
   }
+  const { isOrganizer } = useIsOrganizerOfEvent(event.id);
 
   const [modalContent, setModal] = useState<IModal>({});
   const [isGuestListVisible, setGuestListVisible] = useState(false);
@@ -118,7 +120,7 @@ const EventDetails: NextPage<PageProps> = ({ event }) => {
                 {event.description}
               </p>
             </div>
-            {getUserID() === event.user_id ? (
+            {isOrganizer ? (
               <div className="flex justify-end items-center">
                 <Link
                   href="/events/edit/[link]"
@@ -174,9 +176,7 @@ const EventDetails: NextPage<PageProps> = ({ event }) => {
               </div>
               <div className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2 flex items-center">
                 <UserIcon className="block h-3 w-3 mr-2" aria-hidden="true" />
-                {getUserID() === event.user_id
-                  ? "C'est votre événement"
-                  : "privé"}
+                {isOrganizer ? "C'est votre événement" : "privé"}
               </div>
             </div>
             <div className="bg-gray-50 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
@@ -203,26 +203,28 @@ const EventDetails: NextPage<PageProps> = ({ event }) => {
                 </p>
               </div>
             </div>
-            <div className="py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 flex justify-between">
-              <button
-                onClick={() => setResponse(BoInvitationValidResponse.NO)}
-                className="btn border p-2 btn-sm text-black hover:text-white hover:border-black hover:bg-black"
-              >
-                Refuser
-              </button>
-              <button
-                onClick={() => setResponse(BoInvitationValidResponse.YES)}
-                className="btn border p-2 btn-sm text-green-600 ml-3 hover:text-white hover:border-black hover:bg-black"
-              >
-                Accepter
-              </button>
-              <button
-                onClick={() => setResponse(BoInvitationValidResponse.MAYBE)}
-                className="btn border p-2 btn-sm text-black ml-3 hover:text-white hover:border-black hover:bg-black"
-              >
-                Peut-être
-              </button>
-            </div>
+            {!isOrganizer && (
+              <div className="py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 flex justify-between">
+                <button
+                  onClick={() => setResponse(BoInvitationValidResponse.NO)}
+                  className="btn border p-2 btn-sm text-black hover:text-white hover:border-black hover:bg-black"
+                >
+                  Refuser
+                </button>
+                <button
+                  onClick={() => setResponse(BoInvitationValidResponse.YES)}
+                  className="btn border p-2 btn-sm text-green-600 ml-3 hover:text-white hover:border-black hover:bg-black"
+                >
+                  Accepter
+                </button>
+                <button
+                  onClick={() => setResponse(BoInvitationValidResponse.MAYBE)}
+                  className="btn border p-2 btn-sm text-black ml-3 hover:text-white hover:border-black hover:bg-black"
+                >
+                  Peut-être
+                </button>
+              </div>
+            )}
           </div>
         </div>
       </section>
