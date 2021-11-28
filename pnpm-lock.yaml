@@ -20,6 +20,7 @@ specifiers:
   fp-ts: ^2.11.5
   jest: 27.0.6
   next: 12.0.3
+  nextjs-progressbar: ^0.0.13
   node-mocks-http: ^1.11.0
   postcss: 8.3.11
   prettier: ^2.4.1
@@ -44,6 +45,7 @@ dependencies:
   firebase-admin: 10.0.0
   fp-ts: 2.11.5
   next: 12.0.3_0c41f19aae22112e9f1896e888ec7296
+  nextjs-progressbar: 0.0.13_next@12.0.3+react@17.0.2
   react: 17.0.2
   react-cool-onclickoutside: 1.7.0_react@17.0.2
   react-dom: 17.0.2_react@17.0.2
@@ -5211,6 +5213,18 @@ packages:
       - webpack
     dev: false
 
+  /nextjs-progressbar/0.0.13_next@12.0.3+react@17.0.2:
+    resolution: {integrity: sha512-vuE9/j1yaFyHhMVwdlPZbGbcwnvoZZMH8fXUG+HCa+w5uojRNOMO43EL+o9YZ53QwQHsjWdfUapz+J8D/u3jFw==}
+    peerDependencies:
+      next: '>= 6.0.0 <=12.x.x'
+      react: '>= 16.0.0 <= 17.x.x'
+    dependencies:
+      next: 12.0.3_0c41f19aae22112e9f1896e888ec7296
+      nprogress: 0.2.0
+      prop-types: 15.7.2
+      react: 17.0.2
+    dev: false
+
   /node-abi/3.3.0:
     resolution: {integrity: sha512-/+2sCVPXmj07GY/l0ggRr7+trqzX7F9d4QVfSArqIVYmRzc/LkXKr5FlRO6U8uZ/gVVclDDaBxBNITj1z1Z/Zw==}
     engines: {node: '>=10'}
@@ -5308,6 +5322,10 @@ packages:
       console-control-strings: 1.1.0
       gauge: 2.7.4
       set-blocking: 2.0.0
+    dev: false
+
+  /nprogress/0.2.0:
+    resolution: {integrity: sha1-y480xTIT2JVyP8urkH6UIq28r7E=}
     dev: false
 
   /number-is-nan/1.0.1:
