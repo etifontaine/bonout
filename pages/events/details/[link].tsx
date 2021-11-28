@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from "react";
 import type { NextPage } from "next";
+import Link from "next/link";
 import Router from "next/router";
 import Head from "next/head";
 import dayjs from "dayjs";
-import Header from "../../../components/Header";
-import Modal from "../../../components/Invitation/Modal";
-import GuestListModal from "../../../components/GuestListModal";
-import { BoEvent, BoInvitationValidResponse } from "../../../src/types";
-import { getEventByLink } from "../../../src/models/events";
+import Header from "@components/Header";
+import Modal from "@components/Invitation/Modal";
+import GuestListModal from "@components/GuestListModal";
+import { BoEvent, BoInvitationValidResponse } from "src/types";
+import { getEventByLink } from "src/models/events";
 import { getUserID } from "src/utils/user";
 import {
   CalendarIcon,
@@ -138,13 +139,14 @@ const EventDetails: NextPage<PageProps> = ({ event }) => {
             </div>
             {getUserID() === event.user_id ? (
               <div className="flex justify-end items-center">
-                <button
-                  onClick={() => {
-                    toast.info("Tu ne peux pas encore éditer un événement 😕");
-                  }}
+                <Link
+                  href="/events/edit/[link]"
+                  as={`/events/edit/${event.link}`}
                 >
-                  <PencilIcon className="block h-4 w-4" aria-hidden="true" />
-                </button>
+                  <a>
+                    <PencilIcon className="block h-4 w-4" aria-hidden="true" />
+                  </a>
+                </Link>
               </div>
             ) : null}
           </div>
