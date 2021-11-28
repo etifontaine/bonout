@@ -30,4 +30,4 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
       with:
         test-command: "pnpm run test:ci"
-         coverage-comment: false
+        coverage-comment: false
