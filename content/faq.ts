@@ -20,7 +20,7 @@ export const questions = [
       "Non, tu peux juste partager le lien de ton évènement et ils pourront répondre avec un pseudo ou leur nom.",
   },
   {
-    title: "Comment je fais pour me souvenir de mon user_id?",
+    title: "Comment je fais pour me souvenir de mon identifiant?",
     answer:
       "Tu peux l'enregistrer dans ton gestionnaire de mot de passe ou dans une note. Sinon, tu peux en recréer un nouveau lors de ton prochain événement!",
   },
