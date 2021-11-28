@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import type { NextPage } from "next";
 import Link from "next/link";
 import Router from "next/router";
@@ -18,7 +18,6 @@ import {
   UserGroupIcon,
   UserIcon,
 } from "@heroicons/react/outline";
-import { toast } from "react-toastify";
 
 interface PageProps {
   event: BoEvent & { comingGuestAmount: number };
@@ -61,7 +60,6 @@ const EventDetails: NextPage<PageProps> = ({ event }) => {
 
   const [modalContent, setModal] = useState<IModal>({});
   const [isGuestListVisible, setGuestListVisible] = useState(false);
-  const [userInvitationStatus, setUserInvitationStatus] = useState<string>();
 
   const setResponse = (userResponse: BoInvitationValidResponse) => {
     setModal({ userResponse, link: event.link });
@@ -91,23 +89,6 @@ const EventDetails: NextPage<PageProps> = ({ event }) => {
       window.open("https://maps.google.com/maps?q=" + address);
     }
   };
-
-  useEffect(() => {
-    if (event.invitations.length > 0) {
-      const userInvitation = event.invitations.find(
-        (invitation) => invitation.user_id === getUserID()
-      );
-      if (userInvitation?.response === BoInvitationValidResponse.YES) {
-        setUserInvitationStatus("Vous avez prévu de venir");
-      } else if (userInvitation?.response === BoInvitationValidResponse.MAYBE) {
-        setUserInvitationStatus("Vous avez peut-être prévu de venir");
-      } else if (userInvitation?.response === BoInvitationValidResponse.NO) {
-        setUserInvitationStatus("Vous n'avez pas prévu de venir");
-      }
-    } else {
-      setUserInvitationStatus("Vous n'avez pas encore répondu à l'invitation");
-    }
-  }, [event]);
 
   return (
     <>
