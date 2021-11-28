@@ -1,11 +1,12 @@
 import type { NextPage } from "next";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Router from "next/router";
 import Header from "@components/Header";
 import { toast } from "react-toastify";
 import { Form } from "@components/CreateEvent/Form/Form";
 import type { Tform } from "@components/CreateEvent/Form/types";
 import Loader from "@components/Loader";
+import useIsOrganizerOfEvent from "@components/useIsEventOrganiser";
 import { BoEvent } from "src/types";
 import { getEventByLink } from "src/models/events";
 import { getUserID } from "src/utils/user";
@@ -37,27 +38,15 @@ export async function getServerSideProps(context: { query: { link: string } }) {
 
 const EditEvent: NextPage<PageProps> = ({ event }) => {
   const [isLoading, setIsLoading] = useState(false);
-  const [userChecked, setUserChecked] = useState(false);
-  const [isOrganizer, setIsOrganizer] = useState(false);
-  if (typeof window !== "undefined") {
-    if (getUserID() !== null) {
-      if (isLoading === false && !userChecked) setIsLoading(true);
-      fetch(`/api/users/${getUserID()}/isOrganizerOf/${event.id}`)
-        .then((res) => {
-          if (res.status === 200) {
-            res.json().then((data) => {
-              if (data.error) {
-                toast.error(data.error);
-              } else {
-                setIsOrganizer(data);
-                setUserChecked(true);
-              }
-            });
-          }
-        })
-        .finally(() => setIsLoading(false));
-    }
-  }
+  const {
+    isOrganizer,
+    userChecked,
+    isLoading: ILC,
+  } = useIsOrganizerOfEvent(event.id);
+
+  useEffect(() => {
+    setIsLoading(ILC);
+  }, [ILC]);
 
   return (
     <>
