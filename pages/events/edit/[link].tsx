@@ -114,8 +114,8 @@ const EditEvent: NextPage<PageProps> = ({ event }) => {
       body: JSON.stringify({
         id: event.id,
         title: name.value,
-        start_at: startAt.value,
-        end_at: endAt.value,
+        start_at: new Date(startAt.value).toISOString(),
+        end_at: new Date(endAt.value).toISOString(),
         address: location.value,
         description: description.value,
         user_id: getUserID(),

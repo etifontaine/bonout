@@ -49,8 +49,8 @@ const Add: NextPage = () => {
       method: "POST",
       body: JSON.stringify({
         title: name.value,
-        start_at: startAt.value,
-        end_at: endAt.value,
+        start_at: new Date(startAt.value).toISOString(),
+        end_at: new Date(endAt.value).toISOString(),
         address: location.value,
         description: description.value,
         user_id: localStorage.getItem("user_id") || undefined,
