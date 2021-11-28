@@ -140,8 +140,8 @@ const EventDetails: NextPage<PageProps> = ({ event }) => {
             {getUserID() === event.user_id ? (
               <div className="flex justify-end items-center">
                 <Link
-                  href="/events/details/[link]/edit"
-                  as={`/events/details/${event.link}/edit`}
+                  href="/events/edit/[link]"
+                  as={`/events/edit/${event.link}`}
                 >
                   <a>
                     <PencilIcon className="block h-4 w-4" aria-hidden="true" />
