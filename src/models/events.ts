@@ -134,6 +134,15 @@ export async function updateEvent(event: BoEvent): Promise<void> {
     });
 }
 
+export async function isOrganizerOf(
+  userID: string,
+  eventID: string
+): Promise<boolean> {
+  const event = await getEventByID(eventID);
+
+  return event?.user_id === userID;
+}
+
 export async function deleteEventByID(id: string): Promise<void> {
   await db.collection(COLLECTION_NAME_EVENTS).doc(id).delete();
 }

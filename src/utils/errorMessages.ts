@@ -11,4 +11,5 @@ export const API_ERROR_MESSAGES = {
   MISSING_PARAMETER: "missing parameter",
   INVALID_PARAMETER: "invalid parameter",
   EVENT_ID_REQUIRED: "event id required",
+  NOT_ORGANIZER: "not organizer",
 };

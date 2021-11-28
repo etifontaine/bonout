@@ -8,6 +8,7 @@ import {
   getEvents,
   createEvent,
   updateEvent,
+  isOrganizerOf,
 } from "../../../src/models/events";
 
 export default async function handler(
@@ -74,11 +75,19 @@ export default async function handler(
   }
 
   async function updateEventHandler(): Promise<void> {
-    return await updateEvent(checkIfEventIdIsDefined(getBodyPayload()));
+    return await updateEvent(
+      await checkIfUserIsOrganizer(checkIfEventIdIsDefined(getBodyPayload()))
+    );
 
     function checkIfEventIdIsDefined(event: BoEvent): BoEvent {
       if (!event.id)
         throw new RequestError(API_ERROR_MESSAGES.EVENT_ID_REQUIRED);
+      return event;
+    }
+
+    async function checkIfUserIsOrganizer(event: BoEvent): Promise<BoEvent> {
+      if (!(await isOrganizerOf(event.user_id, event.id)))
+        throw new RequestError(API_ERROR_MESSAGES.NOT_ORGANIZER);
       return event;
     }
   }

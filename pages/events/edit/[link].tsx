@@ -18,7 +18,6 @@ interface PageProps {
 export async function getServerSideProps(context: { query: { link: string } }) {
   const { link } = context.query;
   const event = await getEventByLink(link);
-  console.log(event);
   const cleanedEvent = {
     id: event?.id,
     address: event?.address,
@@ -27,7 +26,6 @@ export async function getServerSideProps(context: { query: { link: string } }) {
     end_at: event?.end_at,
     link: event?.link,
     title: event?.title,
-    user_id: event?.user_id,
   };
 
   return {
@@ -39,6 +37,27 @@ export async function getServerSideProps(context: { query: { link: string } }) {
 
 const EditEvent: NextPage<PageProps> = ({ event }) => {
   const [isLoading, setIsLoading] = useState(false);
+  const [userChecked, setUserChecked] = useState(false);
+  const [isOrganizer, setIsOrganizer] = useState(false);
+  if (typeof window !== "undefined") {
+    if (getUserID() !== null) {
+      if (isLoading === false && !userChecked) setIsLoading(true);
+      fetch(`/api/users/${getUserID()}/isOrganizerOf/${event.id}`)
+        .then((res) => {
+          if (res.status === 200) {
+            res.json().then((data) => {
+              if (data.error) {
+                toast.error(data.error);
+              } else {
+                setIsOrganizer(data);
+                setUserChecked(true);
+              }
+            });
+          }
+        })
+        .finally(() => setIsLoading(false));
+    }
+  }
 
   return (
     <>
@@ -46,7 +65,7 @@ const EditEvent: NextPage<PageProps> = ({ event }) => {
 
       <section className="pt-24 md:mt-0 h-screen flex justify-center md:flex-row md:justify-between lg:px-48 md:px-12 px-4 bg-secondary">
         <div className="md:max-w-3xl mx-auto w-full text-left">
-          {getUserID() === event.user_id ? (
+          {(userChecked && isOrganizer) || isLoading ? (
             <>
               <h1 className="text-3xl md:text-5xl font-extrabold leading-tighter tracking-tighter mb-4 mt-5">
                 Modifier l'événement {event.title}
@@ -111,6 +130,7 @@ const EditEvent: NextPage<PageProps> = ({ event }) => {
         end_at: endAt.value,
         address: location.value,
         description: description.value,
+        user_id: getUserID(),
       }),
     })
       .then(async (res) => {
