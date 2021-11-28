@@ -145,7 +145,8 @@ export function Form(props: {
           />
           {props.id === "location" &&
           !form.location.hideSuggestions &&
-          gmapIsLoad ? (
+          gmapIsLoad &&
+          form.location.isTouched ? (
             <GMapsLocationSuggestions
               onSelect={onSuggestionSelectHandler}
               inputValue={form.location.value}
