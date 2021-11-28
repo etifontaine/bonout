@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import type { NextPage } from "next";
 import Link from "next/link";
 import Router from "next/router";
@@ -6,7 +6,7 @@ import Head from "next/head";
 import dayjs from "dayjs";
 import Header from "@components/Header";
 import Modal from "@components/Invitation/Modal";
-import useIsOrganizerOfEvent from "@components/useIsEventOrganiser";
+import useIsOrganizerOfEvent from "hooks/useIsEventOrganiser";
 import GuestListModal from "@components/GuestListModal";
 import { BoEvent, BoInvitationValidResponse } from "src/types";
 import { getEventByLink } from "src/models/events";
@@ -19,6 +19,7 @@ import {
   UserGroupIcon,
   UserIcon,
 } from "@heroicons/react/outline";
+import { responses } from "content/responses";
 
 interface PageProps {
   event: BoEvent & { comingGuestAmount: number };
@@ -59,6 +60,25 @@ const EventDetails: NextPage<PageProps> = ({ event }) => {
     Router.push("/home");
   }
   const { isOrganizer } = useIsOrganizerOfEvent(event.id);
+
+  const [userInvitationResponse, setUserInvitationResponse] =
+    useState<string>();
+
+  useEffect(() => {
+    if (getUserID()) {
+      fetch(`/api/users/${getUserID()}/checkIfUserComing/${event.id}`).then(
+        (res) => {
+          if (res.status === 200) {
+            res.json().then((data) => {
+              if (data.response !== "undefined") {
+                setUserInvitationResponse(`Tu as répondu ${data.response}`);
+              }
+            });
+          }
+        }
+      );
+    }
+  }, [event]);
 
   const [modalContent, setModal] = useState<IModal>({});
   const [isGuestListVisible, setGuestListVisible] = useState(false);
@@ -197,10 +217,13 @@ const EventDetails: NextPage<PageProps> = ({ event }) => {
                   aria-hidden="true"
                 />
                 <p>
-                  Yes: {event.comingGuestAmount}, No:{" "}
-                  {event.notComingGuestAmount}, Maybe:{" "}
+                  {responses.yes}: {event.comingGuestAmount}, {responses.no}:{" "}
+                  {event.notComingGuestAmount}, {responses.maybe}:{" "}
                   {event.maybeComingGuestAmount}
                 </p>
+              </div>
+              <div className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-1  flex items-center">
+                <p>{userInvitationResponse}</p>
               </div>
             </div>
             {!isOrganizer && (

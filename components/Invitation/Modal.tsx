@@ -84,6 +84,7 @@ export default function InvitationModal({ link, userResponse }: IModal) {
         ) {
           localStorage.setItem("user_id", user_id);
         }
+        toast.info("Merci pour ta réponse");
         setIsOpen(false);
         Router.push(`/events/details/${link}`);
       } else {

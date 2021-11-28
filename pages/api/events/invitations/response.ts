@@ -64,7 +64,7 @@ export default async function handler(
     payload.user_id = uid();
   }
 
-  const event = await getEventByLink(payload.link);
+  const event = await getEventByLink(payload.link, { withUserIDs: true });
   if (!event) {
     return res
       .status(400)
@@ -75,6 +75,7 @@ export default async function handler(
   const existingInvitation = event.invitations?.find(
     (invitation) => invitation.user_id === payload?.user_id
   );
+
   if (existingInvitation) {
     await deleteInvitationResponse(event.id, existingInvitation);
   }

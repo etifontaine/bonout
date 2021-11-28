@@ -274,7 +274,7 @@ export function inputsStaticProps(): TinputsStaticProps[] {
     },
     {
       id: "description",
-      label: "Et quelque infos ?",
+      label: "Et quelques infos ?",
       placeholder: "Description de l'événement",
       type: "textarea",
     },
