@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { Disclosure } from "@headlessui/react";
-import { EyeIcon, EyeOffIcon, MenuIcon, XIcon } from "@heroicons/react/outline";
+import { EyeIcon, EyeOffIcon } from "@heroicons/react/outline";
 import { getUserID } from "src/utils/user";
 import LoginModal from "./LoginModal";
 
