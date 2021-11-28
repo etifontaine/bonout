@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import Script from "next/script";
 import Input from "../../Input";
 import type { TdefaultInputState, Tform, TinputsStaticProps } from "./types";
 import {
@@ -49,6 +50,13 @@ export function Form(props: {
     },
   } as Tform);
 
+  const [gmapIsLoad, setGmapIsLoad] = useState(false);
+  if (typeof window !== "undefined") {
+    if (window.google && !gmapIsLoad) {
+      setGmapIsLoad(true);
+    }
+  }
+
   const isFormValid = Object.values(form).every((input) => input.isValid);
 
   const locationFieldsetRef = useOnclickOutside(() => {
@@ -56,24 +64,33 @@ export function Form(props: {
   });
 
   return (
-    <form
-      onSubmit={(e) => {
-        checkUp();
-        props.onSubmit(e, form, isFormValid);
-      }}
-      className="pt-3"
-    >
-      <div className="flex flex-wrap">
-        <div className="w-full mb-2">{generateInputs(inputsStaticProps())}</div>
-      </div>
-      <input
-        value="Créer"
-        type="submit"
-        className={`${isFormValid ? "" : "cursor-not-allowed opacity-30"}
+    <>
+      <Script
+        onLoad={() => setGmapIsLoad(true)}
+        defer
+        src={`https://maps.googleapis.com/maps/api/js?key=AIzaSyAugCWPRmET1IH1TkplqNzrGMgK1yItKmM&libraries=places`}
+      ></Script>
+      <form
+        onSubmit={(e) => {
+          checkUp();
+          props.onSubmit(e, form, isFormValid);
+        }}
+        className="pt-3"
+      >
+        <div className="flex flex-wrap">
+          <div className="w-full mb-2">
+            {generateInputs(inputsStaticProps())}
+          </div>
+        </div>
+        <input
+          value="Créer"
+          type="submit"
+          className={`${isFormValid ? "" : "cursor-not-allowed opacity-30"}
         btn bg-black cursor-pointer
         text-white font-bold py-2 px-4 float-right`}
-      />
-    </form>
+        />
+      </form>
+    </>
   );
 
   function generateInputs(inputsProps: TinputsStaticProps[]) {
@@ -93,7 +110,9 @@ export function Form(props: {
             helperText={form[props.id].helperText}
             className={setInvalidClass(form[props.id])}
           />
-          {props.id === "location" && !form.location.hideSuggestions ? (
+          {props.id === "location" &&
+          !form.location.hideSuggestions &&
+          gmapIsLoad ? (
             <GMapsLocationSuggestions
               onSelect={onSuggestionSelectHandler}
               inputValue={form.location.value}

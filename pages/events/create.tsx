@@ -1,6 +1,5 @@
 import type { NextPage } from "next";
 import { useState } from "react";
-import Script from "next/script";
 import Router from "next/router";
 import Header from "../../components/Header";
 import { toast } from "react-toastify";
@@ -9,20 +8,9 @@ import type { Tform } from "../../components/CreateEvent/Form/types";
 import Loader from "@components/Loader";
 
 const Add: NextPage = () => {
-  const [gmapIsLoad, setGmapIsLoad] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  if (typeof window !== "undefined") {
-    if (window.google && !gmapIsLoad) {
-      setGmapIsLoad(true);
-    }
-  }
   return (
     <>
-      <Script
-        onLoad={() => setGmapIsLoad(true)}
-        defer
-        src={`https://maps.googleapis.com/maps/api/js?key=AIzaSyAugCWPRmET1IH1TkplqNzrGMgK1yItKmM&libraries=places`}
-      ></Script>
       <Header />
       <section className="pt-24 md:mt-0 h-screen flex justify-center md:flex-row md:justify-between lg:px-48 md:px-12 px-4 bg-secondary">
         <div className="md:max-w-3xl mx-auto w-full text-left">
@@ -35,15 +23,11 @@ const Add: NextPage = () => {
                 <Loader />
               </div>
             )}
-            {gmapIsLoad && (
-              <div
-                className={
-                  isLoading ? "filter blur-sm pointer-events-none" : ""
-                }
-              >
-                <Form onSubmit={handleSubmit} />
-              </div>
-            )}
+            <div
+              className={isLoading ? "filter blur-sm pointer-events-none" : ""}
+            >
+              <Form onSubmit={handleSubmit} />
+            </div>
           </div>
         </div>
       </section>
