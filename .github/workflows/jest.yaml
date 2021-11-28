@@ -25,6 +25,6 @@ jobs:
       env:
         DB_ENV: staging
     - name: run test:ci
-      run: pnpm run test:ci
+      uses: mattallty/jest-github-action@v1
       env:
-        DB_ENV: staging
+        GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
