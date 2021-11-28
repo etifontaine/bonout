@@ -25,9 +25,6 @@ jobs:
       env:
         DB_ENV: staging
     - name: run test:ci
-      uses: mattallty/jest-github-action@v1
+      run: pnpm run test:ci
       env:
-        GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
-      with:
-        test-command: "pnpm run test:ci"
-        coverage-comment: false
+        DB_ENV: staging
