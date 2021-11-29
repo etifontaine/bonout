@@ -115,8 +115,13 @@ const EventDetails: NextPage<PageProps> = ({ event }) => {
   return (
     <>
       <Head>
+      <title>Bonout - {event.title}</title>
         <meta property="og:title" content={`Bonout - ${event.title}`} />
         <meta property="og:description" content={`${event.description}`} />
+        <meta charSet="utf-8" />
+        <link rel="icon" href="/images/logo.svg" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="theme-color" content="#ffffff" />
       </Head>
       <Modal
         link={modalContent.link}
