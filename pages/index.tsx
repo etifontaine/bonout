@@ -1,5 +1,6 @@
 import React from "react";
 import type { NextPage } from "next";
+import Head from "next/head";
 import dynamic from "next/dynamic";
 import Header from "@components/Header";
 import HeroHome from "@components/Landing/HeroHome";
@@ -21,18 +22,37 @@ type Data = {
 
 const Home: NextPage<{ data: Data }> = ({ data }) => {
   return (
-    <div className="flex flex-col min-h-screen overflow-hidden">
-      <Header />
+    <>
+      <Head>
+        <title>Bonout</title>
+        <meta
+          name="description"
+          content="Bonout t'aide à organiser ton prochain événement, un seul site avec toutes les fonctionnalités!"
+        />
+        <meta charSet="utf-8" />
+        <link rel="icon" href="/images/logo.svg" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="theme-color" content="#ffffff" />
+        <meta property="og:title" content="Bonout" />
+        <meta property="og:type" content="siteweb" />
+        <meta
+          property="og:description"
+          content="Organise ton prochain événement sans prise de tête, un seul site avec toutes les fonctionnalités!"
+        />
+      </Head>
+      <div className="flex flex-col min-h-screen overflow-hidden">
+        <Header />
 
-      {/*  Page content */}
-      <HeroHome />
-      <HowItWorks />
-      <FeaturesHome />
-      <FAQ />
+        {/*  Page content */}
+        <HeroHome />
+        <HowItWorks />
+        <FeaturesHome />
+        <FAQ />
 
-      {/*  Site footer */}
-      <Footer />
-    </div>
+        {/*  Site footer */}
+        <Footer />
+      </div>
+    </>
   );
 };
 
