@@ -115,7 +115,7 @@ const EventDetails: NextPage<PageProps> = ({ event }) => {
   return (
     <>
       <Head>
-      <title>Bonout - {event.title}</title>
+        <title>Bonout - {event.title}</title>
         <meta property="og:title" content={`Bonout - ${event.title}`} />
         <meta property="og:description" content={`${event.description}`} />
         <meta charSet="utf-8" />

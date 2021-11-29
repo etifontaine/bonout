@@ -22,7 +22,7 @@ type Data = {
 
 const Home: NextPage<{ data: Data }> = ({ data }) => {
   return (
-      <>
+    <>
       <Head>
         <title>Bonout</title>
         <meta
@@ -40,18 +40,18 @@ const Home: NextPage<{ data: Data }> = ({ data }) => {
           content="Organise ton prochain événement sans prise de tête, un seul site avec toutes les fonctionnalités!"
         />
       </Head>
-    <div className="flex flex-col min-h-screen overflow-hidden">
-      <Header />
+      <div className="flex flex-col min-h-screen overflow-hidden">
+        <Header />
 
-      {/*  Page content */}
-      <HeroHome />
-      <HowItWorks />
-      <FeaturesHome />
-      <FAQ />
+        {/*  Page content */}
+        <HeroHome />
+        <HowItWorks />
+        <FeaturesHome />
+        <FAQ />
 
-      {/*  Site footer */}
-      <Footer />
-    </div>
+        {/*  Site footer */}
+        <Footer />
+      </div>
     </>
   );
 };
