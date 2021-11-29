@@ -34,9 +34,9 @@ function HeroHome() {
           />
         </div>
         <Image
-          src="/images/MacBookPro.webp"
-          height="216"
-          width="352"
+          src="/images/iphone.webp"
+          height="438"
+          width="219"
           priority={true}
           alt="Macbook"
         />
@@ -44,7 +44,7 @@ function HeroHome() {
           <img
             src="/images/Highlight2.svg"
             alt="Highlight2"
-            className="absolute -bottom-10 -right-6"
+            className="absolute -bottom-10 left-52"
           />
         </div>
       </div>
