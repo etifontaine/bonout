@@ -41,7 +41,7 @@ function getHoursAndMinuteLeft(date: string) {
   if (hours == 0) {
     return `Dans ${minutes} min`;
   } else if (hours < 0) {
-    return `En cours`
+    return `En cours`;
   }
   return `${hours}h${("0" + minutes).slice(-2)}`;
 }
