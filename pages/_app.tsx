@@ -2,6 +2,7 @@ import type { AppProps } from "next/app";
 import { ToastContainer } from "react-toastify";
 import NextNprogress from "nextjs-progressbar";
 import "../styles/style.scss";
+import 'react-loading-skeleton/dist/skeleton.css'
 import "react-toastify/dist/ReactToastify.css";
 
 function MyApp({ Component, pageProps }: AppProps) {
