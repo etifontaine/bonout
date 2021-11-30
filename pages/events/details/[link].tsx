@@ -59,13 +59,13 @@ const EventDetails: NextPage<PageProps> = ({ event }) => {
   if (!event) {
     Router.push("/home");
   }
-  const { isOrganizer } = useIsOrganizerOfEvent(event.id);
+  const { isOrganizer, userChecked } = useIsOrganizerOfEvent(event.id);
 
   const [userInvitationResponse, setUserInvitationResponse] =
     useState<string>();
 
   useEffect(() => {
-    if (getUserID()) {
+    if (getUserID() && !isOrganizer && userChecked) {
       fetch(`/api/users/${getUserID()}/checkIfUserComing/${event.id}`).then(
         (res) => {
           if (res.status === 200) {
@@ -78,7 +78,7 @@ const EventDetails: NextPage<PageProps> = ({ event }) => {
         }
       );
     }
-  }, [event]);
+  }, [userChecked]);
 
   const [modalContent, setModal] = useState<IModal>({});
   const [isGuestListVisible, setGuestListVisible] = useState(false);
@@ -188,11 +188,10 @@ const EventDetails: NextPage<PageProps> = ({ event }) => {
               <div className="text-sm font-medium text-gray-500">Lien</div>
               <div className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2 flex items-center">
                 <LinkIcon className="block h-3 w-3 mr-2" aria-hidden="true" />
-                <button className="underline" onClick={() => shareEvent()}>{`${
-                  typeof window !== "undefined"
-                    ? `${window.location.host}/events/details/`
-                    : ""
-                }${event.link}`}</button>
+                <button className="underline" onClick={() => shareEvent()}>{`${typeof window !== "undefined"
+                  ? `${window.location.host}/events/details/`
+                  : ""
+                  }${event.link}`}</button>
               </div>
             </div>
             <div className="py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
