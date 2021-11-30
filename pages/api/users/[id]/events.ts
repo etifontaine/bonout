@@ -1,8 +1,8 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import type { BoEvent } from "@src/types";
-import { RequestError } from "@src/utils/CustomErrors";
-import { API_ERROR_MESSAGES } from "@src/utils/errorMessages";
-import { getEventsByUserID } from "@src/models/events";
+import { RequestError } from "../../../../src/utils/CustomErrors";
+import { API_ERROR_MESSAGES } from "../../../../src/utils/errorMessages";
+import { getEventsByUserID } from "../../../../src/models/events";
 
 export default async function handler(
   req: NextApiRequest,
