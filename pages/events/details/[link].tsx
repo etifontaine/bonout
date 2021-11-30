@@ -4,7 +4,7 @@ import Link from "next/link";
 import Router from "next/router";
 import Head from "next/head";
 import dayjs from "dayjs";
-import Skeleton from 'react-loading-skeleton'
+import Skeleton from "react-loading-skeleton";
 import Header from "@components/Header";
 import Modal from "@components/Invitation/Modal";
 import useIsOrganizerOfEvent from "hooks/useIsEventOrganiser";
@@ -201,7 +201,15 @@ const EventDetails: NextPage<PageProps> = ({ event }) => {
               </div>
               <div className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2 flex items-center">
                 <UserIcon className="block h-3 w-3 mr-2" aria-hidden="true" />
-                {userChecked ? isOrganizer ? "C'est votre événement" : "privé" : <Skeleton width="50" />}
+                {userChecked ? (
+                  isOrganizer ? (
+                    "C'est votre événement"
+                  ) : (
+                    "privé"
+                  )
+                ) : (
+                  <Skeleton width="50" />
+                )}
               </div>
             </div>
             <div className="bg-gray-50 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
