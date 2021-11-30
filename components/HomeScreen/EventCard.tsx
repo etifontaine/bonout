@@ -23,7 +23,7 @@ export default function EventCard({ event, ...props }: { event: BoEvent }) {
           </div>
           <div className="flex flex-col">
             <div className="text-sm font-medium text-blue-400">
-              Dans {getHoursAndMinuteLeft(event.start_at)}
+              {getHoursAndMinuteLeft(event.start_at)}
             </div>
           </div>
         </div>
@@ -39,7 +39,9 @@ function getHoursAndMinuteLeft(date: string) {
   const hours = Math.floor(diff / (1000 * 60 * 60));
   const minutes = Math.floor(diff / (1000 * 60)) % 60;
   if (hours == 0) {
-    return `${minutes} min`;
+    return `Dans ${minutes} min`;
+  } else if (hours < 0) {
+    return `En cours`
   }
   return `${hours}h${("0" + minutes).slice(-2)}`;
 }

@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { getUserID } from "src/utils/user";
 import Router from "next/router";
+import Head from "next/head";
 
 const Home: NextPage = () => {
   const [events, setEvents] = useState<BoEvent[] | null>(null);
@@ -26,6 +27,18 @@ const Home: NextPage = () => {
 
   return (
     <div>
+      <Head>
+        <title>Bonout - Mes événements</title>
+        <meta property="og:title" content="Bonout - Mes événements" />
+        <meta
+          name="description"
+          content="Bonout t'aide à organiser ton prochain événement, un seul site avec toutes les fonctionnalités!"
+        />
+        <meta charSet="utf-8" />
+        <link rel="icon" href="/images/logo.svg" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="theme-color" content="#ffffff" />
+      </Head>
       <Header />
       <section className="pt-24 md:mt-0 h-screen flex justify-center md:flex-row md:justify-between lg:px-48 md:px-12 px-4 bg-secondary">
         <div className="md:max-w-3xl mx-auto w-full text-left">
