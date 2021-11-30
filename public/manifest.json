@@ -1,0 +1,54 @@
+{
+    "short_name": "Bonout",
+    "id": "/",
+    "name": "Bonout, organise tes événements!",
+    "icons": [
+        {
+            "src": "/logo.svg",
+            "type": "image/svg+xml",
+            "sizes": "512x512"
+        },
+        {
+            "src": "/logos/android-icon-192x192.png",
+            "type": "image/png",
+            "sizes": "192x192"
+        },
+        {
+            "src": "/logo-512.png",
+            "type": "image/png",
+            "sizes": "512x512"
+        }
+    ],
+    "start_url": "/",
+    "background_color": "#F3F2ED",
+    "display": "standalone",
+    "scope": "/",
+    "theme_color": "#F3F2ED",
+    "shortcuts": [
+        {
+            "name": "Créer un événement",
+            "short_name": "Créer",
+            "description": "Crée ton événement Bonout",
+            "url": "/events/create",
+            "icons": [
+                {
+                    "src": "/logos/android-icon-192x192.png",
+                    "sizes": "192x192"
+                }
+            ]
+        },
+        {
+            "name": "Voir mes événements",
+            "short_name": "Home",
+            "description": "Voir mes événements",
+            "url": "/home",
+            "icons": [
+                {
+                    "src": "/logos/android-icon-192x192.png",
+                    "sizes": "192x192"
+                }
+            ]
+        }
+    ],
+    "description": "Bonout t'aide à organiser ton prochain événement, un seul site avec toutes les fonctionnalités!"
+}
