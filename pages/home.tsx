@@ -8,7 +8,7 @@ import { toast } from "react-toastify";
 import { getUserID } from "src/utils/user";
 import Router from "next/router";
 import Head from "next/head";
-import Skeleton from 'react-loading-skeleton'
+import Skeleton from "react-loading-skeleton";
 
 const Home: NextPage = () => {
   const [events, setEvents] = useState<BoEvent[] | null>(null);
@@ -24,7 +24,8 @@ const Home: NextPage = () => {
       .catch((err) => {
         console.log(err);
         toast.error("Can't get events");
-      }).finally(() => setIsLoading(false))
+      })
+      .finally(() => setIsLoading(false));
   }, []);
 
   return (
@@ -43,55 +44,54 @@ const Home: NextPage = () => {
       </Head>
       <Header />
       <section className="pt-24 md:mt-0 h-screen flex justify-center md:flex-row md:justify-between lg:px-48 md:px-12 px-4 bg-secondary">
-        {
-          isLoading ? (
-            <div className="md:max-w-3xl mx-auto w-full">
-              <Skeleton height={80} count={2} style={{ marginBottom: "5px" }} />
-            </div>
-          ) :
-            (
-              <div className="md:max-w-3xl mx-auto w-full">
-                {todayEvents !== null && todayEvents.length > 0 && (
-                  <>
-                    <h2 className="text-2xl font-medium pt-4 pb-2">
-                      C'est aujourd'hui !
-                    </h2>
-                    {todayEvents.map((event, index) => (
-                      <div key={event.id}>
-                        <EventCard event={event} />
-                        {index !== todayEvents.length - 1 ? (
-                          <Separator color="blue-400" />
-                        ) : null}
-                      </div>
-                    ))}
-                  </>
-                )}
+        {isLoading ? (
+          <div className="md:max-w-3xl mx-auto w-full">
+            <Skeleton height={80} count={2} style={{ marginBottom: "5px" }} />
+          </div>
+        ) : (
+          <div className="md:max-w-3xl mx-auto w-full">
+            {todayEvents !== null && todayEvents.length > 0 && (
+              <>
+                <h2 className="text-2xl font-medium pt-4 pb-2">
+                  C'est aujourd'hui !
+                </h2>
+                {todayEvents.map((event, index) => (
+                  <div key={event.id}>
+                    <EventCard event={event} />
+                    {index !== todayEvents.length - 1 ? (
+                      <Separator color="blue-400" />
+                    ) : null}
+                  </div>
+                ))}
+              </>
+            )}
 
-                {events && events?.length > 0 ? (
-                  <>
-                    <h2 className="text-2xl font-medium mt-4 pb-2">
-                      Évenements à venir
-                    </h2>
-                    <section className="h-full bg-gray-200">
-                      {events.map((event, index) => (
-                        <div key={event.id}>
-                          <EventItem
-                            onClick={() =>
-                              Router.push(`/events/details/${event.link}`)
-                            }
-                            event={event}
-                          />
-                          {index !== events.length - 1 ? <Separator /> : null}
-                        </div>
-                      ))}
-                    </section>
-                  </>
-                ) : (
-                  <h2 className="text-2xl font-medium mt-20 pb-2 text-center">Aucun événement à venir</h2>
-                )}
-              </div>
-            )
-        }
+            {events && events?.length > 0 ? (
+              <>
+                <h2 className="text-2xl font-medium mt-4 pb-2">
+                  Évenements à venir
+                </h2>
+                <section className="h-full bg-gray-200">
+                  {events.map((event, index) => (
+                    <div key={event.id}>
+                      <EventItem
+                        onClick={() =>
+                          Router.push(`/events/details/${event.link}`)
+                        }
+                        event={event}
+                      />
+                      {index !== events.length - 1 ? <Separator /> : null}
+                    </div>
+                  ))}
+                </section>
+              </>
+            ) : (
+              <h2 className="text-2xl font-medium mt-20 pb-2 text-center">
+                Aucun événement à venir
+              </h2>
+            )}
+          </div>
+        )}
       </section>
     </div>
   );
