@@ -59,13 +59,13 @@ const EventDetails: NextPage<PageProps> = ({ event }) => {
   if (!event) {
     Router.push("/home");
   }
-  const { isOrganizer } = useIsOrganizerOfEvent(event.id);
+  const { isOrganizer, userChecked } = useIsOrganizerOfEvent(event.id);
 
   const [userInvitationResponse, setUserInvitationResponse] =
     useState<string>();
 
   useEffect(() => {
-    if (getUserID()) {
+    if (getUserID() && !isOrganizer && userChecked) {
       fetch(`/api/users/${getUserID()}/checkIfUserComing/${event.id}`).then(
         (res) => {
           if (res.status === 200) {
@@ -78,7 +78,7 @@ const EventDetails: NextPage<PageProps> = ({ event }) => {
         }
       );
     }
-  }, [event]);
+  }, [userChecked]);
 
   const [modalContent, setModal] = useState<IModal>({});
   const [isGuestListVisible, setGuestListVisible] = useState(false);
