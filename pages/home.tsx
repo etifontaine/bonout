@@ -35,7 +35,7 @@ const Home: NextPage = () => {
         <meta property="og:title" content="Bonout - Mes événements" />
         <meta
           property="og:image"
-          content={`${process.env.NEXT_PUBLIC_BASE_URL}/images/header-30112021.png`}
+          content={`${process.env.NEXT_PUBLIC_BASE_URL}/header-30112021.png`}
         />
         <meta
           name="description"

@@ -32,7 +32,7 @@ const Home: NextPage<{ data: Data }> = ({ data }) => {
         <meta property="og:title" content="Bonout" />
         <meta
           property="og:image"
-          content={`${process.env.NEXT_PUBLIC_BASE_URL}/images/header-30112021.png`}
+          content={`${process.env.NEXT_PUBLIC_BASE_URL}/header-30112021.png`}
         />
         <meta property="og:type" content="siteweb" />
         <meta
