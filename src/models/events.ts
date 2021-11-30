@@ -39,7 +39,7 @@ export async function getEventsByUserID(userID: string): Promise<BoEvent[]> {
   const userEvents = await db
     .collection(COLLECTION_NAME_EVENTS)
     .where("user_id", "==", userID)
-    .where("start_at", ">=", new Date().getTime())
+    .where("end_at", ">=", new Date().getTime())
     .get()
     .then((querySnapshot) => {
       const events = querySnapshot.docs.map((x) => {
@@ -74,9 +74,7 @@ export async function getEventsByUserID(userID: string): Promise<BoEvent[]> {
     });
   const userData = await Promise.all([userEvents, userEventsInvitations]);
 
-  return filterBy(sortByDate(userData.flat(), "start_at"), "id").filter(
-    ({ start_at }) => start_at >= new Date().getTime()
-  );
+  return filterBy(sortByDate(userData.flat(), "start_at"), "id");
 }
 
 export async function getEventByLink(
