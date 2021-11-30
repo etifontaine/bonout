@@ -2,7 +2,7 @@ name: deploy-staging
 on:
   push:
     branches:
-      - develop
+      - main
 
 env:
   PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
