@@ -119,20 +119,79 @@ const EventDetails: NextPage<PageProps> = ({ event }) => {
         <title>Bonout - {event.title}</title>
         <meta property="og:title" content={`Bonout - ${event.title}`} />
         <meta property="og:description" content={`${event.description}`} />
-        <meta property="og:image" content={`${process.env.NEXT_PUBLIC_BASE_URL}/images/header-30112021.png`} />
-        <link rel="apple-touch-icon" sizes="57x57" href="/logos/apple-icon-57x57.png" />
-        <link rel="apple-touch-icon" sizes="60x60" href="/logos/apple-icon-60x60.png" />
-        <link rel="apple-touch-icon" sizes="72x72" href="/logos/apple-icon-72x72.png" />
-        <link rel="apple-touch-icon" sizes="76x76" href="/logos/apple-icon-76x76.png" />
-        <link rel="apple-touch-icon" sizes="114x114" href="/logos/apple-icon-114x114.png" />
-        <link rel="apple-touch-icon" sizes="120x120" href="/logos/apple-icon-120x120.png" />
-        <link rel="apple-touch-icon" sizes="144x144" href="/logos/apple-icon-144x144.png" />
-        <link rel="apple-touch-icon" sizes="152x152" href="/logos/apple-icon-152x152.png" />
-        <link rel="apple-touch-icon" sizes="180x180" href="/logos/apple-icon-180x180.png" />
-        <link rel="icon" type="image/png" sizes="192x192" href="/logos/android-icon-192x192.png" />
-        <link rel="icon" type="image/png" sizes="32x32" href="/logos/favicon-32x32.png" />
-        <link rel="icon" type="image/png" sizes="96x96" href="/logos/favicon-96x96.png" />
-        <link rel="icon" type="image/png" sizes="16x16" href="/logos/favicon-16x16.png" />
+        <meta
+          property="og:image"
+          content={`${process.env.NEXT_PUBLIC_BASE_URL}/images/header-30112021.png`}
+        />
+        <link
+          rel="apple-touch-icon"
+          sizes="57x57"
+          href="/logos/apple-icon-57x57.png"
+        />
+        <link
+          rel="apple-touch-icon"
+          sizes="60x60"
+          href="/logos/apple-icon-60x60.png"
+        />
+        <link
+          rel="apple-touch-icon"
+          sizes="72x72"
+          href="/logos/apple-icon-72x72.png"
+        />
+        <link
+          rel="apple-touch-icon"
+          sizes="76x76"
+          href="/logos/apple-icon-76x76.png"
+        />
+        <link
+          rel="apple-touch-icon"
+          sizes="114x114"
+          href="/logos/apple-icon-114x114.png"
+        />
+        <link
+          rel="apple-touch-icon"
+          sizes="120x120"
+          href="/logos/apple-icon-120x120.png"
+        />
+        <link
+          rel="apple-touch-icon"
+          sizes="144x144"
+          href="/logos/apple-icon-144x144.png"
+        />
+        <link
+          rel="apple-touch-icon"
+          sizes="152x152"
+          href="/logos/apple-icon-152x152.png"
+        />
+        <link
+          rel="apple-touch-icon"
+          sizes="180x180"
+          href="/logos/apple-icon-180x180.png"
+        />
+        <link
+          rel="icon"
+          type="image/png"
+          sizes="192x192"
+          href="/logos/android-icon-192x192.png"
+        />
+        <link
+          rel="icon"
+          type="image/png"
+          sizes="32x32"
+          href="/logos/favicon-32x32.png"
+        />
+        <link
+          rel="icon"
+          type="image/png"
+          sizes="96x96"
+          href="/logos/favicon-96x96.png"
+        />
+        <link
+          rel="icon"
+          type="image/png"
+          sizes="16x16"
+          href="/logos/favicon-16x16.png"
+        />
         <link rel="manifest" href="/manifest.json" />
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -203,10 +262,11 @@ const EventDetails: NextPage<PageProps> = ({ event }) => {
               <div className="text-sm font-medium text-gray-500">Lien</div>
               <div className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2 flex items-center">
                 <LinkIcon className="block h-3 w-3 mr-2" aria-hidden="true" />
-                <button className="underline" onClick={() => shareEvent()}>{`${typeof window !== "undefined"
-                  ? `${window.location.host}/events/details/`
-                  : ""
-                  }${event.link}`}</button>
+                <button className="underline" onClick={() => shareEvent()}>{`${
+                  typeof window !== "undefined"
+                    ? `${window.location.host}/events/details/`
+                    : ""
+                }${event.link}`}</button>
               </div>
             </div>
             <div className="py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
