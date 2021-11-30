@@ -1,8 +1,6 @@
 name: deploy-prod
-on:
-  push:
-    branches:
-      - main
+
+on: [tags]
 
 env:
   PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
