@@ -1,5 +1,6 @@
 {
     "short_name": "Bonout",
+    "id": "/",
     "name": "Bonout, organise tes événements!",
     "icons": [
         {
@@ -8,12 +9,12 @@
             "sizes": "512x512"
         },
         {
-            "src": "/images/android-icon-192x192.png",
+            "src": "/logos/android-icon-192x192.png",
             "type": "image/png",
             "sizes": "192x192"
         },
         {
-            "src": "/images/logo-512.png",
+            "src": "/logo-512.png",
             "type": "image/png",
             "sizes": "512x512"
         }
@@ -31,7 +32,7 @@
             "url": "/events/create",
             "icons": [
                 {
-                    "src": "/images/android-icon-192x192.png",
+                    "src": "/logos/android-icon-192x192.png",
                     "sizes": "192x192"
                 }
             ]
@@ -43,7 +44,7 @@
             "url": "/home",
             "icons": [
                 {
-                    "src": "/images/android-icon-192x192.png",
+                    "src": "/logos/android-icon-192x192.png",
                     "sizes": "192x192"
                 }
             ]
