@@ -26,6 +26,8 @@ export default function useIsEventOrganiser(eventID: string) {
             }
           })
           .finally(() => setIsLoading(false));
+      } else {
+        setUserChecked(true);
       }
     }
   }, [isLoading, userChecked, eventID, once]);
