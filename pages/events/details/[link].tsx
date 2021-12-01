@@ -11,7 +11,7 @@ import useIsOrganizerOfEvent from "hooks/useIsEventOrganiser";
 import GuestListModal from "@components/GuestListModal";
 import { BoEvent, BoInvitationValidResponse } from "src/types";
 import { getEventByLink } from "src/models/events";
-import { getUserID } from "src/utils/user";
+import { getUserID, getUserName } from "src/utils/user";
 import {
   CalendarIcon,
   LinkIcon,
@@ -44,6 +44,7 @@ export async function getServerSideProps(context: { query: { link: string } }) {
     link: event?.link,
     title: event?.title,
     invitations: event?.invitations || [],
+    user_name: event?.user_name,
     comingGuestAmount: event?.comingGuestAmount,
     notComingGuestAmount: event?.notComingGuestAmount,
     maybeComingGuestAmount: event?.maybeComingGuestAmount,
@@ -279,7 +280,7 @@ const EventDetails: NextPage<PageProps> = ({ event }) => {
                   isOrganizer ? (
                     "C'est votre événement"
                   ) : (
-                    "privé"
+                    event.user_name || "Anonyme"
                   )
                 ) : (
                   <Skeleton width="50" />

@@ -3,6 +3,7 @@ export type BoEvent = {
   title: string;
   description: string;
   user_id: string;
+  user_name?: string; // maybe undefined, because prod data don't have user_name
   address: string;
   start_at: string;
   end_at: string;
