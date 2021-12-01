@@ -198,7 +198,12 @@ export function Form(props: {
         ),
         isInput("startAt", (f) =>
           pipe(
-            setProp("isValid", isNotPassedDate(value))(f),
+            setProp(
+              "value",
+              isNotPassedDate(value, f.endAt.value) ? value : f.endAt.value,
+              "endAt"
+            )(f),
+            setProp("isValid", isNotPassedDate(value)),
             setHelperText(DATE_PASSED_ERROR("aujourd'hui"))
           )
         ),
@@ -226,11 +231,11 @@ export function Form(props: {
       };
     }
 
-    function setProp(prop: string, value: string | boolean) {
+    function setProp(prop: string, value: string | boolean, id = inputId) {
       return (form: Tform): Tform => ({
         ...form,
-        [inputId]: {
-          ...form[inputId],
+        [id]: {
+          ...form[id],
           [prop]: value,
         } as TdefaultInputState,
       });
