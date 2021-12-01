@@ -156,7 +156,14 @@ export default async function handler(
       }
     }
     function fieldsToCheck() {
-      return ["title", "description", "address", "start_at", "end_at"];
+      return [
+        "title",
+        "description",
+        "address",
+        "start_at",
+        "end_at",
+        "user_name",
+      ];
     }
   }
 }

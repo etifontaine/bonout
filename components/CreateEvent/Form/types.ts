@@ -8,6 +8,7 @@ export type TdefaultInputState = {
 
 export type Tform = {
   [key: string]: TdefaultInputState;
+  userName: TdefaultInputState;
   name: TdefaultInputState;
   description: TdefaultInputState;
   location: TdefaultInputState;

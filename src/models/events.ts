@@ -133,6 +133,7 @@ export async function updateEvent(event: BoEvent): Promise<void> {
       title: event.title,
       description: event.description,
       address: event.address,
+      user_name: event.user_name,
       start_at: new Date(event.start_at).getTime(),
       end_at: new Date(event.end_at).getTime(),
     });

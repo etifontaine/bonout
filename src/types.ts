@@ -3,6 +3,7 @@ export type BoEvent = {
   title: string;
   description: string;
   user_id: string;
+  user_name?: string; // en option pour le moment etant donné que des données de prod ne l'ont pas
   address: string;
   start_at: string;
   end_at: string;

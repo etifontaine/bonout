@@ -17,6 +17,7 @@ import {
 
 import type { suggestion } from "./LocationSuggestions";
 import { BoEvent } from "src/types";
+import { getUserName } from "@src/utils/user";
 
 const GMapsLocationSuggestions =
   withGooglePlacesAutocomplete(LocationSuggestions);
@@ -39,6 +40,11 @@ export function Form(props: {
   const [form, setForm] = useState(
     props.event
       ? {
+          userName: {
+            ...defaultInputState,
+            value: props.event.user_name || "",
+            isValid: true,
+          },
           name: {
             ...defaultInputState,
             value: props.event.title,
@@ -67,6 +73,7 @@ export function Form(props: {
           },
         }
       : ({
+          userName: { ...defaultInputState, value: getUserName() || "" },
           name: defaultInputState,
           description: defaultInputState,
           location: { ...defaultInputState, hideSuggestions: false },
@@ -184,6 +191,12 @@ export function Form(props: {
         form,
         setProp("value", value),
         setProp("isTouched", true),
+        isInput("userName", (f) =>
+          pipe(
+            setProp("isValid", isLongEnough(2, value))(f),
+            setHelperText(LENGTH_ERROR(2))
+          )
+        ),
         isInput("name", (f) =>
           pipe(
             setProp("isValid", isLongEnough(3, value))(f),
@@ -267,6 +280,11 @@ export function Form(props: {
 
 export function inputsStaticProps(): TinputsStaticProps[] {
   return [
+    {
+      id: "userName",
+      label: "Votre nom",
+      placeholder: "Nom ou surnom",
+    },
     {
       id: "name",
       label: "Nom de l'événement",

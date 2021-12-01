@@ -36,7 +36,7 @@ const Add: NextPage = () => {
 
   function handleSubmit(
     e: React.FormEvent<HTMLFormElement>,
-    { name, startAt, endAt, location, description }: Tform,
+    { name, startAt, endAt, location, description, userName }: Tform,
     isValid: boolean
   ) {
     e.preventDefault();
@@ -54,17 +54,25 @@ const Add: NextPage = () => {
         address: location.value,
         description: description.value,
         user_id: localStorage.getItem("user_id") || undefined,
+        user_name: userName.value,
       }),
     })
       .then(async (res) => {
         if (res.status === 201) {
-          const { link, user_id } = await res.json();
+          const { link, user_id, user_name } = await res.json();
           Router.push(`/events/details/${link}`);
           if (
             localStorage.getItem("user_id") === null ||
             localStorage.getItem("user_id") === "undefined"
           ) {
             localStorage.setItem("user_id", user_id);
+          }
+
+          if (
+            localStorage.getItem("user_name") === null ||
+            localStorage.getItem("user_name") === "undefined"
+          ) {
+            localStorage.setItem("user_name", user_name);
           }
         } else {
           res

@@ -9,7 +9,7 @@ import Loader from "@components/Loader";
 import useIsOrganizerOfEvent from "hooks/useIsEventOrganiser";
 import { BoEvent } from "src/types";
 import { getEventByLink } from "src/models/events";
-import { getUserID } from "src/utils/user";
+import { getUserID, getUserName } from "src/utils/user";
 import Link from "next/link";
 
 interface PageProps {
@@ -27,6 +27,7 @@ export async function getServerSideProps(context: { query: { link: string } }) {
     end_at: event?.end_at,
     link: event?.link,
     title: event?.title,
+    user_name: event?.user_name,
   };
 
   return {
@@ -100,7 +101,7 @@ const EditEvent: NextPage<PageProps> = ({ event }) => {
 
   function handleSubmit(
     e: React.FormEvent<HTMLFormElement>,
-    { name, startAt, endAt, location, description }: Tform,
+    { name, startAt, endAt, location, description, userName }: Tform,
     isValid: boolean
   ) {
     e.preventDefault();
@@ -119,6 +120,7 @@ const EditEvent: NextPage<PageProps> = ({ event }) => {
         address: location.value,
         description: description.value,
         user_id: getUserID(),
+        user_name: userName.value,
       }),
     })
       .then(async (res) => {
