@@ -25,9 +25,7 @@ function Question({title, answer}: questionContent) {
             className={`transform transition-transform ${isOpen ? 'rotate-90' :  ''}`}
           />
         </div>
-        <div className={`font-montserrat text-sm font-extralight pb-8 ${isOpen ? '' :  'hidden'}`}>
-          {answer}
-        </div>
+        <div className={`font-montserrat text-sm font-extralight pb-8 ${isOpen ? '' :  'hidden'}`} dangerouslySetInnerHTML={{__html: answer}} />
       </div>
       <hr className="w-full bg-white" />
     </>
