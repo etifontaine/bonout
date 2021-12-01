@@ -1,33 +1,36 @@
-import React, {useState} from "react";
-import Image from "next/image"
+import React, { useState } from "react";
+import Image from "next/image";
 import { questions } from "content/faq";
 
 interface questionContent {
-    title: string,
-    answer: string
+  title: string;
+  answer: string;
 }
 
-function Question({title, answer}: questionContent) {
-  const [isOpen, setIsOpen] = useState(false)
+function Question({ title, answer }: questionContent) {
+  const [isOpen, setIsOpen] = useState(false);
 
   return (
     <>
       <div onClick={() => setIsOpen(!isOpen)} className="w-full py-4">
         <div className="flex justify-between items-center cursor-pointer">
-          <div className="font-montserrat font-medium mr-auto">
-          {title}
-          </div>
+          <div className="font-montserrat font-medium mr-auto">{title}</div>
           <Image
             src="/images/CaretRight.svg"
             alt="Caret"
             height="58"
             width="58"
-            className={`transform transition-transform ${isOpen ? 'rotate-90' :  ''}`}
+            className={`transform transition-transform ${
+              isOpen ? "rotate-90" : ""
+            }`}
           />
         </div>
-        <div className={`font-montserrat text-sm font-extralight pb-8 ${isOpen ? '' :  'hidden'}`}>
-          {answer}
-        </div>
+        <div
+          className={`font-montserrat text-sm font-extralight pb-8 ${
+            isOpen ? "" : "hidden"
+          }`}
+          dangerouslySetInnerHTML={{ __html: answer }}
+        />
       </div>
       <hr className="w-full bg-white" />
     </>
@@ -42,12 +45,11 @@ function FAQ() {
           FAQ
         </h2>
       </div>
-    {
-        questions.map((question, key) => {
-            return <Question key={key} answer={question.answer} title={question.title} />
-        })
-    }
-      
+      {questions.map((question, key) => {
+        return (
+          <Question key={key} answer={question.answer} title={question.title} />
+        );
+      })}
     </section>
   );
 }
