@@ -73,7 +73,11 @@ export function Form(props: {
           },
         }
       : ({
-          userName: { ...defaultInputState, value: getUserName() || "" },
+          userName: {
+            ...defaultInputState,
+            value: getUserName() || "",
+            isValid: getUserName() ? true : false,
+          },
           name: defaultInputState,
           description: defaultInputState,
           location: { ...defaultInputState, hideSuggestions: false },
