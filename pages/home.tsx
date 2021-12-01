@@ -128,14 +128,16 @@ const Home: NextPage = () => {
                 <h2 className="text-2xl font-medium pt-4 pb-2">
                   C'est aujourd'hui !
                 </h2>
-                {todayEvents.map((event, index) => (
-                  <div key={event.id}>
-                    <EventCard event={event} />
-                    {index !== todayEvents.length - 1 ? (
-                      <Separator color="blue-400" />
-                    ) : null}
-                  </div>
-                ))}
+                {todayEvents
+                  .sort((a, b) => isPassed(a.start_at, b.start_at))
+                  .map((event, index) => (
+                    <div key={event.id}>
+                      <EventCard event={event} />
+                      {index !== todayEvents.length - 1 ? (
+                        <Separator color="blue-400" />
+                      ) : null}
+                    </div>
+                  ))}
               </>
             )}
 
@@ -145,17 +147,19 @@ const Home: NextPage = () => {
                   Évenements à venir
                 </h2>
                 <section className="h-full bg-gray-200">
-                  {events.map((event, index) => (
-                    <div key={event.id}>
-                      <EventItem
-                        onClick={() =>
-                          Router.push(`/events/details/${event.link}`)
-                        }
-                        event={event}
-                      />
-                      {index !== events.length - 1 ? <Separator /> : null}
-                    </div>
-                  ))}
+                  {events
+                    .sort((a, b) => isPassed(a.start_at, b.start_at))
+                    .map((event, index) => (
+                      <div key={event.id}>
+                        <EventItem
+                          onClick={() =>
+                            Router.push(`/events/details/${event.link}`)
+                          }
+                          event={event}
+                        />
+                        {index !== events.length - 1 ? <Separator /> : null}
+                      </div>
+                    ))}
                 </section>
               </>
             ) : (
@@ -192,6 +196,12 @@ const Home: NextPage = () => {
       date.getMonth() === today.getMonth() &&
       date.getFullYear() === today.getFullYear()
     );
+  }
+
+  function isPassed(dateString: string, dateString2: string) {
+    const date = new Date(dateString);
+    const date2 = new Date(dateString2);
+    return date.getTime() - date2.getTime();
   }
 };
 
