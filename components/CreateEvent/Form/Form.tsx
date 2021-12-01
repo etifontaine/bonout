@@ -213,7 +213,9 @@ export function Form(props: {
           pipe(
             setProp(
               "value",
-              isNotPassedDate(value, f.endAt.value) ? value : f.endAt.value,
+              isNotPassedDate(value, f.endAt.value)
+                ? getDateTime(add1h(new Date(value)))
+                : f.endAt.value,
               "endAt"
             )(f),
             setProp("isValid", isNotPassedDate(value)),
