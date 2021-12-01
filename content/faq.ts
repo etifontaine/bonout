@@ -11,8 +11,7 @@ export const questions = [
   },
   {
     title: "Comment Bonout est financé?",
-    answer:
-      `Tu peux faire des dons, plus tard on proposera des fonctionnalitées payantes. Toujours sans tracking et en respectant votre vie privée.<br/>
+    answer: `Tu peux faire des dons, plus tard on proposera des fonctionnalitées payantes. Toujours sans tracking et en respectant votre vie privée.<br/>
       Nous acceptons les donations en cryptomonnaie sur les adresses suivantes:<br/><br/>
       SOL: 4HDbY24XWbWg4mrkbrhr2ZFx8ifsZYtz6LHqwK9ABbgD <br/><br/>
       Et sur Binance: <br/>
