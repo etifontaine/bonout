@@ -9,12 +9,7 @@ import manifest from "public/manifest.json";
 import { isInstalled } from "@src/utils";
 
 function MyApp({ Component, pageProps }: AppProps) {
-  if (
-    typeof window !== "undefined" &&
-    !isInstalled() &&
-    getUserID() &&
-    getUserName()
-  ) {
+  if (typeof window !== "undefined" && !isInstalled() && getUserID()) {
     const urlRoot = location.protocol + "//" + location.host;
     const manifestElement = document.getElementById("manifest");
     const manifestString = JSON.stringify({
