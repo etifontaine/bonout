@@ -85,7 +85,7 @@ class MyDocument extends Document {
             sizes="16x16"
             href="/logos/favicon-16x16.png"
           />
-          <link rel="manifest" href="/manifest.json" />
+          <link rel="manifest" href="/manifest.json" id="manifest" />
           <meta charSet="utf-8" />
           <meta name="viewport" content="width=device-width, initial-scale=1" />
           <meta name="theme-color" content="#F3F2ED" />
