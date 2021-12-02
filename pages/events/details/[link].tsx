@@ -44,7 +44,7 @@ export async function getServerSideProps(context: { query: { link: string } }) {
     link: event?.link,
     title: event?.title,
     invitations: event?.invitations || [],
-    user_name: event?.user_name,
+    user_name: event?.user_name || null,
     comingGuestAmount: event?.comingGuestAmount,
     notComingGuestAmount: event?.notComingGuestAmount,
     maybeComingGuestAmount: event?.maybeComingGuestAmount,
@@ -234,7 +234,7 @@ const EventDetails: NextPage<PageProps> = ({ event }) => {
             ) : null}
           </div>
           <div className="border-t border-gray-200">
-            <div className="bg-gray-50 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+            <div className="py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
               <div className="text-sm font-medium text-gray-500">Date</div>
               <div className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2 flex items-center">
                 <CalendarIcon
@@ -259,7 +259,7 @@ const EventDetails: NextPage<PageProps> = ({ event }) => {
                 </button>
               </div>
             </div>
-            <div className="bg-gray-50 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+            <div className="py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
               <div className="text-sm font-medium text-gray-500">Lien</div>
               <div className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2 flex items-center">
                 <LinkIcon className="block h-3 w-3 mr-2" aria-hidden="true" />
@@ -287,7 +287,7 @@ const EventDetails: NextPage<PageProps> = ({ event }) => {
                 )}
               </div>
             </div>
-            <div className="bg-gray-50 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+            <div className="py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
               <div className="text-sm flex justify-between	font-medium text-gray-500">
                 <span>Invités</span>
                 {event.invitations.length > 0 ? (
@@ -318,19 +318,19 @@ const EventDetails: NextPage<PageProps> = ({ event }) => {
               <div className="py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 flex justify-between">
                 <button
                   onClick={() => setResponse(BoInvitationValidResponse.NO)}
-                  className="btn border p-2 btn-sm text-black hover:text-white hover:border-black hover:bg-black"
+                  className="btn border border-black p-2 btn-sm text-black hover:text-white hover:border-black hover:bg-black"
                 >
                   Refuser
                 </button>
                 <button
                   onClick={() => setResponse(BoInvitationValidResponse.YES)}
-                  className="btn border p-2 btn-sm text-green-600 ml-3 hover:text-white hover:border-black hover:bg-black"
+                  className="btn border border-black p-2 btn-sm text-black ml-3 hover:text-white hover:border-black hover:bg-black"
                 >
                   Accepter
                 </button>
                 <button
                   onClick={() => setResponse(BoInvitationValidResponse.MAYBE)}
-                  className="btn border p-2 btn-sm text-black ml-3 hover:text-white hover:border-black hover:bg-black"
+                  className="btn border border-black p-2 btn-sm text-black ml-3 hover:text-white hover:border-black hover:bg-black"
                 >
                   Peut-être
                 </button>

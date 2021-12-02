@@ -27,7 +27,7 @@ export async function getServerSideProps(context: { query: { link: string } }) {
     end_at: event?.end_at,
     link: event?.link,
     title: event?.title,
-    user_name: event?.user_name,
+    user_name: event?.user_name || null,
   };
 
   return {
