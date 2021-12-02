@@ -1,9 +1,7 @@
-import { HtmlProps } from "next/dist/shared/lib/utils";
 import type {
   ChangeEventHandler,
   FocusEventHandler,
   InputHTMLAttributes,
-  KeyboardEventHandler,
 } from "react";
 
 // react component for a text input
