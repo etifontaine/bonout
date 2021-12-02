@@ -49,9 +49,9 @@ function MiniCalandar({ date }: { date: string }) {
     "Dec",
   ][month];
   return (
-    <div className="bg-white overflow-hidden shadow-lg w-12 h-12 border-blue-400 border-2 border-solid text-right leading-none p-2">
+    <div className="bg-white overflow-hidden shadow-lg w-12 h-12 border-black border-2 border-solid text-right leading-none p-2">
       <div>{day}</div>
-      <div className="text-blue-400">{monthName}</div>
+      <div className="">{monthName}</div>
     </div>
   );
 }

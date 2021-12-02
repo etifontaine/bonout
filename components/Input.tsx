@@ -42,7 +42,7 @@ export default function Input(props: InputProps) {
       <Label inputId={id} txt={label} />
       <SuperInput
         id={id}
-        className={`appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 ${className}`}
+        className={`appearance-none block w-full text-gray-700 border border-black py-3 px-4 leading-tight focus:outline-none ${className}`}
         value={value}
         onChange={(event) => onChange(event.target.value, id)} // onChange is a function that takes an event
         onFocus={(event) => onFocus(event.target.value, id)} // onChange is a function that takes an event
