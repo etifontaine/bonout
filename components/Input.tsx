@@ -1,17 +1,26 @@
+import { HtmlProps } from "next/dist/shared/lib/utils";
+import type {
+  ChangeEventHandler,
+  FocusEventHandler,
+  InputHTMLAttributes,
+  KeyboardEventHandler,
+} from "react";
+
 // react component for a text input
-export interface InputProps {
-  id: string;
-  value: string;
+export interface InputProps
+  extends Omit<SuperInputProps, "onChange" | "onFocus"> {
+  label?: string;
+  helperText?: string;
   onChange: (value: string, id: string) => void;
   onFocus: (value: string, id: string) => void;
-  label?: string;
-  placeholder?: string;
-  type?: string;
-  className?: string;
-  disabled?: boolean;
-  required?: boolean;
-  helperText?: string;
   onKeyDown?: (event: React.KeyboardEvent<HTMLInputElement>) => void;
+}
+
+export interface SuperInputProps extends InputHTMLAttributes<HTMLInputElement> {
+  id: string;
+  value: string;
+  onChange: ChangeEventHandler<HTMLInputElement>;
+  onFocus: FocusEventHandler<HTMLInputElement>;
 }
 
 export default function Input(props: InputProps) {
@@ -33,7 +42,7 @@ export default function Input(props: InputProps) {
   return (
     <div className="w-full mb-6 md:mb-0">
       <Label inputId={id} txt={label} />
-      <input
+      <SuperInput
         id={id}
         className={`appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 ${className}`}
         value={value}
@@ -47,6 +56,19 @@ export default function Input(props: InputProps) {
       />
       <Label inputId={id} txt={helperText} isHelp={helperText ? true : false} />
     </div>
+  );
+}
+
+function SuperInput(props: SuperInputProps) {
+  const cleanProps = Object.entries(props).reduce((acc, [key, value]) => {
+    if (value === undefined) return acc;
+    return { ...acc, [key]: value };
+  }, {});
+
+  return props.type === "textarea" ? (
+    <textarea {...cleanProps} />
+  ) : (
+    <input {...cleanProps} />
   );
 }
 
