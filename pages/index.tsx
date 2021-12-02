@@ -35,6 +35,10 @@ const Home: NextPage<{ data: Data }> = ({ data }) => {
           content={`${process.env.NEXT_PUBLIC_BASE_URL}/header-30112021.png`}
         />
         <meta property="og:type" content="siteweb" />
+        <meta
+          property="og:description"
+          content="Organise ton prochain événement sans prise de tête, un seul site avec toutes les fonctionnalités!"
+        />
       </Head>
       <div className="flex flex-col min-h-screen overflow-hidden">
         <Header />
