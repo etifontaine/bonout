@@ -12,6 +12,7 @@ import GuestListModal from "@components/GuestListModal";
 import { BoEvent, BoInvitationValidResponse } from "src/types";
 import { getEventByLink } from "src/models/events";
 import { getUserID, getUserName } from "src/utils/user";
+import AddCalendarModal from "@components/AddCalendarModal";
 import {
   CalendarIcon,
   LinkIcon,
@@ -80,10 +81,11 @@ const EventDetails: NextPage<PageProps> = ({ event }) => {
         }
       );
     }
-  }, [userChecked]);
+  }, [userChecked, isOrganizer, event.id]);
 
   const [modalContent, setModal] = useState<IModal>({});
   const [isGuestListVisible, setGuestListVisible] = useState(false);
+  const [isAddCalendarVisible, setAddCalendarVisible] = useState(false);
 
   const setResponse = (userResponse: BoInvitationValidResponse) => {
     setModal({ userResponse, link: event.link });
@@ -202,6 +204,15 @@ const EventDetails: NextPage<PageProps> = ({ event }) => {
         link={modalContent.link}
         userResponse={modalContent.userResponse}
       />
+
+      <AddCalendarModal
+        isOpen={isAddCalendarVisible}
+        event={event}
+        onClose={() => {
+          setAddCalendarVisible(false);
+        }}
+      />
+
       <GuestListModal
         isVisible={isGuestListVisible}
         setGuestListVisible={setGuestListVisible}
@@ -241,10 +252,16 @@ const EventDetails: NextPage<PageProps> = ({ event }) => {
                   className="block h-3 w-3 mr-2"
                   aria-hidden="true"
                 />
-                Du {dayjs(event.start_at).format("DD/MM/YYYY")} à{" "}
-                {dayjs(event.start_at).format("HH:mm")} au{" "}
-                {dayjs(event.end_at).format("DD/MM/YYYY")} à{" "}
-                {dayjs(event.end_at).format("HH:mm")}
+                <button
+                  className="underline"
+                  onClick={() => setAddCalendarVisible(true)}
+                >
+                  {" "}
+                  {dayjs(event.start_at).format("DD/MM/YYYY")} à{" "}
+                  {dayjs(event.start_at).format("HH:mm")} au{" "}
+                  {dayjs(event.end_at).format("DD/MM/YYYY")} à{" "}
+                  {dayjs(event.end_at).format("HH:mm")}
+                </button>
               </div>
             </div>
             <div className="py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
