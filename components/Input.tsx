@@ -51,6 +51,7 @@ export default function Input(props: InputProps) {
         disabled={disabled}
         onKeyDown={onKeyDown}
         required={required}
+        autoComplete="off"
       />
       <Label inputId={id} txt={helperText} isHelp={helperText ? true : false} />
     </div>
