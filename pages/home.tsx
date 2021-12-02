@@ -116,7 +116,7 @@ const Home: NextPage = () => {
         <meta name="theme-color" content="#F3F2ED" />
       </Head>
       <Header />
-      <section className="pt-24 md:mt-0 h-screen flex justify-center md:flex-row md:justify-between lg:px-48 md:px-12 px-4 bg-secondary">
+      <section className="pt-24 md:mt-0 min-h-screen flex justify-center md:flex-row md:justify-between lg:px-48 md:px-12 px-4 bg-secondary">
         {isLoading ? (
           <div className="md:max-w-3xl mx-auto w-full">
             <Skeleton height={80} count={2} style={{ marginBottom: "5px" }} />
@@ -134,7 +134,7 @@ const Home: NextPage = () => {
                     <div key={event.id}>
                       <EventCard event={event} />
                       {index !== todayEvents.length - 1 ? (
-                        <Separator color="blue-400" />
+                        <Separator color="transparent" />
                       ) : null}
                     </div>
                   ))}
@@ -146,7 +146,7 @@ const Home: NextPage = () => {
                 <h2 className="text-2xl font-medium mt-4 pb-2">
                   Évenements à venir
                 </h2>
-                <section className="h-full bg-gray-200">
+                <section className="">
                   {events
                     .sort((a, b) => isPassed(a.start_at, b.start_at))
                     .map((event, index) => (
@@ -207,8 +207,8 @@ const Home: NextPage = () => {
 
 function Separator({ color }: { color?: string }) {
   return (
-    <div className={`bg-${color || "white"}`}>
-      <div className="m-auto w-100 h-0.5 bg-blue-400"></div>
+    <div className={`${color || "bg-white"}`}>
+      <div className="m-auto w-100 h-0.5 "></div>
     </div>
   );
 }
