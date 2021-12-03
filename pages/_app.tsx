@@ -9,8 +9,8 @@ import manifest from "public/manifest.json";
 import { isInstalled, getQueries } from "@src/utils";
 
 function MyApp({ Component, pageProps }: AppProps) {
-  if (typeof window !== "undefined" && !isInstalled() && getUserID()) {
-    if (window.location.pathname !== "/install") {
+  if (typeof window !== "undefined") {
+    if (!isInstalled() && getUserID()) {
       const urlRoot = location.protocol + "//" + location.host;
       const manifestElement = document.getElementById("manifest");
       const manifestString = JSON.stringify({
@@ -21,7 +21,9 @@ function MyApp({ Component, pageProps }: AppProps) {
         })),
         scope: urlRoot,
         start_url:
-          `${location.protocol + "//" + location.host}/?userID=${getUserID()}` +
+          `${
+            location.protocol + "//" + location.host
+          }/home?userID=${getUserID()}` +
           (getUserName() ? `&userName=${getUserName()}` : ""),
       });
       manifestElement?.setAttribute(
