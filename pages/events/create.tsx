@@ -12,7 +12,7 @@ const Add: NextPage = () => {
   return (
     <>
       <Header />
-      <section className="pt-24 md:mt-0 h-screen flex justify-center md:flex-row md:justify-between lg:px-48 md:px-12 px-4 bg-secondary">
+      <section className="pt-24 md:mt-0 min-h-screen pb-10 flex justify-center md:flex-row md:justify-between lg:px-48 md:px-12 px-4 bg-secondary">
         <div className="md:max-w-3xl mx-auto w-full text-left">
           <h1 className="text-3xl md:text-5xl font-extrabold leading-tighter tracking-tighter mb-4 mt-5">
             Créer un événement
