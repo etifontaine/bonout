@@ -81,12 +81,16 @@ export default function AddCalendarModal(props: props) {
             key={name}
           >
             <span className="h-2">
-              <Image
-                src={`/images/icon-${name.toLowerCase()}.svg`}
-                width={20}
-                height={20}
-                alt={name}
-              />{" "}
+              {name !== "Autre" ? (
+                <Image
+                  src={`/images/icon-${name.toLowerCase()}.svg`}
+                  width={20}
+                  height={20}
+                  alt={name}
+                />
+              ) : (
+                <CalendarIcon className="h-5 w-5" aria-hidden="true" />
+              )}{" "}
             </span>
             <span className="ml-2">{name} Calendar</span>
           </li>
