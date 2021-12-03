@@ -68,7 +68,7 @@ export default function AddCalendarModal(props: props) {
         title: "Ajouter à mon calendrier",
         description: "Choisissez votre app favori !",
       }}
-      icon={<CalendarIcon />}
+      icon={<CalendarIcon className="h-20 w-20" aria-hidden="true" />}
       isOpen={isOpen}
       onClose={props.onClose}
     >
