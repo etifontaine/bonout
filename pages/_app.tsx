@@ -32,9 +32,9 @@ function MyApp({ Component, pageProps }: AppProps) {
     }
     const queries = getQueries();
     if (queries && queries.userID) {
-      window.localStorage.setItem("userID", queries.userID);
+      window.localStorage.setItem("user_id", queries.userID);
       if (queries.userName) {
-        window.localStorage.setItem("userName", queries.userName);
+        window.localStorage.setItem("user_name", queries.userName);
       }
     }
   }
