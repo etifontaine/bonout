@@ -21,7 +21,9 @@ function MyApp({ Component, pageProps }: AppProps) {
         })),
         scope: urlRoot,
         start_url:
-          `${location.protocol + "//" + location.host}/?userID=${getUserID()}` +
+          `${
+            location.protocol + "//" + location.host
+          }/home?userID=${getUserID()}` +
           (getUserName() ? `&userName=${getUserName()}` : ""),
       });
       manifestElement?.setAttribute(
