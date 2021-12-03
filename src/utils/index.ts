@@ -11,3 +11,11 @@ export function isInstalled() {
     return false;
   }
 }
+
+export function getQueries() {
+  if (typeof window !== "undefined") {
+    const urlSearchParams = new URLSearchParams(window.location.search);
+    return Object.fromEntries(urlSearchParams.entries());
+  }
+  return null;
+}
