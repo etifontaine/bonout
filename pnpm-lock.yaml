@@ -13,6 +13,7 @@ specifiers:
   '@types/uuid': 8.3.1
   autoprefixer: 10.4.0
   babel-jest: 27.0.6
+  datebook: ^7.0.7
   dayjs: ^1.10.7
   eslint: 7.32.0
   eslint-config-next: 12.0.3
@@ -42,6 +43,7 @@ dependencies:
   '@headlessui/react': 1.4.2_react-dom@17.0.2+react@17.0.2
   '@heroicons/react': 1.0.5_react@17.0.2
   '@types/google.maps': 3.46.1
+  datebook: 7.0.7
   dayjs: 1.10.7
   firebase-admin: 10.0.0
   fp-ts: 2.11.5
@@ -2616,6 +2618,12 @@ packages:
     dev: false
     optional: true
 
+  /datebook/7.0.7:
+    resolution: {integrity: sha512-Hbai8ue5KnNLfOdvEaePt8rT2Gv0rr0eZlukJ9xSEdV5qBryK8746HIF2eNh+L6gYBIl+PSfxWWlVkSFeBCc/A==}
+    dependencies:
+      file-saver: 2.0.5
+    dev: false
+
   /dayjs/1.10.7:
     resolution: {integrity: sha512-P6twpd70BcPK34K26uJ1KT3wlhpuOAPoMwJzpsIWUxHZ7wpmbdZL/hQqBDfz7hGurYSa5PhzdhDHtt319hL3ig==}
     dev: false
@@ -3323,6 +3331,10 @@ packages:
     dependencies:
       flat-cache: 3.0.4
     dev: true
+
+  /file-saver/2.0.5:
+    resolution: {integrity: sha512-P9bmyZ3h/PRG+Nzga+rbdI4OEpNDzAVyy74uVO9ATgzLK6VtAsYybF/+TOCvrc0MO793d6+42lLyZTw7/ArVzA==}
+    dev: false
 
   /fill-range/7.0.1:
     resolution: {integrity: sha512-qOo9F+dMUmC2Lcb4BbVvnKJxTPjCm+RRpe4gDuGrzkL7mEVl/djYSu2OdQ2Pa302N4oqkSg9ir6jaLWJ2USVpQ==}
