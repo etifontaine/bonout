@@ -1,11 +1,13 @@
 import React from "react";
+import { useTranslation } from 'next-i18next';
 
 function Features() {
+  const { t } = useTranslation('landing');
   return (
     <section className="sectionSize bg-secondary">
       <div>
         <h2 className="secondaryTitle bg-underline3 bg-100%">
-          Fonctionnalités
+          {t('features.title')}
         </h2>
       </div>
       <div className="md:grid md:grid-cols-2 md:grid-rows-2">
@@ -18,14 +20,8 @@ function Features() {
             className="h-7 mr-4"
           />
           <div>
-            <h3 className="font-semibold text-2xl">Prépare un événement</h3>
-            <p>
-              Prépare ton événement en lui donnant un nom, une description, une
-              date et un lieu. En quelques secondes tu pourras le partager à
-              tout tes invités! Le tout sans inscription et gratuitement! Plus
-              besoin d'avoir un compte sur chaque réseau social pour inviter
-              tout le monde.
-            </p>
+            <h3 className="font-semibold text-2xl">{t('features.first.title')}</h3>
+            <p>{t('features.first.content')}</p>
           </div>
         </div>
 
@@ -38,12 +34,8 @@ function Features() {
             className="h-7 mr-4"
           />
           <div>
-            <h3 className="font-semibold text-2xl">Invitations</h3>
-            <p>
-              Partage ton événement par messagerie, mail ou QRCode, grâce à ton
-              lien unique! Seul les personnes avec ton lien pourront trouver ton
-              événement.
-            </p>
+            <h3 className="font-semibold text-2xl">{t('features.second.title')}</h3>
+            <p>{t('features.second.content')}</p>
           </div>
         </div>
 
@@ -57,13 +49,9 @@ function Features() {
           />
           <div>
             <h3 className="font-semibold text-2xl">
-              Vie privée & respect de l'utilisateur
+              {t('features.third.title')}
             </h3>
-            <p>
-              Ce sont des valeurs essentielles chez Bonout. Nous n'avons pas de
-              trackers ou cookies sur le site, car il n'y en a pas besoin pour
-              vous laisser organiser vos événements dans de bonnes conditions.
-            </p>
+            <p>{t('features.third.content')}</p>
           </div>
         </div>
 
@@ -76,12 +64,8 @@ function Features() {
             className="h-7 mr-4"
           />
           <div>
-            <h3 className="font-semibold text-2xl">Organisation</h3>
-            <p>
-              Tu peux gérer tout ton événement depuis Bonout! Invite tes amis,
-              utilise les commentaires pour communiquer avec eux et créer des
-              listes pour vous organiser.
-            </p>
+            <h3 className="font-semibold text-2xl">{t('features.fourth.title')}</h3>
+            <p>{t('features.fourth.content')}</p>
           </div>
         </div>
       </div>

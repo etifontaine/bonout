@@ -8,28 +8,27 @@ import HowItWorks from "@components/Landing/HowItWorks";
 const FeaturesHome = dynamic(() => import("@components/Landing/Features"));
 const FAQ = dynamic(() => import("@components/Landing/FAQ"));
 const Footer = dynamic(() => import("@components/Footer"));
-import { getEventsCount } from "src/models/events";
+import { useTranslation } from 'next-i18next';
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
-export async function getServerSideProps() {
-  const res = await getEventsCount();
-  const data: Data = { countEvents: res };
-  return { props: { data } };
-}
 
-type Data = {
-  countEvents: number;
-};
+export const getStaticProps = async ({ locale }: any) => ({
+  props: {
+    ...await serverSideTranslations(locale, ['common', 'landing']),
+  },
+})
 
-const Home: NextPage<{ data: Data }> = ({ data }) => {
+const Home: NextPage = () => {
+  const { t } = useTranslation('common');
   return (
     <>
       <Head>
-        <title>Bonout</title>
+        <title>{t('site.title')}</title>
         <meta
           name="description"
-          content="Bonout t'aide à organiser ton prochain événement, un seul site avec toutes les fonctionnalités!"
+          content={t('site.description')}
         />
-        <meta property="og:title" content="Bonout" />
+        <meta property="og:title" content={t('site.title')} />
         <meta
           property="og:image"
           content={`${process.env.NEXT_PUBLIC_BASE_URL}/header-30112021.png`}
@@ -37,7 +36,7 @@ const Home: NextPage<{ data: Data }> = ({ data }) => {
         <meta property="og:type" content="siteweb" />
         <meta
           property="og:description"
-          content="Organise ton prochain événement sans prise de tête, un seul site avec toutes les fonctionnalités!"
+          content={t('site.description')}
         />
       </Head>
       <div className="flex flex-col min-h-screen overflow-hidden">

@@ -1,0 +1,9 @@
+{
+    "head": {
+        "title": "Bonout - Mes événements",
+        "description": "Bonout t'aide à organiser ton prochain événement, un seul site avec toutes les fonctionnalités!"
+    },
+    "todayEvent": "C'est aujourd'hui !",
+    "comingEvent": "Évenements à venir",
+    "noEvent": "Aucun événement à venir"
+}

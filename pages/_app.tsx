@@ -7,6 +7,8 @@ import "react-toastify/dist/ReactToastify.css";
 import { getUserID, getUserName } from "@src/utils/user";
 import manifest from "public/manifest.json";
 import { isInstalled, getQueries } from "@src/utils";
+import Head from "next/head"
+import { appWithTranslation } from "next-i18next";
 
 function MyApp({ Component, pageProps }: AppProps) {
   if (typeof window !== "undefined") {
@@ -21,15 +23,14 @@ function MyApp({ Component, pageProps }: AppProps) {
         })),
         scope: urlRoot,
         start_url:
-          `${
-            location.protocol + "//" + location.host
+          `${location.protocol + "//" + location.host
           }/home?userID=${getUserID()}` +
           (getUserName() ? `&userName=${getUserName()}` : ""),
       });
       manifestElement?.setAttribute(
         "href",
         "data:application/json;charset=utf-8," +
-          encodeURIComponent(manifestString)
+        encodeURIComponent(manifestString)
       );
     }
     const queries = getQueries();
@@ -42,6 +43,11 @@ function MyApp({ Component, pageProps }: AppProps) {
   }
   return (
     <>
+      <Head>
+        <meta charSet="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="theme-color" content="#F3F2ED" />
+      </Head>
       <ToastContainer
         position="top-right"
         autoClose={5000}
@@ -59,4 +65,4 @@ function MyApp({ Component, pageProps }: AppProps) {
   );
 }
 
-export default MyApp;
+export default appWithTranslation(MyApp);

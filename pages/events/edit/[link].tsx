@@ -9,14 +9,16 @@ import Loader from "@components/Loader";
 import useIsOrganizerOfEvent from "hooks/useIsEventOrganiser";
 import { BoEvent } from "src/types";
 import { getEventByLink } from "src/models/events";
-import { getUserID, getUserName } from "src/utils/user";
+import { getUserID } from "src/utils/user";
 import Link from "next/link";
+import { useTranslation } from 'next-i18next';
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 interface PageProps {
   event: BoEvent & { comingGuestAmount: number };
 }
 
-export async function getServerSideProps(context: { query: { link: string } }) {
+export async function getServerSideProps(context: { query: { link: string; }; locale: string; }) {
   const { link } = context.query;
   const event = await getEventByLink(link);
   const cleanedEvent = {
@@ -33,11 +35,13 @@ export async function getServerSideProps(context: { query: { link: string } }) {
   return {
     props: {
       event: cleanedEvent,
+      ...await serverSideTranslations(context.locale, ['common', 'events']),
     },
   };
 }
 
 const EditEvent: NextPage<PageProps> = ({ event }) => {
+  const { t } = useTranslation(['events', 'common']);
   const [isLoading, setIsLoading] = useState(false);
   const {
     isOrganizer,
@@ -57,9 +61,7 @@ const EditEvent: NextPage<PageProps> = ({ event }) => {
         <div className="md:max-w-3xl mx-auto w-full text-left">
           {(userChecked && isOrganizer) || isLoading ? (
             <>
-              <h1 className="text-3xl md:text-5xl font-extrabold leading-tighter tracking-tighter mb-4 mt-5">
-                Modifier l'événement {event.title}
-              </h1>
+              <h1 className="text-3xl md:text-5xl font-extrabold leading-tighter tracking-tighter mb-4 mt-5">{t('edit.title')}</h1>
               <div className="max-w-3xl mt-5 mx-auto relative">
                 {isLoading && (
                   <div className="absolute top-0 left-0 right-0 bottom-0">
@@ -106,7 +108,7 @@ const EditEvent: NextPage<PageProps> = ({ event }) => {
   ) {
     e.preventDefault();
     if (!isValid) {
-      toast.error("Il y a des erreurs dans le formulaire");
+      toast.error(t('errors.form_errors', { ns: 'common' }));
       return;
     }
     setIsLoading(true);

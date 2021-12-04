@@ -1,7 +1,9 @@
 import React from "react";
 import Image from "next/image";
+import { useTranslation } from 'next-i18next';
 
 function Footer() {
+  const { t } = useTranslation('common');
   return (
     <footer className="bg-black sectionSize">
       <div className="mb-4">
@@ -14,7 +16,7 @@ function Footer() {
         />
       </div>
       <div className="text-white font-montserrat text-sm">
-        © 2021 Bonout. Tout droits réservés
+        © 2021 Bonout. {t("footer.copyright")}
       </div>
     </footer>
   );

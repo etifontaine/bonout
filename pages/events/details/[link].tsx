@@ -22,6 +22,8 @@ import {
   UserIcon,
 } from "@heroicons/react/outline";
 import { responses } from "content/responses";
+import { useTranslation } from 'next-i18next';
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 interface PageProps {
   event: BoEvent & { comingGuestAmount: number };
@@ -32,7 +34,7 @@ export interface IModal {
   userResponse?: BoInvitationValidResponse;
 }
 
-export async function getServerSideProps(context: { query: { link: string } }) {
+export async function getServerSideProps(context: { query: { link: string; }; locale: string; }) {
   const { link } = context.query;
   const event = await getEventByLink(link);
 
@@ -54,6 +56,7 @@ export async function getServerSideProps(context: { query: { link: string } }) {
   return {
     props: {
       event: cleanedEvent,
+      ...await serverSideTranslations(context.locale, ['common', 'events']),
     },
   };
 }
@@ -280,11 +283,10 @@ const EventDetails: NextPage<PageProps> = ({ event }) => {
               <div className="text-sm font-medium text-gray-500">Lien</div>
               <div className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2 flex items-center">
                 <LinkIcon className="block h-3 w-3 mr-2" aria-hidden="true" />
-                <button className="underline" onClick={() => shareEvent()}>{`${
-                  typeof window !== "undefined"
-                    ? `${window.location.host}/events/details/`
-                    : ""
-                }${event.link}`}</button>
+                <button className="underline" onClick={() => shareEvent()}>{`${typeof window !== "undefined"
+                  ? `${window.location.host}/events/details/`
+                  : ""
+                  }${event.link}`}</button>
               </div>
             </div>
             <div className="py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">

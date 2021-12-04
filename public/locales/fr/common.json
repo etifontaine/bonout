@@ -1,0 +1,23 @@
+{
+    "site": {
+        "title": "Bonout",
+        "description": "Bonout t'aide à organiser ton prochain événement, un seul site avec toutes les fonctionnalités!"
+    },
+    "locale": {
+        "fr": "Français",
+        "en": "English"
+    },
+    "header": {
+        "user_id": "Identifiant",
+        "my_events": "Mes événements",
+        "login": "Connexion",
+        "create_event": "Créer un événement"
+    },
+    "footer": {
+        "copyright": "Tout droits réservés"
+    },
+    "errors": {
+        "catch_all": "Une erreur est survenue",
+        "form_errors": "Il y a des erreurs dans le formulaire"
+    }
+}
