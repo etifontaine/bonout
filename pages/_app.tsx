@@ -7,7 +7,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { getUserID, getUserName } from "@src/utils/user";
 import manifest from "public/manifest.json";
 import { isInstalled, getQueries } from "@src/utils";
-import Head from "next/head"
+import Head from "next/head";
 import { appWithTranslation } from "next-i18next";
 
 function MyApp({ Component, pageProps }: AppProps) {
@@ -23,14 +23,15 @@ function MyApp({ Component, pageProps }: AppProps) {
         })),
         scope: urlRoot,
         start_url:
-          `${location.protocol + "//" + location.host
+          `${
+            location.protocol + "//" + location.host
           }/home?userID=${getUserID()}` +
           (getUserName() ? `&userName=${getUserName()}` : ""),
       });
       manifestElement?.setAttribute(
         "href",
         "data:application/json;charset=utf-8," +
-        encodeURIComponent(manifestString)
+          encodeURIComponent(manifestString)
       );
     }
     const queries = getQueries();

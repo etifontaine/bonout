@@ -1,9 +1,9 @@
 import React from "react";
 import Image from "next/image";
-import { useTranslation } from 'next-i18next';
+import { useTranslation } from "next-i18next";
 
 function Footer() {
-  const { t } = useTranslation('common');
+  const { t } = useTranslation("common");
   return (
     <footer className="bg-black sectionSize">
       <div className="mb-4">

@@ -1,10 +1,10 @@
 import { Fragment, useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { useTranslation } from 'next-i18next';
+import { useTranslation } from "next-i18next";
 import { EyeIcon, EyeOffIcon } from "@heroicons/react/outline";
-import { Menu, Transition } from '@headlessui/react'
-import { ChevronDownIcon } from '@heroicons/react/solid'
+import { Menu, Transition } from "@headlessui/react";
+import { ChevronDownIcon } from "@heroicons/react/solid";
 import { getUserID } from "src/utils/user";
 import LoginModal from "./LoginModal";
 import { useRouter } from "next/router";
@@ -15,9 +15,9 @@ export default function Header() {
   const [isUserIDVisible, setUserIDVisible] = useState(false);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
 
-  const router = useRouter()
+  const router = useRouter();
 
-  const { t } = useTranslation('common');
+  const { t } = useTranslation("common");
 
   useEffect(() => {
     const user = getUserID();
@@ -29,7 +29,7 @@ export default function Header() {
   const toggleUserID = (user: string) => {
     return (
       <div className="flex items-center">
-        <span className="mr-1">{t('header.user_id')}:</span>
+        <span className="mr-1">{t("header.user_id")}:</span>
         <span>{isUserIDVisible ? user : "**********"}</span>
         <button
           onClick={() => setUserIDVisible(!isUserIDVisible)}
@@ -73,18 +73,18 @@ export default function Header() {
                   </div>
                   <Link href="/home">
                     <a className="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md font-medium">
-                      {t('header.my_events')}
+                      {t("header.my_events")}
                     </a>
                   </Link>
                 </>
               ) : (
                 <button onClick={() => setLoginVisible(true)} className="mr-6">
-                  {t('header.login')}
+                  {t("header.login")}
                 </button>
               )}
               <Link href="/events/create">
                 <a className="py-2 px-4 text-white bg-black rounded-3xl flex items-center">
-                  <span>{t('header.create_event')}</span>
+                  <span>{t("header.create_event")}</span>
                   <svg
                     className="w-3 h-3 fill-current text-gray-400 flex-shrink-0 ml-2 -mr-1"
                     viewBox="0 0 12 12"
@@ -101,7 +101,10 @@ export default function Header() {
                 <div>
                   <Menu.Button className="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-indigo-500">
                     {t(`locale.${router.locale}`)}
-                    <ChevronDownIcon className="-mr-1 ml-2 h-5 w-5" aria-hidden="true" />
+                    <ChevronDownIcon
+                      className="-mr-1 ml-2 h-5 w-5"
+                      aria-hidden="true"
+                    />
                   </Menu.Button>
                 </div>
                 <Transition
@@ -133,7 +136,6 @@ export default function Header() {
                   </Menu.Items>
                 </Transition>
               </Menu>
-
             </div>
           </div>
         </div>
@@ -154,8 +156,9 @@ export default function Header() {
       {/* Mobile menu */}
       <div
         id="mobileNav"
-        className={`${showMobileMenu ? "block" : "hidden"
-          } px-4 py-6 fixed top-0 left-0 h-full w-full bg-secondary z-20 animate-fade-in-down`}
+        className={`${
+          showMobileMenu ? "block" : "hidden"
+        } px-4 py-6 fixed top-0 left-0 h-full w-full bg-secondary z-20 animate-fade-in-down`}
       >
         <div
           onClick={() => setShowMobileMenu(false)}
@@ -165,20 +168,20 @@ export default function Header() {
         </div>
         <ul className="font-montserrat flex flex-col mx-8 my-24 items-center text-xl">
           <li className="my-6">
-            <Link href="/events/create">{t('header.create_event')}</Link>
+            <Link href="/events/create">{t("header.create_event")}</Link>
           </li>
           {user.length > 0 ? (
             <>
               <li className="my-6">
                 <Link href="/home">
-                  <a>{t('header.my_events')}</a>
+                  <a>{t("header.my_events")}</a>
                 </Link>
               </li>
               <li className="my-6">{toggleUserID(user)}</li>
             </>
           ) : (
             <button onClick={() => setLoginVisible(true)} className="mr-6">
-              {t('header.login')}
+              {t("header.login")}
             </button>
           )}
         </ul>

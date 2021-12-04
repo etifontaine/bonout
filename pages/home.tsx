@@ -8,22 +8,22 @@ import { toast } from "react-toastify";
 import { getUserID } from "src/utils/user";
 import Router from "next/router";
 import Head from "next/head";
-import { useTranslation } from 'next-i18next';
+import { useTranslation } from "next-i18next";
 import Skeleton from "react-loading-skeleton";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 export const getStaticProps = async ({ locale }: any) => ({
   props: {
-    ...await serverSideTranslations(locale, ['common', 'home']),
+    ...(await serverSideTranslations(locale, ["common", "home"])),
   },
-})
+});
 
 const Home: NextPage = () => {
   const [events, setEvents] = useState<BoEvent[] | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [todayEvents, setTodayEvents] = useState<BoEvent[] | null>(null);
 
-  const { t } = useTranslation('home');
+  const { t } = useTranslation("home");
 
   useEffect(() => {
     fetchEvents(getUserID())
@@ -41,16 +41,13 @@ const Home: NextPage = () => {
   return (
     <div>
       <Head>
-        <title>{t('head.title')}</title>
-        <meta property="og:title" content={t('head.description')} />
+        <title>{t("head.title")}</title>
+        <meta property="og:title" content={t("head.description")} />
         <meta
           property="og:image"
           content={`${process.env.NEXT_PUBLIC_BASE_URL}/header-30112021.png`}
         />
-        <meta
-          name="description"
-          content={t('head.description')}
-        />
+        <meta name="description" content={t("head.description")} />
       </Head>
       <Header />
       <section className="pt-24 md:mt-0 min-h-screen flex justify-center md:flex-row md:justify-between lg:px-48 md:px-12 px-4 bg-secondary">
@@ -62,7 +59,9 @@ const Home: NextPage = () => {
           <div className="md:max-w-3xl mx-auto w-full">
             {todayEvents !== null && todayEvents.length > 0 && (
               <>
-                <h2 className="text-2xl font-medium pt-4 pb-2">{t('todayEvent')}</h2>
+                <h2 className="text-2xl font-medium pt-4 pb-2">
+                  {t("todayEvent")}
+                </h2>
                 {todayEvents
                   .sort((a, b) => isPassed(a.start_at, b.start_at))
                   .map((event, index) => (
@@ -78,7 +77,9 @@ const Home: NextPage = () => {
 
             {events && events?.length > 0 ? (
               <>
-                <h2 className="text-2xl font-medium mt-4 pb-2">{t('comingEvent')}</h2>
+                <h2 className="text-2xl font-medium mt-4 pb-2">
+                  {t("comingEvent")}
+                </h2>
                 <section className="">
                   {events
                     .sort((a, b) => isPassed(a.start_at, b.start_at))
@@ -96,7 +97,9 @@ const Home: NextPage = () => {
                 </section>
               </>
             ) : (
-              <h2 className="text-2xl font-medium mt-20 pb-2 text-center">{t('noEvent')}</h2>
+              <h2 className="text-2xl font-medium mt-20 pb-2 text-center">
+                {t("noEvent")}
+              </h2>
             )}
           </div>
         )}

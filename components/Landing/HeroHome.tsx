@@ -1,15 +1,15 @@
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { useTranslation } from 'next-i18next';
+import { useTranslation } from "next-i18next";
 
 function HeroHome() {
-  const { t } = useTranslation('landing');
+  const { t } = useTranslation("landing");
   return (
     <section className="pt-24 md:mt-0 md:h-screen flex flex-col justify-center text-center md:text-left md:flex-row md:justify-between md:items-center lg:px-48 md:px-12 px-4 bg-secondary">
       <div className="md:flex-1 md:mr-10">
         <h1 className="font-pt-serif text-5xl font-bold mb-7">
-        {t("head.part1")}
+          {t("head.part1")}
           <span className="bg-underline1 bg-left-bottom bg-no-repeat pb-2 bg-100%">
             {" "}
             {t("head.part2")}
