@@ -75,10 +75,11 @@ function SuperInput(props: SuperInputProps) {
 function Label(props: { inputId: string; txt?: string; isHelp?: boolean }) {
   return props.txt ? (
     <label
-      className={`${props.isHelp
-        ? "text-red-500 text-xs help-label"
-        : "text-gray-700 text-s font-bold"
-        } block text-left tracking-wide`}
+      className={`${
+        props.isHelp
+          ? "text-red-500 text-xs help-label"
+          : "text-gray-700 text-s font-bold"
+      } block text-left tracking-wide`}
       htmlFor={props.inputId}
     >
       {props.txt}

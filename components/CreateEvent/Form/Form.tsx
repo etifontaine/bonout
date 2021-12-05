@@ -42,58 +42,58 @@ export function Form(props: {
   const [form, setForm] = useState(
     props.event
       ? {
-        userName: {
-          ...defaultInputState,
-          value: props.event.user_name || "",
-          isValid: true,
-        },
-        name: {
-          ...defaultInputState,
-          value: props.event.title,
-          isValid: true,
-        },
-        description: {
-          ...defaultInputState,
-          value: props.event.description,
-          isValid: true,
-        },
-        location: {
-          ...defaultInputState,
-          hideSuggestions: false,
-          value: props.event.address,
-          isValid: true,
-        },
-        startAt: {
-          ...defaultInputState,
-          value: getDateTime(new Date(props.event.start_at)),
-          isValid: true,
-        },
-        endAt: {
-          ...defaultInputState,
-          value: getDateTime(new Date(props.event.end_at)),
-          isValid: true,
-        },
-      }
+          userName: {
+            ...defaultInputState,
+            value: props.event.user_name || "",
+            isValid: true,
+          },
+          name: {
+            ...defaultInputState,
+            value: props.event.title,
+            isValid: true,
+          },
+          description: {
+            ...defaultInputState,
+            value: props.event.description,
+            isValid: true,
+          },
+          location: {
+            ...defaultInputState,
+            hideSuggestions: false,
+            value: props.event.address,
+            isValid: true,
+          },
+          startAt: {
+            ...defaultInputState,
+            value: getDateTime(new Date(props.event.start_at)),
+            isValid: true,
+          },
+          endAt: {
+            ...defaultInputState,
+            value: getDateTime(new Date(props.event.end_at)),
+            isValid: true,
+          },
+        }
       : ({
-        userName: {
-          ...defaultInputState,
-          value: getUserName() || "",
-          isValid: getUserName() ? true : false,
-        },
-        name: defaultInputState,
-        description: defaultInputState,
-        location: { ...defaultInputState, hideSuggestions: false },
-        startAt: {
-          ...defaultInputState,
-          value: getDateTime(add10min(new Date())),
-          isValid: true,
-        },
-        endAt: {
-          ...defaultInputState,
-          value: getDateTime(add1h(add10min(new Date()))),
-          isValid: true,
-        },
-      } as Tform)
+          userName: {
+            ...defaultInputState,
+            value: getUserName() || "",
+            isValid: getUserName() ? true : false,
+          },
+          name: defaultInputState,
+          description: defaultInputState,
+          location: { ...defaultInputState, hideSuggestions: false },
+          startAt: {
+            ...defaultInputState,
+            value: getDateTime(add10min(new Date())),
+            isValid: true,
+          },
+          endAt: {
+            ...defaultInputState,
+            value: getDateTime(add1h(add10min(new Date()))),
+            isValid: true,
+          },
+        } as Tform)
   );
 
   const [gmapIsLoad, setGmapIsLoad] = useState(false);
@@ -129,7 +129,11 @@ export function Form(props: {
           </div>
         </div>
         <input
-          value={props.event ? t<string>("common.update") : t<string>("common.create")}
+          value={
+            props.event
+              ? t<string>("common.update")
+              : t<string>("common.create")
+          }
           type="submit"
           className={`${isFormValid ? "" : "cursor-not-allowed opacity-30"}
         btn bg-black cursor-pointer
@@ -157,9 +161,9 @@ export function Form(props: {
             className={setInvalidClass(form[props.id])}
           />
           {props.id === "location" &&
-            !form.location.hideSuggestions &&
-            gmapIsLoad &&
-            form.location.isTouched ? (
+          !form.location.hideSuggestions &&
+          gmapIsLoad &&
+          form.location.isTouched ? (
             <GMapsLocationSuggestions
               onSelect={onSuggestionSelectHandler}
               inputValue={form.location.value}

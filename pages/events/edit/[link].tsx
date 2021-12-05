@@ -139,7 +139,11 @@ const EditEvent: NextPage<PageProps> = ({ event }) => {
           res
             .json()
             .then((data) => {
-              toast.error(data.error ? data.error : t("errors.catch_all", { ns: "common" }));
+              toast.error(
+                data.error
+                  ? data.error
+                  : t("errors.catch_all", { ns: "common" })
+              );
             })
             .catch(() => {
               toast.error(t("errors.catch_all", { ns: "common" }));
