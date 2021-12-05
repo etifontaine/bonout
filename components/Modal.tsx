@@ -1,4 +1,5 @@
 import { Fragment, useEffect, useRef, useState } from "react";
+import { useTranslation } from "next-i18next";
 import Router from "next/router";
 import { Dialog, Transition } from "@headlessui/react";
 import { ExclamationIcon, ThumbUpIcon } from "@heroicons/react/outline";
@@ -7,9 +8,6 @@ import { toast } from "react-toastify";
 interface IModalContent {
   title: string;
   description?: string;
-}
-interface IModalForm {
-  username: string;
 }
 
 export interface ModalProps {
@@ -23,6 +21,7 @@ export interface ModalProps {
 export default function Modal(props: ModalProps) {
   const cancelButtonRef = useRef(null);
   let [isOpen, setIsOpen] = useState(props.isOpen);
+  const { t } = useTranslation("common");
 
   useEffect(() => {
     setIsOpen(props.isOpen);
@@ -34,7 +33,7 @@ export default function Modal(props: ModalProps) {
         as="div"
         className="fixed z-40 inset-0 overflow-y-auto"
         initialFocus={cancelButtonRef}
-        onClose={() => {}}
+        onClose={() => { }}
       >
         <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
           <Transition.Child
@@ -98,7 +97,7 @@ export default function Modal(props: ModalProps) {
                   }}
                   ref={cancelButtonRef}
                 >
-                  Annuler
+                  {t('cancel')}
                 </button>
               </div>
             </div>

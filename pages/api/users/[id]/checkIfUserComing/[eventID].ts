@@ -2,7 +2,6 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { RequestError } from "src/utils/CustomErrors";
 import { API_ERROR_MESSAGES } from "src/utils/errorMessages";
 import { isUserComing } from "src/models/events";
-import { BoInvitationValidResponse } from "src/types";
 
 export default async function handler(
   req: NextApiRequest,

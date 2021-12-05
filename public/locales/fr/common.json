@@ -18,6 +18,11 @@
     },
     "errors": {
         "catch_all": "Une erreur est survenue",
+        "pseudo_missing": "Vous devez renseigner un pseudo",
         "form_errors": "Il y a des erreurs dans le formulaire"
-    }
+    },
+    "response_success": "Merci pour ta réponse",
+    "cancel": "Annuler",
+    "confirm": "Confirmer",
+    "close": "Fermer"
 }

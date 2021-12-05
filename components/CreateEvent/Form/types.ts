@@ -18,8 +18,6 @@ export type Tform = {
 
 export type TinputsStaticProps = {
   id: string;
-  label: string;
-  placeholder?: string;
   required?: true;
   type?: string;
 };

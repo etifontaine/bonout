@@ -3,6 +3,7 @@ import Router from "next/router";
 import { Dialog, Transition } from "@headlessui/react";
 import { ExclamationIcon, ThumbUpIcon } from "@heroicons/react/outline";
 import { toast } from "react-toastify";
+import { useTranslation } from "next-i18next";
 import { BoInvitationValidResponse } from "../../src/types";
 import { IModal } from "../../pages/events/details/[link]";
 
@@ -19,6 +20,7 @@ export default function InvitationModal({ link, userResponse }: IModal) {
   let [isOpen, setIsOpen] = useState(false);
   const [formContent, setFormContent] = useState<IModalForm>();
   const [content, setContent] = useState<IModalContent>();
+  const { t } = useTranslation(["events", "common"]);
 
   useEffect(() => {
     const username = localStorage.getItem("user_pseudo");
@@ -63,7 +65,7 @@ export default function InvitationModal({ link, userResponse }: IModal) {
 
   const postInvitationResponse = () => {
     if (!formContent?.username) {
-      toast.error("Vous devez renseigner un pseudo");
+      toast.error(t('errors.pseudo_missing', { ns: 'common' }));
       return;
     }
     localStorage.setItem("user_pseudo", formContent.username);
@@ -84,17 +86,17 @@ export default function InvitationModal({ link, userResponse }: IModal) {
         ) {
           localStorage.setItem("user_id", user_id);
         }
-        toast.info("Merci pour ta réponse");
+        toast.info(t('response_success', { ns: 'common' }));
         setIsOpen(false);
         Router.push(`/events/details/${link}`);
       } else {
         res
           .json()
           .then((data) => {
-            toast.error(data.error ? data.error : "Une erreur est survenue");
+            toast.error(data.error ? data.error : t('errors.catch_all', { ns: 'common' }));
           })
           .catch(() => {
-            toast.error("Une erreur est survenue");
+            toast.error(t('errors.catch_all', { ns: 'common' }));
           });
       }
     });
@@ -106,7 +108,7 @@ export default function InvitationModal({ link, userResponse }: IModal) {
         as="div"
         className="fixed z-40 inset-0 overflow-y-auto"
         initialFocus={cancelButtonRef}
-        onClose={() => {}}
+        onClose={() => { }}
       >
         <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
           <Transition.Child
@@ -181,7 +183,7 @@ export default function InvitationModal({ link, userResponse }: IModal) {
                           className="block text-gray-700 text-sm font-bold mb-2"
                           htmlFor="username"
                         >
-                          Nom ou pseudo
+                          {t("common.userName.label")}
                         </label>
                         <input
                           autoComplete="on"
@@ -193,7 +195,7 @@ export default function InvitationModal({ link, userResponse }: IModal) {
                           id="username"
                           name="username"
                           type="text"
-                          placeholder="Nom ou pseudo"
+                          placeholder={t("common.userName.placeholder")}
                         />
                       </div>
                     </form>
@@ -206,7 +208,7 @@ export default function InvitationModal({ link, userResponse }: IModal) {
                   className={`w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-black text-base font-medium text-white focus:outline-none focus:ring-2 focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm`}
                   onClick={() => postInvitationResponse()}
                 >
-                  Confirmer
+                  {t("confirm", { ns: "common" })}
                 </button>
                 <button
                   type="button"
@@ -214,7 +216,7 @@ export default function InvitationModal({ link, userResponse }: IModal) {
                   onClick={() => setIsOpen(false)}
                   ref={cancelButtonRef}
                 >
-                  Annuler
+                  {t("cancel", { ns: "common" })}
                 </button>
               </div>
             </div>

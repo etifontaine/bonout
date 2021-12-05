@@ -1,10 +1,10 @@
 import type { NextPage } from "next";
 import { useState } from "react";
 import Router from "next/router";
-import Header from "../../components/Header";
+import Header from "@components/Header";
 import { toast } from "react-toastify";
-import { Form } from "../../components/CreateEvent/Form/Form";
-import type { Tform } from "../../components/CreateEvent/Form/types";
+import { Form } from "@components/CreateEvent/Form/Form";
+import type { Tform } from "@components/CreateEvent/Form/types";
 import Loader from "@components/Loader";
 import { useTranslation } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
@@ -17,7 +17,7 @@ export const getStaticProps = async ({ locale }: any) => ({
 
 const Add: NextPage = () => {
   const [isLoading, setIsLoading] = useState(false);
-  const { t } = useTranslation(["events", "common"]);
+  const { t } = useTranslation("events");
   return (
     <>
       <Header />

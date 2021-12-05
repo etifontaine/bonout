@@ -89,14 +89,14 @@ const EditEvent: NextPage<PageProps> = ({ event }) => {
                 {event.title}
               </h1>
               <h1 className="text-3xl md:text-5xl font-extrabold leading-tighter tracking-tighter mb-4 mt-5">
-                Vous n'etes pas autorisé à modifier cet événement
+                {t("edit.unauthorized")}
               </h1>
               <Link
                 href="/events/details/[link]"
                 as={`/events/details/${event.link}`}
               >
                 <a className="text-lg font-semibold text-center mt-5 underline">
-                  {"<"} Retourner à l'événement
+                  {"<"} {t("edit.backToEvent")}
                 </a>
               </Link>
             </>
@@ -139,10 +139,10 @@ const EditEvent: NextPage<PageProps> = ({ event }) => {
           res
             .json()
             .then((data) => {
-              toast.error(data.error ? data.error : "Une erreur est survenue");
+              toast.error(data.error ? data.error : t("errors.catch_all", { ns: "common" }));
             })
             .catch(() => {
-              toast.error("Une erreur est survenue");
+              toast.error(t("errors.catch_all", { ns: "common" }));
             });
         }
       })

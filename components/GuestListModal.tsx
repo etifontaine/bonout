@@ -1,6 +1,7 @@
 import { Fragment } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { BoInvitationResponse } from "src/types";
+import { useTranslation } from "next-i18next";
 
 interface IModal {
   isVisible: boolean;
@@ -19,6 +20,9 @@ export default function GuestListModal({
   setGuestListVisible,
   guests,
 }: IModal) {
+
+  const { t } = useTranslation(["events", "common"]);
+
   const renderGuestsList = () => {
     const guestsGroup: guestsGroup = { yes: [], no: [], maybe: [] };
     guests.map((g) => {
@@ -27,24 +31,39 @@ export default function GuestListModal({
 
     return (
       <>
-        <h4 className="text-l leading-8 font-medium text-gray-900 text-left">
-          Oui
-        </h4>
-        {guestsGroup.yes.map((g, key) => {
-          return <p key={key}>{g}</p>;
-        })}
-        <h4 className="text-l leading-8 font-medium text-gray-900 text-left mt-5">
-          Peut-être
-        </h4>
-        {guestsGroup.maybe.map((g, key) => {
-          return <p key={key}>{g}</p>;
-        })}
-        <h4 className="text-l leading-8 font-medium text-gray-900 text-left mt-5">
-          Non
-        </h4>
-        {guestsGroup.no.map((g, key) => {
-          return <p key={key}>{g}</p>;
-        })}
+        {guestsGroup.yes.length > 0 ?
+          (
+            <>
+              <h4 className="text-l leading-8 font-medium text-gray-900 text-left">
+                {t('common.response.yes')}
+              </h4>
+              {guestsGroup.yes.map((g, key) => {
+                return <p key={key}>{g}</p>;
+              })}
+            </>
+          ) : null}
+        {guestsGroup.maybe.length > 0 ?
+          (
+            <>
+              <h4 className="text-l leading-8 font-medium text-gray-900 text-left mt-5">
+                {t('common.response.maybe')}
+              </h4>
+              {guestsGroup.maybe.map((g, key) => {
+                return <p key={key}>{g}</p>;
+              })}
+            </>
+          ) : null}
+        {guestsGroup.no.length > 0 ?
+          (
+            <>
+              <h4 className="text-l leading-8 font-medium text-gray-900 text-left mt-5">
+                {t('common.response.no')}
+              </h4>
+              {guestsGroup.no.map((g, key) => {
+                return <p key={key}>{g}</p>;
+              })}
+            </>
+          ) : null}
       </>
     );
   };
@@ -54,7 +73,7 @@ export default function GuestListModal({
       <Dialog
         as="div"
         className="fixed z-40 inset-0 overflow-y-auto"
-        onClose={() => {}}
+        onClose={() => { }}
       >
         <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
           <Transition.Child
@@ -93,7 +112,7 @@ export default function GuestListModal({
                       as="h3"
                       className="text-lg text-center mb-5 leading-6 font-medium text-gray-900"
                     >
-                      Invités
+                      {t('common.guests')}
                     </Dialog.Title>
                     <div className="max-h-72 overflow-y-auto">
                       {renderGuestsList()}
@@ -107,7 +126,7 @@ export default function GuestListModal({
                   className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
                   onClick={() => setGuestListVisible(false)}
                 >
-                  Fermer
+                  {t('close', { ns: "common" })}
                 </button>
               </div>
             </div>

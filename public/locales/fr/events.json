@@ -3,6 +3,58 @@
         "title": "Créer un événement"
     },
     "edit": {
-        "title": "Modification de l'événement"
+        "title": "Modification de l'événement",
+        "unauthorized": "Vous n'etes pas autorisé à modifier cet événement",
+        "backToEvent": "Retourner à l'événement"
+    },
+    "calendar": {
+        "addToCalendar": {
+            "title": "Ajouter à mon calendrier",
+            "description": "Choisis ton calendrier préféré !"
+        }
+    },
+    "common": {
+        "create": "Créer",
+        "update": "Modifier",
+        "other": "Autre",
+        "organizer": "Organisateur",
+        "date": "Date",
+        "address": "Adresse",
+        "link": "Lien",
+        "guests": "Invités",
+        "guestsList": "Voir la liste",
+        "yourEvent": "C'est votre événement",
+        "anonymous": "Anonyme",
+        "userName": {
+            "placeholder": "Nom ou pseudo",
+            "label": "Nom"
+        },
+        "name": {
+            "placeholder": "Nom de l'événement",
+            "label": "Nom de l'événement"
+        },
+        "description": {
+            "placeholder": "Description de l'événement",
+            "label": "Et quelques infos ?"
+        },
+        "startAt": {
+            "label": "On commence quand ?"
+        },
+        "endAt": {
+            "label": "Jusqu'à quand ?"
+        },
+        "location": {
+            "placeholder": "Lieu de l'événement",
+            "label": "Un lieu ?"
+        },
+        "response": {
+            "yes": "Accepter",
+            "oui": "Accepter",
+            "no": "Refuser",
+            "non": "Refuser",
+            "maybe": "Peut-être",
+            "peut-être": "Peut-être"
+        },
+        "userResponse": "Tu as répondu: {{response}}"
     }
 }
