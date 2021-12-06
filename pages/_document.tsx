@@ -14,7 +14,7 @@ class MyDocument extends Document {
 
   render() {
     return (
-      <Html lang="fr">
+      <Html>
         <Head>
           <link
             rel="apple-touch-icon"
@@ -86,9 +86,6 @@ class MyDocument extends Document {
             href="/logos/favicon-16x16.png"
           />
           <link rel="manifest" href="/manifest.json" id="manifest" />
-          <meta charSet="utf-8" />
-          <meta name="viewport" content="width=device-width, initial-scale=1" />
-          <meta name="theme-color" content="#F3F2ED" />
         </Head>
         <body>
           <Main />

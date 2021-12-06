@@ -1,0 +1,15 @@
+{
+    "head": {
+        "title": "Bonout - Mes événements",
+        "description": "Bonout t'aide à organiser ton prochain événement, un seul site avec toutes les fonctionnalités!"
+    },
+    "todayEvent": "C'est aujourd'hui !",
+    "comingEvent": "Évenements à venir",
+    "noEvent": "Aucun événement à venir",
+    "inProgress": "En cours",
+    "in_x_minutes": "Dans {{minutes}} min",
+    "noGuests": "Personne n'est présent",
+    "noAnswers": "Personne n'a encore répondu",
+    "comingGuest": "1 personne à prévu de venir",
+    "comingGuests": "{{count}} personnes ont prévu de venir"
+}

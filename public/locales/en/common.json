@@ -1,0 +1,28 @@
+{
+    "site": {
+        "title": "Bonout",
+        "description": "Bonout helps you to organize your next event, one website with all the features!"
+    },
+    "locale": {
+        "fr": "Français",
+        "en": "English"
+    },
+    "header": {
+        "user_id": "Username",
+        "my_events": "My events",
+        "login": "Login",
+        "create_event": "Create a event"
+    },
+    "footer": {
+        "copyright": "All rights reserved"
+    },
+    "errors": {
+        "catch_all": "An error has occurred",
+        "pseudo_missing": "You must enter a username",
+        "form_errors": "There are errors in the form"
+    },
+    "response_success": "Thank you for your answer",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "close": "Close"
+}

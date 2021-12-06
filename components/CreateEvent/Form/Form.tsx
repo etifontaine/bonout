@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
+import { useTranslation } from "next-i18next";
 import Script from "next/script";
 import Input from "../../Input";
 import type { TdefaultInputState, Tform, TinputsStaticProps } from "./types";
@@ -37,6 +38,7 @@ export function Form(props: {
   ) => void;
   event?: BoEvent;
 }) {
+  const { t } = useTranslation("events");
   const [form, setForm] = useState(
     props.event
       ? {
@@ -127,7 +129,11 @@ export function Form(props: {
           </div>
         </div>
         <input
-          value={props.event ? "Modifier" : "Créer"}
+          value={
+            props.event
+              ? t<string>("common.update")
+              : t<string>("common.create")
+          }
           type="submit"
           className={`${isFormValid ? "" : "cursor-not-allowed opacity-30"}
         btn bg-black cursor-pointer
@@ -293,34 +299,24 @@ export function inputsStaticProps(): TinputsStaticProps[] {
   return [
     {
       id: "userName",
-      label: "Votre nom",
-      placeholder: "Nom ou surnom",
     },
     {
       id: "name",
-      label: "Nom de l'événement",
-      placeholder: "Nom de l'événement",
     },
     {
       id: "description",
-      label: "Et quelques infos ?",
-      placeholder: "Description de l'événement",
       type: "textarea",
     },
     {
       id: "startAt",
-      label: "On commence quand ?",
       type: "datetime-local",
     },
     {
       id: "endAt",
-      label: "Jusqu'à quand ?",
       type: "datetime-local",
     },
     {
       id: "location",
-      label: "Un lieu ?",
-      placeholder: "Lieu de l'événement",
     },
   ];
 }

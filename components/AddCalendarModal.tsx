@@ -3,6 +3,7 @@ import { CalendarIcon } from "@heroicons/react/outline";
 import { BoEvent } from "@src/types";
 import { useState, useEffect } from "react";
 import Image from "next/image";
+import { useTranslation } from "next-i18next";
 import {
   ICalendar,
   OutlookCalendar,
@@ -19,6 +20,7 @@ interface props {
 
 export default function AddCalendarModal(props: props) {
   const [isOpen, setIsOpen] = useState(props.isOpen);
+  const { t } = useTranslation("events");
   useEffect(() => {
     setIsOpen(props.isOpen);
   }, [props.isOpen]);
@@ -27,7 +29,7 @@ export default function AddCalendarModal(props: props) {
     { name: "Outlook" },
     { name: "Yahoo" },
     { name: "Apple" },
-    { name: "Autre" },
+    { name: t("common.other") },
   ];
 
   const hanldeClick = (service: string) => {
@@ -47,7 +49,7 @@ export default function AddCalendarModal(props: props) {
     if (service === "Yahoo") {
       renderAndOpen(new YahooCalendar(config));
     }
-    if (service === "Apple" || service === "Autre") {
+    if (service === "Apple" || service === t("common.other")) {
       const cal = new ICalendar(config);
       setIsOpen(false);
       cal.download();
@@ -65,8 +67,8 @@ export default function AddCalendarModal(props: props) {
   return (
     <Modal
       content={{
-        title: "Ajouter à mon calendrier",
-        description: "Choisis ton app favorite !",
+        title: t("calendar.addToCalendar.title"),
+        description: t("calendar.addToCalendar.description"),
       }}
       icon={<CalendarIcon className="h-20 w-20" aria-hidden="true" />}
       isOpen={isOpen}
@@ -76,12 +78,12 @@ export default function AddCalendarModal(props: props) {
       <ul>
         {services.map(({ name }) => (
           <li
-            className="flex  mb-4 border-b border-gray-200"
+            className="flex  mb-4 border-b border-gray-200 cursor-pointer"
             onClick={() => hanldeClick(name)}
             key={name}
           >
             <span className="h-2">
-              {name !== "Autre" ? (
+              {name !== t("common.other") ? (
                 <Image
                   src={`/images/icon-${name.toLowerCase()}.svg`}
                   width={20}
@@ -92,7 +94,7 @@ export default function AddCalendarModal(props: props) {
                 <CalendarIcon className="h-5 w-5" aria-hidden="true" />
               )}{" "}
             </span>
-            <span className="ml-2">{name} Calendar</span>
+            <span className="ml-2">{name}</span>
           </li>
         ))}
       </ul>
