@@ -41,12 +41,12 @@ const getMaps = (type = "success", d = data): any => ({
   },
 });
 
-jest.mock('react-i18next', () => ({
+jest.mock("react-i18next", () => ({
   useTranslation: () => ({
     t: (key: any) => ({
-      message: key
-    })
-  })
+      message: key,
+    }),
+  }),
 }));
 
 describe("CreateEventPage <Form />", () => {
