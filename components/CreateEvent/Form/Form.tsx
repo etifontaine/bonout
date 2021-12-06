@@ -224,13 +224,13 @@ export function Form(props: {
               "endAt"
             )(f),
             setProp("isValid", isNotPassedDate(value)),
-            setHelperText(t('DATE_PASSED_ERROR_FUTURE', { ns: 'errors' }))
+            setHelperText(t("DATE_PASSED_ERROR_FUTURE", { ns: "errors" }))
           )
         ),
         isInput("endAt", (f) =>
           pipe(
             setProp("isValid", isNotPassedDate(value, f.startAt.value))(f),
-            setHelperText(t('DATE_PASSED_ERROR', { ns: 'errors' }))
+            setHelperText(t("DATE_PASSED_ERROR", { ns: "errors" }))
           )
         ),
         isInput("location", (f) =>
