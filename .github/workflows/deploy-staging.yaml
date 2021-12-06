@@ -49,6 +49,14 @@ jobs:
           --platform "managed" \
           --quiet
 
+    - name: Switch traffic to latest
+      run: |-
+        gcloud run services update-traffic ${{ env.SERVICE }} \
+          --to-latest
+          --region ${{ env.REGION }} \
+          --platform "managed" \
+          --quiet
+
     - name: Update deployment status (success)
       if: success()
       uses: chrnorm/deployment-status@releases/v1
