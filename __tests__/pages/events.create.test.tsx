@@ -6,11 +6,6 @@ import React from "react";
 import { render, fireEvent, act } from "../test-utils";
 import { Form } from "@components/CreateEvent/Form/Form";
 import {
-  LENGTH_ERROR,
-  DATE_PASSED_ERROR,
-  INVALID_PLACE_ERROR,
-} from "@components/CreateEvent/Form/errors.text";
-import {
   getDateTime,
   add1h,
   add10min,
@@ -41,16 +36,6 @@ const getMaps = (type = "success", d = data): any => ({
   },
 });
 
-beforeEach(() => {
-  jest.mock('next-i18next', () => ({
-    useTranslation: () => ({
-      t: (key: any) => ({
-        message: key
-      })
-    })
-  }));
-})
-
 describe("CreateEventPage <Form />", () => {
   beforeAll(() => {
     jest.clearAllTimers();
@@ -77,7 +62,7 @@ describe("CreateEventPage <Form />", () => {
         expect(input).toHaveClass("invalid");
         const label = result.container.querySelector(".help-label");
         expect(label).toBeInTheDocument();
-        expect(label).toHaveTextContent(LENGTH_ERROR(3));
+        expect(label).toHaveTextContent("LENGTH_ERROR");
         fireEvent.change(input, { target: { value: "abc" } });
         expect(input).toHaveClass("valid");
       }
@@ -105,7 +90,7 @@ describe("CreateEventPage <Form />", () => {
         expect(input).toHaveClass("invalid");
         const label = result.container.querySelector(".help-label");
         expect(label).toBeInTheDocument();
-        expect(label).toHaveTextContent(LENGTH_ERROR(5));
+        expect(label).toHaveTextContent("LENGTH_ERROR");
         fireEvent.change(input, { target: { value: "abcde" } });
         expect(input).toHaveClass("valid");
       }
@@ -151,7 +136,7 @@ describe("CreateEventPage <Form />", () => {
         const label = result.container.querySelector(".help-label");
         if (label && label.textContent) {
           expect(
-            label.textContent.startsWith(DATE_PASSED_ERROR(""))
+            label.textContent.startsWith("DATE_PASSED_ERROR")
           ).toBeTruthy();
         } else {
           expect(label).toBeInTheDocument();
@@ -205,7 +190,7 @@ describe("CreateEventPage <Form />", () => {
         const label = result.container.querySelector(".help-label");
         if (label && label.textContent) {
           expect(
-            label.textContent.startsWith(DATE_PASSED_ERROR(""))
+            label.textContent.startsWith("DATE_PASSED_ERROR")
           ).toBeTruthy();
         } else {
           expect(label).toBeInTheDocument();
@@ -275,7 +260,7 @@ describe("CreateEventPage <Form />", () => {
       expect(input).toHaveClass("invalid");
       const label = result.container.querySelector(".help-label");
       expect(label).toBeInTheDocument();
-      expect(label).toHaveTextContent(INVALID_PLACE_ERROR("test"));
+      expect(label).toHaveTextContent("INVALID_PLACE_ERROR");
       const suggestion = result.container.querySelector(".suggestions li");
       if (suggestion) {
         act(() => {
