@@ -42,7 +42,7 @@ function FAQ() {
     <section className="sectionSize items-start pt-8 md:pt-36 bg-black text-white">
       <div>
         <h2 className="secondaryTitle bg-highlight3 p-10 mb-0 bg-center bg-100%">
-          {t("faq.title")}
+          {t("title")}
         </h2>
       </div>
       <Question answer={t("howIsItDifferent.answer")} title={t("howIsItDifferent.title")} />
