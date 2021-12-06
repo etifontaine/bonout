@@ -84,6 +84,7 @@ export async function getEventByLink(
   const eventsQuery = await db
     .collection(COLLECTION_NAME_EVENTS)
     .where("link", "==", link)
+    .where("end_at", ">=", new Date().getTime())
     .get();
   if (eventsQuery.docs.length === 0) {
     return null;
