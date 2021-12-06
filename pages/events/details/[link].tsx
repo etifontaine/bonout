@@ -137,7 +137,7 @@ const EventDetails: NextPage<PageProps> = ({ event }) => {
         <meta property="og:description" content={`${event.description}`} />
         <meta
           property="og:image"
-          content={`${process.env.NEXT_PUBLIC_BASE_URL}/header-30112021.png`}
+          content="https://bonout.com/header-30112021.png"
         />
         <link
           rel="apple-touch-icon"

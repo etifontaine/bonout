@@ -27,7 +27,7 @@ const Home: NextPage = () => {
         <meta property="og:title" content={t("site.title")} />
         <meta
           property="og:image"
-          content={`${process.env.NEXT_PUBLIC_BASE_URL}/header-30112021.png`}
+          content="https://bonout.com/header-30112021.png"
         />
         <meta property="og:type" content="siteweb" />
         <meta property="og:description" content={t("site.description")} />
