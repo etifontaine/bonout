@@ -1,7 +1,7 @@
 {
     "site": {
-        "title": "Bonout",
-        "description": "Bonout helps you to organize your next event, one website with all the features!"
+        "title": "Bonout - Organize your next event",
+        "description": "Bonout helps you to organize your next event, one website with all the features and privacy in mind!"
     },
     "locale": {
         "fr": "Français",
@@ -21,6 +21,7 @@
         "pseudo_missing": "You must enter a username",
         "form_errors": "There are errors in the form"
     },
+    "fill_user_id": "Fill your user_id (not your pseudo)",
     "response_success": "Thank you for your answer",
     "cancel": "Cancel",
     "confirm": "Confirm",

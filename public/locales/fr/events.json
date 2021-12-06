@@ -70,5 +70,8 @@
             "peut-être": "Peut-être"
         },
         "userResponse": "Tu as répondu: {{response}}"
+    },
+    "date": {
+        "intlDateTimeFromTo": "Du {{start_at, datetime}} au {{end_at, datetime}}"
     }
 }

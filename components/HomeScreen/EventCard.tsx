@@ -13,12 +13,10 @@ export default function EventCard({ event, ...props }: { event: BoEvent }) {
     const diff = jsDate.getTime() - now.getTime();
     const hours = Math.floor(diff / (1000 * 60 * 60));
     const minutes = Math.floor(diff / (1000 * 60)) % 60;
-    if (hours == 0) {
+    if (hours >= 0) {
       return t("in_x_minutes", { minutes });
-    } else if (hours < 0) {
-      return t("inProgress");
     }
-    return `${hours}h${("0" + minutes).slice(-2)}`;
+    return t("inProgress");
   }
 
   function calcHowManyUsers(users: Array<BoInvitationResponse>) {

@@ -11,5 +11,6 @@
     "noGuests": "Personne n'est présent",
     "noAnswers": "Personne n'a encore répondu",
     "comingGuest": "1 personne à prévu de venir",
-    "comingGuests": "{{count}} personnes ont prévu de venir"
+    "comingGuests": "{{count}} personnes ont prévu de venir",
+    "intlDateTime": "{{val, datetime}}"
 }

@@ -1,5 +1,6 @@
 import { Fragment, useState } from "react";
 import Router from "next/router";
+import { useTranslation } from "next-i18next";
 import { Dialog, Transition } from "@headlessui/react";
 import { LockOpenIcon } from "@heroicons/react/outline";
 import { toast } from "react-toastify";
@@ -16,6 +17,7 @@ export default function InvitationModal({
   setLoginVisible,
 }: IModal) {
   const [formContent, setFormContent] = useState<IModalForm>();
+  const { t } = useTranslation("common");
 
   const postInvitationResponse = () => {
     if (!formContent?.user_id) {
@@ -78,7 +80,7 @@ export default function InvitationModal({
                       as="h3"
                       className="text-lg leading-6 font-medium text-gray-900"
                     >
-                      Connexion
+                      {t("header.login")}
                     </Dialog.Title>
                     <form
                       className="bg-white pt-6"
@@ -92,7 +94,7 @@ export default function InvitationModal({
                           className="block text-gray-700 text-sm font-bold mb-2"
                           htmlFor="user_id"
                         >
-                          Renseignez votre user_id (pas de pseudo)
+                          {t("fill_user_id")}
                         </label>
                         <input
                           autoFocus={true}
@@ -118,14 +120,14 @@ export default function InvitationModal({
                   className={`w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-black text-base font-medium text-white sm:ml-3 sm:w-auto sm:text-sm`}
                   onClick={() => postInvitationResponse()}
                 >
-                  Confirmer
+                  {t("confirm")}
                 </button>
                 <button
                   type="button"
                   className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
                   onClick={() => setLoginVisible(false)}
                 >
-                  Annuler
+                  {t("cancel")}
                 </button>
               </div>
             </div>
