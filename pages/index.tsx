@@ -31,6 +31,9 @@ const Home: NextPage = () => {
         />
         <meta property="og:type" content="siteweb" />
         <meta property="og:description" content={t("site.description")} />
+        <link rel="alternate" href={`${process.env.NEXT_PUBLIC_BASE_URL}/fr`} hrefLang="fr" />
+        <link rel="alternate" href={`${process.env.NEXT_PUBLIC_BASE_URL}`} hrefLang="en" />
+        <link rel="canonical" href={`${process.env.NEXT_PUBLIC_BASE_URL}`} />
       </Head>
       <div className="flex flex-col min-h-screen overflow-hidden">
         <Header />
