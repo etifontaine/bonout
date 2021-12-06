@@ -69,6 +69,9 @@
             "maybe": "Maybe",
             "peut-être": "Maybe"
         },
-        "userResponse": "You said {{response}}"
+        "userResponse": "You said: {{response}}"
+    },
+    "date": {
+        "intlDateTimeFromTo": "{{start_at, datetime}} until {{end_at, datetime}}"
     }
 }

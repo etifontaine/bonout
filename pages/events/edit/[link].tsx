@@ -38,7 +38,11 @@ export async function getServerSideProps(context: {
   return {
     props: {
       event: cleanedEvent,
-      ...(await serverSideTranslations(context.locale, ["common", "events"])),
+      ...(await serverSideTranslations(context.locale, [
+        "common",
+        "events",
+        "errors",
+      ])),
     },
   };
 }

@@ -1,0 +1,6 @@
+{
+    "LENGTH_ERROR": "This field required at least {{nb}} characters",
+    "DATE_PASSED_ERROR_FUTURE": "The date can't be in the past",
+    "DATE_PASSED_ERROR": "The date of the event must be greater than the start date",
+    "INVALID_PLACE_ERROR": "The location {{payload}} seems incorrect, please use the suggestions"
+}
