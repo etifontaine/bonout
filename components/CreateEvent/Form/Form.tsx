@@ -3,11 +3,6 @@ import { useTranslation } from "next-i18next";
 import Script from "next/script";
 import Input from "../../Input";
 import type { TdefaultInputState, Tform, TinputsStaticProps } from "./types";
-import {
-  DATE_PASSED_ERROR,
-  LENGTH_ERROR,
-  INVALID_PLACE_ERROR,
-} from "./errors.text";
 import { pipe } from "fp-ts/lib/function";
 import { getDateTime, add1h, add10min } from "./utils";
 import useOnclickOutside from "react-cool-onclickoutside";
@@ -38,7 +33,7 @@ export function Form(props: {
   ) => void;
   event?: BoEvent;
 }) {
-  const { t } = useTranslation("events");
+  const { t } = useTranslation(["events", "errors"]);
   const [form, setForm] = useState(
     props.event
       ? {
@@ -204,19 +199,19 @@ export function Form(props: {
         isInput("userName", (f) =>
           pipe(
             setProp("isValid", isLongEnough(2, value))(f),
-            setHelperText(LENGTH_ERROR(2))
+            setHelperText(t("LENGTH_ERROR", { nb: 2, ns: "errors" }))
           )
         ),
         isInput("name", (f) =>
           pipe(
             setProp("isValid", isLongEnough(3, value))(f),
-            setHelperText(LENGTH_ERROR(3))
+            setHelperText(t("LENGTH_ERROR", { nb: 3, ns: "errors" }))
           )
         ),
         isInput("description", (f) =>
           pipe(
             setProp("isValid", isLongEnough(5, value))(f),
-            setHelperText(LENGTH_ERROR(5))
+            setHelperText(t("LENGTH_ERROR", { nb: 5, ns: "errors" }))
           )
         ),
         isInput("startAt", (f) =>
@@ -229,19 +224,24 @@ export function Form(props: {
               "endAt"
             )(f),
             setProp("isValid", isNotPassedDate(value)),
-            setHelperText(DATE_PASSED_ERROR("aujourd'hui"))
+            setHelperText(t('DATE_PASSED_ERROR_FUTURE', { ns: 'errors' }))
           )
         ),
         isInput("endAt", (f) =>
           pipe(
             setProp("isValid", isNotPassedDate(value, f.startAt.value))(f),
-            setHelperText(DATE_PASSED_ERROR("la date de début"))
+            setHelperText(t('DATE_PASSED_ERROR', { ns: 'errors' }))
           )
         ),
         isInput("location", (f) =>
           pipe(
             setProp("isValid", false)(f),
-            setHelperText(INVALID_PLACE_ERROR(f.location.value))
+            setHelperText(
+              t("INVALID_PLACE_ERROR", {
+                payload: f.location.value,
+                ns: "errors",
+              })
+            )
           )
         )
       );

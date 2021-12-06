@@ -270,10 +270,14 @@ const EventDetails: NextPage<PageProps> = ({ event }) => {
                   onClick={() => setAddCalendarVisible(true)}
                 >
                   {" "}
-                  {dayjs(event.start_at).format("DD/MM/YYYY")} à{" "}
-                  {dayjs(event.start_at).format("HH:mm")} au{" "}
-                  {dayjs(event.end_at).format("DD/MM/YYYY")} à{" "}
-                  {dayjs(event.end_at).format("HH:mm")}
+                  {t("date.intlDateTimeFromTo", {
+                    start_at: event.start_at,
+                    end_at: event.end_at,
+                    formatParams: {
+                      start_at: { dateStyle: "medium", timeStyle: "short" },
+                      end_at: { dateStyle: "medium", timeStyle: "short" },
+                    },
+                  })}
                 </button>
               </div>
             </div>

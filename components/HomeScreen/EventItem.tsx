@@ -1,5 +1,6 @@
 import React from "react";
-import type { BoEvent } from "../../src/types";
+import { useTranslation } from "next-i18next";
+import type { BoEvent } from "@src/types";
 
 export default function EventItem({
   event,
@@ -8,6 +9,26 @@ export default function EventItem({
   event: BoEvent;
   onClick: () => void;
 }) {
+  const { t } = useTranslation("home");
+
+  function MiniCalandar({ date }: { date: string }) {
+    const jsDate = new Date(date);
+    const day = jsDate.getDate();
+    return (
+      <div className="bg-white overflow-hidden shadow-lg w-12 h-12 border-black border-2 border-solid text-right leading-none p-2">
+        <div>{day}</div>
+        <div className="">
+          {t("intlDateTime", {
+            val: date,
+            formatParams: {
+              val: { month: "short" },
+            },
+          })}
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div
       className="bg-secondary overflow-hidden w-full cursor-pointer"
@@ -26,32 +47,6 @@ export default function EventItem({
           </div>
         </div>
       </div>
-    </div>
-  );
-}
-
-function MiniCalandar({ date }: { date: string }) {
-  const jsDate = new Date(date);
-  const day = jsDate.getDate();
-  const month = jsDate.getMonth();
-  const monthName = [
-    "Jan",
-    "Feb",
-    "Mar",
-    "Apr",
-    "May",
-    "Jun",
-    "Jul",
-    "Aug",
-    "Sep",
-    "Oct",
-    "Nov",
-    "Dec",
-  ][month];
-  return (
-    <div className="bg-white overflow-hidden shadow-lg w-12 h-12 border-black border-2 border-solid text-right leading-none p-2">
-      <div>{day}</div>
-      <div className="">{monthName}</div>
     </div>
   );
 }

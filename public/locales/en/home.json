@@ -11,5 +11,6 @@
     "noGuests": "No one is coming",
     "noAnswers": "No answer",
     "comingGuest": "1 person is coming",
-    "comingGuests": "{{count}} persons are coming"
+    "comingGuests": "{{count}} persons are coming",
+    "intlDateTime": "{{val, datetime}}"
 }
