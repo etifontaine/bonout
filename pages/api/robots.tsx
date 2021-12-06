@@ -8,7 +8,7 @@ export default async function handler(
 
   res.setHeader("Content-Type", "text/plain");
   if (process.env.DB_ENV && process.env.DB_ENV === "production") {
-    return res.send("User-agent: *\nAllow: /$\nAllow: /fr$\nDisallow: /");
+    return res.send("User-agent: *\nAllow: /$\nAllow: /fr$\nAllow: /sitemap.xml\nDisallow: /");
   }
 
   res.send("User-agent: *\nDisallow: /");

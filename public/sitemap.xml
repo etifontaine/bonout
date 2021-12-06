@@ -3,9 +3,6 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://bonout.com/</loc>
-    <xhtml:link
-               rel="alternate"
-               hreflang="fr"
-               href="https://bonout.com/fr"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://bonout.com/fr"/>
   </url>
 </urlset>
