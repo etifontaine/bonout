@@ -13,6 +13,20 @@
             "description": "Choisis ton calendrier préféré !"
         }
     },
+    "responses": {
+        "no": {
+            "title": "Vous refusez de venir",
+            "description": "Veuillez confirmer que vous ne viendrez pas à cet événement"
+        },
+        "yes": {
+            "title": "Super! Vous pouvez venir",
+            "description": "Veuillez confirmer votre venue en indiquant votre nom ou pseudo"
+        },
+        "maybe": {
+            "title": "Vous n'êtes pas sûr",
+            "description": "Veuillez confirmer indiquer votre nom ou pseudo pour confirmer votre choix"
+        }
+    },
     "common": {
         "create": "Créer",
         "update": "Modifier",

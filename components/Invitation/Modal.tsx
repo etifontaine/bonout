@@ -31,32 +31,10 @@ export default function InvitationModal({ link, userResponse }: IModal) {
 
   useEffect(() => {
     if (userResponse) {
-      switch (userResponse) {
-        case BoInvitationValidResponse.NO:
-          setContent({
-            title: "Vous refusez de venir",
-            description:
-              "Veuillez confirmer que vous ne viendrez pas à cet événement",
-          });
-          break;
-        case BoInvitationValidResponse.YES:
-          setContent({
-            title: "Super! Vous pouvez venir",
-            description:
-              "Veuillez confirmer votre venue en indiquant votre nom ou pseudo",
-          });
-          break;
-        case BoInvitationValidResponse.MAYBE:
-          setContent({
-            title: "Vous n'êtes pas sûr",
-            description:
-              "Veuillez confirmer indiquer votre nom ou pseudo pour confirmer votre choix",
-          });
-          break;
-
-        default:
-          break;
-      }
+      setContent({
+        title: t(`responses.${userResponse}.title`),
+        description: t(`responses.${userResponse}.description`),
+      });
       setIsOpen(true);
     } else {
       setIsOpen(false);

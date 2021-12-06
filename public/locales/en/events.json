@@ -13,6 +13,20 @@
             "description": "Choose your favorite calendar !"
         }
     },
+    "responses": {
+        "no": {
+            "title": "You refuse to come",
+            "description": "Please confirm that you will not be attending this event"
+        },
+        "yes": {
+            "title": "Great! You can come",
+            "description": "Please confirm your visit by indicating your name or nickname"
+        },
+        "maybe": {
+            "title": "You are not sure",
+            "description": "Please confirm enter your name or nickname to confirm your choice"
+        }
+    },
     "common": {
         "create": "Create",
         "update": "Update",
