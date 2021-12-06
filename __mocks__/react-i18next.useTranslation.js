@@ -1,5 +1,5 @@
 module.exports = () => {
-    return () => ({
-        t: key => key
-    })
-}
+  return () => ({
+    t: (key) => key,
+  });
+};
