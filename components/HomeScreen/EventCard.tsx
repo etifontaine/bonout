@@ -14,16 +14,17 @@ export default function EventCard({ event, ...props }: { event: BoEvent }) {
     const hours = Math.floor(diff / (1000 * 60 * 60));
     const minutes = Math.floor(diff / (1000 * 60)) % 60;
     if (hours == 0) {
-      return t('in_x_minutes', { minutes });
+      return t("in_x_minutes", { minutes });
     } else if (hours < 0) {
-      return t('inProgress');
+      return t("inProgress");
     }
     return `${hours}h${("0" + minutes).slice(-2)}`;
   }
 
   function calcHowManyUsers(users: Array<BoInvitationResponse>) {
-    return users.filter((user) => user.response === BoInvitationValidResponse.YES)
-      .length;
+    return users.filter(
+      (user) => user.response === BoInvitationValidResponse.YES
+    ).length;
   }
 
   function presenceSentences(users: Array<BoInvitationResponse>): string {

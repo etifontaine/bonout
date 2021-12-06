@@ -43,7 +43,7 @@ export default function InvitationModal({ link, userResponse }: IModal) {
 
   const postInvitationResponse = () => {
     if (!formContent?.username) {
-      toast.error(t('errors.pseudo_missing', { ns: 'common' }));
+      toast.error(t("errors.pseudo_missing", { ns: "common" }));
       return;
     }
     localStorage.setItem("user_pseudo", formContent.username);
@@ -64,17 +64,19 @@ export default function InvitationModal({ link, userResponse }: IModal) {
         ) {
           localStorage.setItem("user_id", user_id);
         }
-        toast.info(t('response_success', { ns: 'common' }));
+        toast.info(t("response_success", { ns: "common" }));
         setIsOpen(false);
         Router.push(`/events/details/${link}`);
       } else {
         res
           .json()
           .then((data) => {
-            toast.error(data.error ? data.error : t('errors.catch_all', { ns: 'common' }));
+            toast.error(
+              data.error ? data.error : t("errors.catch_all", { ns: "common" })
+            );
           })
           .catch(() => {
-            toast.error(t('errors.catch_all', { ns: 'common' }));
+            toast.error(t("errors.catch_all", { ns: "common" }));
           });
       }
     });
@@ -86,7 +88,7 @@ export default function InvitationModal({ link, userResponse }: IModal) {
         as="div"
         className="fixed z-40 inset-0 overflow-y-auto"
         initialFocus={cancelButtonRef}
-        onClose={() => { }}
+        onClose={() => {}}
       >
         <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
           <Transition.Child

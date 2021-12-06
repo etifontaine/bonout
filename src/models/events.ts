@@ -154,7 +154,7 @@ export async function isUserComing(
 ): Promise<string | undefined> {
   const event = await getEventByID(eventID);
 
-  if (!event?.invitations) return undefined
+  if (!event?.invitations) return undefined;
 
   const userInvitation = event.invitations.find(
     (invitation) => invitation.user_id === userID
