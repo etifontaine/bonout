@@ -1,5 +1,5 @@
 import { filterBy, sortByDate } from "../../src/utils/array";
-import { FieldValue } from "firebase-admin/firestore";
+import { FieldValue, Firestore, Query } from "firebase-admin/firestore";
 import db from "../db";
 import {
   BoEvent,
@@ -138,6 +138,47 @@ export async function updateEvent(event: BoEvent): Promise<void> {
       start_at: new Date(event.start_at).getTime(),
       end_at: new Date(event.end_at).getTime(),
     });
+}
+
+export async function deletePastEvents() {
+  const queryEvents = db
+    .collection(COLLECTION_NAME_EVENTS)
+    .where("end_at", "<", new Date().getTime())
+    .limit(100);
+
+  return new Promise((resolve, reject) => {
+    deleteQueryBatch(db, queryEvents, resolve).catch(reject);
+  });
+}
+
+async function deleteQueryBatch(db: Firestore, query: Query, resolve: any) {
+  const snapshot = await query.get();
+
+  console.log(`${snapshot.size} old events to delete`)
+
+  const batchSize = snapshot.size;
+  if (batchSize === 0) {
+    // When there are no documents left, we are done
+    resolve();
+    return;
+  }
+
+
+  // Delete documents in a batch
+  const batchEvents = db.batch();
+  snapshot.docs.forEach((doc) => {
+    // Delete invitations linked to the event
+    // db.collection(COLLECTION_NAME_INVITATIONS).
+
+    batchEvents.delete(doc.ref);
+  });
+  await batchEvents.commit();
+
+  // Recurse on the next process tick, to avoid
+  // exploding the stack.
+  process.nextTick(() => {
+    deleteQueryBatch(db, query, resolve);
+  });
 }
 
 export async function isOrganizerOf(
