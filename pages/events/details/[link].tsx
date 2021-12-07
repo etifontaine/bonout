@@ -40,8 +40,18 @@ export async function getServerSideProps(context: {
   const { link } = context.query;
   const event = await getEventByLink(link);
 
+  if (!event) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: "/home",
+      },
+      props: {},
+    };
+  }
+
   const cleanedEvent = {
-    id: event?.id,
+    id: event?.id || null,
     address: event?.address,
     description: event?.description,
     start_at: event?.start_at,
