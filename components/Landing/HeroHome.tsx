@@ -40,8 +40,7 @@ function HeroHome() {
           src={`/images/iphone-${router.locale}.webp`}
           height="438"
           width="219"
-          priority={true}
-          alt="Macbook"
+          alt="iPhone"
         />
         <div className="relative">
           <img
