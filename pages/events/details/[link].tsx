@@ -101,7 +101,7 @@ const EventDetails: NextPage<PageProps> = ({ event }) => {
                     response: t(`common.response.${data.response}`),
                   })
                 );
-                setUserInvitationResponseValue(data.response)
+                setUserInvitationResponseValue(data.response);
               }
             });
           }
@@ -313,10 +313,11 @@ const EventDetails: NextPage<PageProps> = ({ event }) => {
               </div>
               <div className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2 flex items-center">
                 <LinkIcon className="block h-3 w-3 mr-2" aria-hidden="true" />
-                <button className="underline" onClick={() => shareEvent()}>{`${typeof window !== "undefined"
-                  ? `${window.location.host}/events/details/`
-                  : ""
-                  }${event.link}`}</button>
+                <button className="underline" onClick={() => shareEvent()}>{`${
+                  typeof window !== "undefined"
+                    ? `${window.location.host}/events/details/`
+                    : ""
+                }${event.link}`}</button>
               </div>
             </div>
             <div className="py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
@@ -369,19 +370,31 @@ const EventDetails: NextPage<PageProps> = ({ event }) => {
               <div className="py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 flex justify-between">
                 <button
                   onClick={() => setResponse(BoInvitationValidResponse.NO)}
-                  className={`btn border border-black ${userInvitationResponseValue === "non" ? "bg-black text-white" : "text-black"} p-2 btn-sm hover:text-white hover:bg-black`}
+                  className={`btn border border-black ${
+                    userInvitationResponseValue === "non"
+                      ? "bg-black text-white"
+                      : "text-black"
+                  } p-2 btn-sm hover:text-white hover:bg-black`}
                 >
                   {t("common.response.no")}
                 </button>
                 <button
                   onClick={() => setResponse(BoInvitationValidResponse.YES)}
-                  className={`btn border border-black  ${userInvitationResponseValue === "oui" ? "bg-black text-white" : "text-black"}  p-2 btn-sm text-black ml-3 hover:text-white hover:bg-black`}
+                  className={`btn border border-black  ${
+                    userInvitationResponseValue === "oui"
+                      ? "bg-black text-white"
+                      : "text-black"
+                  }  p-2 btn-sm text-black ml-3 hover:text-white hover:bg-black`}
                 >
                   {t("common.response.yes")}
                 </button>
                 <button
                   onClick={() => setResponse(BoInvitationValidResponse.MAYBE)}
-                  className={`btn border border-black ${userInvitationResponseValue === "peut-être" ? "bg-black text-white" : "text-black"}  p-2 btn-sm text-black ml-3 hover:text-white hover:bg-black`}
+                  className={`btn border border-black ${
+                    userInvitationResponseValue === "peut-être"
+                      ? "bg-black text-white"
+                      : "text-black"
+                  }  p-2 btn-sm text-black ml-3 hover:text-white hover:bg-black`}
                 >
                   {t("common.response.maybe")}
                 </button>

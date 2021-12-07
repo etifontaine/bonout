@@ -39,17 +39,21 @@ export async function getEventsByUserID(userID: string): Promise<BoEvent[]> {
     });
 }
 
-export async function getEventsFromUserInvitations(userID: string): Promise<any> {
+export async function getEventsFromUserInvitations(
+  userID: string
+): Promise<any> {
   // Fetch events where the user is invited
   return await db
     .collection(COLLECTION_NAME_INVITATIONS)
     .where("user_id", "==", userID)
     .get()
     .then(async (querySnapshot) => {
-      const events = await Promise.all(querySnapshot.docs.map(async (x) => {
-        const invitation = await x.data() as BoInvitationResponse
-        return await getEventByLink(invitation.link)
-      }));
+      const events = await Promise.all(
+        querySnapshot.docs.map(async (x) => {
+          const invitation = (await x.data()) as BoInvitationResponse;
+          return await getEventByLink(invitation.link);
+        })
+      );
       return events;
     });
 }
@@ -91,7 +95,6 @@ export async function getEventByLink(
 }
 
 export async function createEvent(payload: BoEvent): Promise<BoEvent> {
-
   const event = await db.collection(COLLECTION_NAME_EVENTS).add({
     ...payload,
     created_at: new Date().toISOString(),
@@ -173,9 +176,11 @@ export async function deleteInvitationResponse(
     });
   }
 
-  const userID = payload.user_id
+  const userID = payload.user_id;
   if (userID) {
-    const invitations_query = db.collection(COLLECTION_NAME_INVITATIONS).doc(userID)
+    const invitations_query = db
+      .collection(COLLECTION_NAME_INVITATIONS)
+      .doc(userID);
   }
 
   return eventRef;
@@ -201,14 +206,16 @@ async function deleteQueryBatch(db: Firestore, query: Query, resolve: any) {
     resolve();
     return;
   }
-  console.log(`${snapshot.size} old events to delete`)
+  console.log(`${snapshot.size} old events to delete`);
 
   // Delete documents in a batch
   const batchEvents = db.batch();
   snapshot.docs.forEach((doc) => {
     // Delete invitations linked to the event
-    const docInvitation = doc.data() as BoEvent
-    const invitations_query = db.collection(COLLECTION_NAME_INVITATIONS).where("link", "==", docInvitation.link);
+    const docInvitation = doc.data() as BoEvent;
+    const invitations_query = db
+      .collection(COLLECTION_NAME_INVITATIONS)
+      .where("link", "==", docInvitation.link);
 
     invitations_query.get().then(function (querySnapshot) {
       querySnapshot.forEach(function (doc) {
