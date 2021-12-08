@@ -244,15 +244,10 @@ async function deleteQueryBatch(db: Firestore, query: Query, resolve: any) {
 async function deleteDocumentBatch(db: Firestore, doc: DocumentSnapshot) {
   logger.info(`1 events to delete`);
 
-  // Delete documents in a batch
-  const batchEvents = db.batch();
-
   // Delete invitations linked to the event
   await deleteInviationByEventDocumentSnapshot(db, doc);
-
-  batchEvents.delete(doc.ref);
-
-  await batchEvents.commit();
+  // Delete the event
+  doc.ref.delete();
 }
 
 async function deleteInviationByEventDocumentSnapshot(
