@@ -1,15 +1,13 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { firestore } from "firebase-admin";
 import ShortUniqueId from "short-unique-id";
-import type { BoEvent } from "../../../src/types";
-import { RequestError } from "../../../src/utils/CustomErrors";
-import { API_ERROR_MESSAGES } from "../../../src/utils/errorMessages";
+import type { BoEvent } from "@src/types";
+import { RequestError } from "@src/utils/CustomErrors";
+import { API_ERROR_MESSAGES } from "@src/utils/errorMessages";
 import {
-  getEvents,
   createEvent,
   updateEvent,
   isOrganizerOf,
-} from "../../../src/models/events";
+} from "@src/models/events";
 
 export default async function handler(
   req: NextApiRequest,
@@ -18,9 +16,6 @@ export default async function handler(
   >
 ) {
   try {
-    if (isGetRequest())
-      await getEvents().then((events) => res.status(200).json(events));
-
     if (isPostRequest())
       await createEventHandler().then((event) => {
         return res.status(201).json(event);
@@ -37,10 +32,6 @@ export default async function handler(
       console.error(err);
       res.status(500).json({ error: "Internal server error" });
     }
-  }
-
-  function isGetRequest(): boolean {
-    return req.method === "GET";
   }
 
   function isPostRequest(): boolean {
