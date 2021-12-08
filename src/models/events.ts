@@ -1,4 +1,11 @@
-import { FieldValue, Firestore, Query } from "firebase-admin/firestore";
+import {
+  DocumentReference,
+  DocumentSnapshot,
+  FieldValue,
+  Firestore,
+  Query,
+  QuerySnapshot,
+} from "firebase-admin/firestore";
 import db from "../db";
 import {
   BoEvent,
@@ -199,13 +206,12 @@ export async function deletePastEvents() {
 }
 
 export async function deleteEvent(eventID: BoEvent["id"]): Promise<void> {
-  const queryEvents = db
+  const documentEvent = await db
     .collection(COLLECTION_NAME_EVENTS)
-    .where("id", "==", eventID);
+    .doc(eventID)
+    .get();
 
-  return new Promise((resolve, reject) => {
-    deleteQueryBatch(db, queryEvents, resolve).catch(reject);
-  });
+  return deleteDocumentBatch(db, documentEvent);
 }
 
 async function deleteQueryBatch(db: Firestore, query: Query, resolve: any) {
@@ -223,17 +229,7 @@ async function deleteQueryBatch(db: Firestore, query: Query, resolve: any) {
   const batchEvents = db.batch();
   snapshot.docs.forEach((doc) => {
     // Delete invitations linked to the event
-    const docInvitation = doc.data() as BoEvent;
-    const invitations_query = db
-      .collection(COLLECTION_NAME_INVITATIONS)
-      .where("link", "==", docInvitation.link);
-
-    invitations_query.get().then(function (querySnapshot) {
-      querySnapshot.forEach(function (doc) {
-        doc.ref.delete();
-      });
-    });
-
+    deleteInviationByEventDocumentSnapshot(db, doc);
     batchEvents.delete(doc.ref);
   });
   await batchEvents.commit();
@@ -242,5 +238,42 @@ async function deleteQueryBatch(db: Firestore, query: Query, resolve: any) {
   // exploding the stack.
   process.nextTick(() => {
     deleteQueryBatch(db, query, resolve);
+  });
+}
+
+async function deleteDocumentBatch(db: Firestore, doc: DocumentSnapshot) {
+  logger.info(`1 events to delete`);
+
+  // Delete documents in a batch
+  const batchEvents = db.batch();
+
+  // Delete invitations linked to the event
+  await deleteInviationByEventDocumentSnapshot(db, doc);
+
+  batchEvents.delete(doc.ref);
+
+  await batchEvents.commit();
+
+  // Recurse on the next process tick, to avoid
+  // exploding the stack.
+  process.nextTick(async () => {
+    await deleteDocumentBatch(db, doc);
+  });
+}
+
+async function deleteInviationByEventDocumentSnapshot(
+  db: Firestore,
+  doc: DocumentSnapshot
+) {
+  // Delete invitations linked to the event
+  const docInvitation = doc.data() as BoEvent;
+  const invitations_query = db
+    .collection(COLLECTION_NAME_INVITATIONS)
+    .where("link", "==", docInvitation.link);
+
+  return invitations_query.get().then(function (querySnapshot) {
+    querySnapshot.forEach(function (doc) {
+      doc.ref.delete();
+    });
   });
 }
