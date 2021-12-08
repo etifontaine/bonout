@@ -1,11 +1,11 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import type { BoEvent } from "@src/types";
-import { RequestError } from "../../../../src/utils/CustomErrors";
-import { API_ERROR_MESSAGES } from "../../../../src/utils/errorMessages";
+import { RequestError } from "@src/utils/CustomErrors";
+import { API_ERROR_MESSAGES } from "@src/utils/errorMessages";
 import {
   getEventsByUserID,
   getEventsFromUserInvitations,
-} from "../../../../src/models/events";
+} from "@src/models/events";
 import { filterBy, sortByDate } from "@src/utils/array";
 
 export default async function handler(
@@ -19,7 +19,7 @@ export default async function handler(
       getIdParameter(req)
     );
     const allEvents = [...events, ...eventsInvitations];
-    const filteredEvents = filterBy(sortByDate(allEvents, "start_at"), "id");
+    const filteredEvents = filterBy(sortByDate(allEvents.filter(n => n), "start_at"), "id");
     res.status(200).json(filteredEvents);
   } catch (err) {
     if (err instanceof RequestError) {

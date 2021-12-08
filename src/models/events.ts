@@ -141,7 +141,7 @@ export async function isUserComing(
   const userInvitation = event.invitations.find(
     (invitation) => invitation.user_id === userID
   );
-  return userInvitation ? responses[userInvitation?.response] : undefined;
+  return userInvitation ? userInvitation.response : undefined;
 }
 
 export async function createInvitationResponse(
