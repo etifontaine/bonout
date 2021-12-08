@@ -10,6 +10,7 @@ import {
   getEventByLink,
 } from "../../../../src/models/events";
 import ShortUniqueId from "short-unique-id";
+import logger from "@src/logger";
 
 export default async function handler(
   req: NextApiRequest,
@@ -88,7 +89,7 @@ export default async function handler(
       });
     })
     .catch((e: { message: string }) => {
-      console.log(e);
+      logger.error(e)
       return res.status(500).json({ error: e.message });
     });
 }

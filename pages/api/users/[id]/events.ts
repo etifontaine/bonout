@@ -7,6 +7,7 @@ import {
   getEventsFromUserInvitations,
 } from "@src/models/events";
 import { filterBy, sortByDate } from "@src/utils/array";
+import logger from "@src/logger";
 
 export default async function handler(
   req: NextApiRequest,
@@ -31,7 +32,7 @@ export default async function handler(
     if (err instanceof RequestError) {
       res.status(400).json({ error: err.message });
     } else {
-      console.log(err);
+      logger.error(err);
       res.status(500).json({ error: "Internal server error" });
     }
   }

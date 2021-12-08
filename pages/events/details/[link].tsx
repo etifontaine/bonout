@@ -23,6 +23,7 @@ import {
 } from "@heroicons/react/outline";
 import { useTranslation } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import logger from "@src/logger";
 
 interface PageProps {
   event: BoEvent & { comingGuestAmount: number };
@@ -122,7 +123,7 @@ const EventDetails: NextPage<PageProps> = ({ event }) => {
           text: event.description,
           url: event.link,
         })
-        .catch((error) => console.log("Error sharing", error));
+        .catch((error) => logger.error({ message: "Error sharing", error }));
     }
   };
 
@@ -313,11 +314,10 @@ const EventDetails: NextPage<PageProps> = ({ event }) => {
               </div>
               <div className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2 flex items-center">
                 <LinkIcon className="block h-3 w-3 mr-2" aria-hidden="true" />
-                <button className="underline" onClick={() => shareEvent()}>{`${
-                  typeof window !== "undefined"
+                <button className="underline" onClick={() => shareEvent()}>{`${typeof window !== "undefined"
                     ? `${window.location.host}/events/details/`
                     : ""
-                }${event.link}`}</button>
+                  }${event.link}`}</button>
               </div>
             </div>
             <div className="py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
@@ -367,33 +367,30 @@ const EventDetails: NextPage<PageProps> = ({ event }) => {
               <div className="py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 flex justify-between">
                 <button
                   onClick={() => setResponse(BoInvitationValidResponse.NO)}
-                  className={`btn border border-black ${
-                    userInvitationResponseValue === BoInvitationValidResponse.NO
+                  className={`btn border border-black ${userInvitationResponseValue === BoInvitationValidResponse.NO
                       ? "bg-black text-white"
                       : "text-black"
-                  } p-2 btn-sm hover:text-white hover:bg-black`}
+                    } p-2 btn-sm hover:text-white hover:bg-black`}
                 >
                   {t("common.response.no")}
                 </button>
                 <button
                   onClick={() => setResponse(BoInvitationValidResponse.YES)}
-                  className={`btn border border-black ${
-                    userInvitationResponseValue ===
-                    BoInvitationValidResponse.YES
+                  className={`btn border border-black ${userInvitationResponseValue ===
+                      BoInvitationValidResponse.YES
                       ? "bg-black text-white"
                       : "text-black"
-                  } p-2 btn-sm text-black ml-3 hover:text-white hover:bg-black`}
+                    } p-2 btn-sm text-black ml-3 hover:text-white hover:bg-black`}
                 >
                   {t("common.response.yes")}
                 </button>
                 <button
                   onClick={() => setResponse(BoInvitationValidResponse.MAYBE)}
-                  className={`btn border border-black ${
-                    userInvitationResponseValue ===
-                    BoInvitationValidResponse.MAYBE
+                  className={`btn border border-black ${userInvitationResponseValue ===
+                      BoInvitationValidResponse.MAYBE
                       ? "bg-black text-white"
                       : "text-black"
-                  }  p-2 btn-sm text-black ml-3 hover:text-white hover:bg-black`}
+                    }  p-2 btn-sm text-black ml-3 hover:text-white hover:bg-black`}
                 >
                   {t("common.response.maybe")}
                 </button>
