@@ -16,7 +16,7 @@ export default function EventCard({ event, ...props }: { event: BoEvent }) {
     if (hours == 0) {
       return t("in_x_minutes", { minutes });
     } else if (hours > 0) {
-      const minutesFormated = ("0" + minutes).slice(-2)
+      const minutesFormated = ("0" + minutes).slice(-2);
       return t("in_hours_x_minutes", { hours, minutesFormated });
     }
     return t("inProgress");
