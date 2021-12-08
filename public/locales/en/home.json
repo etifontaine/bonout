@@ -8,6 +8,7 @@
     "noEvent": "No upcoming events",
     "inProgress": "In progress",
     "in_x_minutes": "In {{minutes}} min",
+    "in_hours_x_minutes": "In {{hours}}h{{minutesFormated}}",
     "noGuests": "No one is coming",
     "noAnswers": "No answer",
     "comingGuest": "1 person is coming",
