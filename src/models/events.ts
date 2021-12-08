@@ -1,11 +1,15 @@
-import { FieldValue, Firestore, Query } from "firebase-admin/firestore";
+import {
+  DocumentSnapshot,
+  FieldValue,
+  Firestore,
+  Query,
+} from "firebase-admin/firestore";
 import db from "../db";
 import {
   BoEvent,
   BoInvitationResponse,
   BoInvitationValidResponse,
 } from "../types";
-import { responses } from "content/responses";
 import logger from "@src/logger";
 
 const COLLECTION_NAME_EVENTS = `${process.env.DB_ENV}_events`;
@@ -198,6 +202,18 @@ export async function deletePastEvents() {
   });
 }
 
+export async function deleteEvent(eventID: BoEvent["id"]): Promise<void> {
+  return await db
+    .collection(COLLECTION_NAME_EVENTS)
+    .doc(eventID)
+    .get()
+    .then(async (doc) => {
+      logger.info(`${eventID}-event will be deleted`);
+      await deleteInvitationByEventDocumentSnapshot(db, doc);
+      doc.ref.delete();
+    });
+}
+
 async function deleteQueryBatch(db: Firestore, query: Query, resolve: any) {
   const snapshot = await query.get();
 
@@ -207,23 +223,13 @@ async function deleteQueryBatch(db: Firestore, query: Query, resolve: any) {
     resolve();
     return;
   }
-  logger.info(`${snapshot.size} old events to delete`);
+  logger.info(`${snapshot.size} events to delete`);
 
   // Delete documents in a batch
   const batchEvents = db.batch();
   snapshot.docs.forEach((doc) => {
     // Delete invitations linked to the event
-    const docInvitation = doc.data() as BoEvent;
-    const invitations_query = db
-      .collection(COLLECTION_NAME_INVITATIONS)
-      .where("link", "==", docInvitation.link);
-
-    invitations_query.get().then(function (querySnapshot) {
-      querySnapshot.forEach(function (doc) {
-        doc.ref.delete();
-      });
-    });
-
+    deleteInvitationByEventDocumentSnapshot(db, doc);
     batchEvents.delete(doc.ref);
   });
   await batchEvents.commit();
@@ -233,4 +239,21 @@ async function deleteQueryBatch(db: Firestore, query: Query, resolve: any) {
   process.nextTick(() => {
     deleteQueryBatch(db, query, resolve);
   });
+}
+
+async function deleteInvitationByEventDocumentSnapshot(
+  db: Firestore,
+  doc: DocumentSnapshot
+) {
+  // Delete invitations linked to the event
+  const docInvitation = doc.data() as BoEvent;
+  return db
+    .collection(COLLECTION_NAME_INVITATIONS)
+    .where("link", "==", docInvitation.link)
+    .get()
+    .then(function (querySnapshot) {
+      querySnapshot.forEach(function (doc) {
+        doc.ref.delete();
+      });
+    });
 }

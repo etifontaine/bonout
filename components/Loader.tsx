@@ -7,7 +7,7 @@ export default function Loader() {
           rounded-full
           h-32
           w-32
-          border-t-4 border-b-4 border-purple-500"
+          border-t-4 border-b-4 border-black"
       ></div>
     </div>
   );

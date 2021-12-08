@@ -1,77 +1,84 @@
 {
-    "create": {
-        "title": "Create an event"
-    },
-    "edit": {
-        "title": "Update the event",
-        "unauthorized": "You are not authorized to modify this event",
-        "backToEvent": "Return to event"
-    },
-    "calendar": {
-        "addToCalendar": {
-            "title": "Add to calendar",
-            "description": "Choose your favorite calendar !"
-        }
-    },
-    "responses": {
-        "no": {
-            "title": "You refuse to come",
-            "description": "Please confirm that you will not be attending this event"
-        },
-        "yes": {
-            "title": "Great! You can come",
-            "description": "Please confirm your visit by indicating your name or nickname"
-        },
-        "maybe": {
-            "title": "You are not sure",
-            "description": "Please confirm enter your name or nickname to confirm your choice"
-        }
-    },
-    "common": {
-        "create": "Create",
-        "update": "Update",
-        "other": "Other",
-        "organizer": "Organizer",
-        "date": "Date",
-        "address": "Address",
-        "link": "Link",
-        "guests": "Guests",
-        "guestsList": "Check the list",
-        "yourEvent": "It's your event",
-        "anonymous": "Anonymous",
-        "userName": {
-            "placeholder": "Name or pseudo",
-            "label": "Name"
-        },
-        "name": {
-            "placeholder": "Event name",
-            "label": "Event name"
-        },
-        "description": {
-            "placeholder": "Description of the event",
-            "label": "And some info?"
-        },
-        "startAt": {
-            "label": "When does it start?"
-        },
-        "endAt": {
-            "label": "Until ?"
-        },
-        "location": {
-            "placeholder": "Even place",
-            "label": "A place ?"
-        },
-        "response": {
-            "yes": "Confirm",
-            "oui": "Confirm",
-            "no": "Refuse",
-            "non": "Refuse",
-            "maybe": "Maybe",
-            "peut-être": "Maybe"
-        },
-        "userResponse": "You said: {{response}}"
-    },
-    "date": {
-        "intlDateTimeFromTo": "{{start_at, datetime}} until {{end_at, datetime}}"
+  "create": {
+    "title": "Create an event"
+  },
+  "edit": {
+    "title": "Update the event",
+    "unauthorized": "You are not authorized to modify this event",
+    "backToEvent": "Return to event"
+  },
+  "calendar": {
+    "addToCalendar": {
+      "title": "Add to calendar",
+      "description": "Choose your favorite calendar !"
     }
+  },
+  "deleteModal": {
+    "title": "Delete this event",
+    "description": "Are you sure you want to delete this event ?"
+  },
+  "responses": {
+    "no": {
+      "title": "You refuse to come",
+      "description": "Please confirm that you will not be attending this event"
+    },
+    "yes": {
+      "title": "Great! You can come",
+      "description": "Please confirm your visit by indicating your name or nickname"
+    },
+    "maybe": {
+      "title": "You are not sure",
+      "description": "Please confirm enter your name or nickname to confirm your choice"
+    }
+  },
+  "common": {
+    "create": "Create",
+    "update": "Update",
+    "other": "Other",
+    "organizer": "Organizer",
+    "date": "Date",
+    "address": "Address",
+    "link": "Link",
+    "guests": "Guests",
+    "guestsList": "Check the list",
+    "yourEvent": "It's your event",
+    "anonymous": "Anonymous",
+    "userName": {
+      "placeholder": "Name or pseudo",
+      "label": "Name"
+    },
+    "name": {
+      "placeholder": "Event name",
+      "label": "Event name"
+    },
+    "description": {
+      "placeholder": "Description of the event",
+      "label": "And some info?"
+    },
+    "startAt": {
+      "label": "When does it start?"
+    },
+    "endAt": {
+      "label": "Until ?"
+    },
+    "location": {
+      "placeholder": "Even place",
+      "label": "A place ?"
+    },
+    "response": {
+      "yes": "Confirm",
+      "oui": "Confirm",
+      "no": "Refuse",
+      "non": "Refuse",
+      "maybe": "Maybe",
+      "peut-être": "Maybe"
+    },
+    "userResponse": "You said: {{response}}",
+    "errors": {
+      "deleteEvent": "An error occured while deleting the event"
+    }
+  },
+  "date": {
+    "intlDateTimeFromTo": "{{start_at, datetime}} until {{end_at, datetime}}"
+  }
 }
