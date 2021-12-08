@@ -253,12 +253,6 @@ async function deleteDocumentBatch(db: Firestore, doc: DocumentSnapshot) {
   batchEvents.delete(doc.ref);
 
   await batchEvents.commit();
-
-  // Recurse on the next process tick, to avoid
-  // exploding the stack.
-  process.nextTick(async () => {
-    await deleteDocumentBatch(db, doc);
-  });
 }
 
 async function deleteInviationByEventDocumentSnapshot(
