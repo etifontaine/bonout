@@ -208,7 +208,7 @@ export async function deleteEvent(eventID: BoEvent["id"]): Promise<void> {
     .doc(eventID)
     .get()
     .then(async (doc) => {
-      logger.info(`1 events to delete`);
+      logger.info(`${eventID} events to delete`);
       await deleteInvitationByEventDocumentSnapshot(db, doc);
       doc.ref.delete();
     });
