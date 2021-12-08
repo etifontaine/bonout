@@ -3,7 +3,10 @@ import admin from "firebase-admin";
 
 if (!admin.apps.length) {
   try {
-    if (process.env.DB_ENV === "production" || process.env.DB_ENV === "staging") {
+    if (
+      process.env.DB_ENV === "production" ||
+      process.env.DB_ENV === "staging"
+    ) {
       admin.initializeApp({
         serviceAccountId: process.env.SA_ID,
       });
@@ -15,7 +18,7 @@ if (!admin.apps.length) {
       });
     }
   } catch (error) {
-    logger.error({"message": "Firebase admin initialization error", error});
+    logger.error({ message: "Firebase admin initialization error", error });
   }
 }
 

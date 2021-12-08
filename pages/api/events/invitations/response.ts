@@ -89,7 +89,7 @@ export default async function handler(
       });
     })
     .catch((e: { message: string }) => {
-      logger.error(e)
+      logger.error(e);
       return res.status(500).json({ error: e.message });
     });
 }

@@ -1,6 +1,6 @@
-import pino from 'pino'
+import pino from "pino";
 
-const logger = pino()
+const logger = pino();
 
-export const log = (msg: any) => logger.info(msg)
-export default logger
+export const log = (msg: any) => logger.info(msg);
+export default logger;
