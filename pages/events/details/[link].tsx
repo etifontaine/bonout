@@ -23,6 +23,7 @@ import {
 } from "@heroicons/react/outline";
 import { useTranslation } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import logger from "@src/logger";
 
 interface PageProps {
   event: BoEvent & { comingGuestAmount: number };
@@ -122,7 +123,7 @@ const EventDetails: NextPage<PageProps> = ({ event }) => {
           text: event.description,
           url: event.link,
         })
-        .catch((error) => console.log("Error sharing", error));
+        .catch((error) => logger.error({ message: "Error sharing", error }));
     }
   };
 

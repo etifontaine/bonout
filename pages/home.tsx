@@ -11,6 +11,7 @@ import Head from "next/head";
 import { useTranslation } from "next-i18next";
 import Skeleton from "react-loading-skeleton";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import logger from "@src/logger";
 
 export const getStaticProps = async ({ locale }: any) => ({
   props: {
@@ -32,7 +33,7 @@ const Home: NextPage = () => {
         setTodayEvents(getTodayEvents(events));
       })
       .catch((err) => {
-        console.log(err);
+        logger.error(err);
         toast.error("Can't get events");
       })
       .finally(() => setIsLoading(false));

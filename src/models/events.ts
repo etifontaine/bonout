@@ -6,6 +6,7 @@ import {
   BoInvitationValidResponse,
 } from "../types";
 import { responses } from "content/responses";
+import logger from "@src/logger";
 
 const COLLECTION_NAME_EVENTS = `${process.env.DB_ENV}_events`;
 const COLLECTION_NAME_INVITATIONS = `${process.env.DB_ENV}_invitations`;
@@ -206,7 +207,7 @@ async function deleteQueryBatch(db: Firestore, query: Query, resolve: any) {
     resolve();
     return;
   }
-  console.log(`${snapshot.size} old events to delete`);
+  logger.info(`${snapshot.size} old events to delete`);
 
   // Delete documents in a batch
   const batchEvents = db.batch();
