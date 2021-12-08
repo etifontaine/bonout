@@ -203,12 +203,15 @@ export async function deletePastEvents() {
 }
 
 export async function deleteEvent(eventID: BoEvent["id"]): Promise<void> {
-  const documentEvent = await db
+  return await db
     .collection(COLLECTION_NAME_EVENTS)
     .doc(eventID)
-    .get();
-
-  return deleteDocumentBatch(db, documentEvent);
+    .get()
+    .then(async (doc) => {
+      logger.info(`1 events to delete`);
+      await deleteInvitationByEventDocumentSnapshot(db, doc);
+      doc.ref.delete();
+    });
 }
 
 async function deleteQueryBatch(db: Firestore, query: Query, resolve: any) {
@@ -236,15 +239,6 @@ async function deleteQueryBatch(db: Firestore, query: Query, resolve: any) {
   process.nextTick(() => {
     deleteQueryBatch(db, query, resolve);
   });
-}
-
-async function deleteDocumentBatch(db: Firestore, doc: DocumentSnapshot) {
-  logger.info(`1 events to delete`);
-
-  // Delete invitations linked to the event
-  await deleteInvitationByEventDocumentSnapshot(db, doc);
-  // Delete the event
-  doc.ref.delete();
 }
 
 async function deleteInvitationByEventDocumentSnapshot(
