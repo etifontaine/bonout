@@ -1,8 +1,12 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import type { BoEvent } from "@src/types";
-import { RequestError } from "../../../../src/utils/CustomErrors";
-import { API_ERROR_MESSAGES } from "../../../../src/utils/errorMessages";
-import { getEventsByUserID } from "../../../../src/models/events";
+import { RequestError } from "@src/utils/CustomErrors";
+import { API_ERROR_MESSAGES } from "@src/utils/errorMessages";
+import {
+  getEventsByUserID,
+  getEventsFromUserInvitations,
+} from "@src/models/events";
+import { filterBy, sortByDate } from "@src/utils/array";
 
 export default async function handler(
   req: NextApiRequest,
@@ -11,7 +15,18 @@ export default async function handler(
   if (req.method !== "GET") return res.status(405).end();
   try {
     const events = await getEventsByUserID(getIdParameter(req));
-    res.status(200).json(events);
+    const eventsInvitations = await getEventsFromUserInvitations(
+      getIdParameter(req)
+    );
+    const allEvents = [...events, ...eventsInvitations];
+    const filteredEvents = filterBy(
+      sortByDate(
+        allEvents.filter((n) => n),
+        "start_at"
+      ),
+      "id"
+    );
+    res.status(200).json(filteredEvents);
   } catch (err) {
     if (err instanceof RequestError) {
       res.status(400).json({ error: err.message });
