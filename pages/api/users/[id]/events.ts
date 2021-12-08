@@ -19,7 +19,13 @@ export default async function handler(
       getIdParameter(req)
     );
     const allEvents = [...events, ...eventsInvitations];
-    const filteredEvents = filterBy(sortByDate(allEvents.filter(n => n), "start_at"), "id");
+    const filteredEvents = filterBy(
+      sortByDate(
+        allEvents.filter((n) => n),
+        "start_at"
+      ),
+      "id"
+    );
     res.status(200).json(filteredEvents);
   } catch (err) {
     if (err instanceof RequestError) {
