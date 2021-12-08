@@ -3,16 +3,19 @@ import type { NextPage } from "next";
 import Link from "next/link";
 import Router from "next/router";
 import Head from "next/head";
-import dayjs from "dayjs";
 import Skeleton from "react-loading-skeleton";
 import Header from "@components/Header";
-import Modal from "@components/Invitation/Modal";
+import ModalInvitation from "@components/Invitation/Modal";
 import useIsOrganizerOfEvent from "hooks/useIsEventOrganiser";
 import GuestListModal from "@components/GuestListModal";
 import { BoEvent, BoInvitationValidResponse } from "src/types";
 import { getEventByLink } from "src/models/events";
 import { getUserID } from "src/utils/user";
 import AddCalendarModal from "@components/AddCalendarModal";
+import Modal from "@components/Modal";
+import Loader from "@components/Loader";
+
+const DeleteModal = Modal;
 import {
   CalendarIcon,
   LinkIcon,
@@ -20,10 +23,12 @@ import {
   PencilIcon,
   UserGroupIcon,
   UserIcon,
+  TrashIcon,
 } from "@heroicons/react/outline";
 import { useTranslation } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import logger from "@src/logger";
+import { toast } from "react-toastify";
 
 interface PageProps {
   event: BoEvent & { comingGuestAmount: number };
@@ -88,7 +93,9 @@ const EventDetails: NextPage<PageProps> = ({ event }) => {
 
   const [modalContent, setModal] = useState<IModal>({});
   const [isGuestListVisible, setGuestListVisible] = useState(false);
+  const [isDeleteModalVisible, setDeleteModalVisible] = useState(false);
   const [isAddCalendarVisible, setAddCalendarVisible] = useState(false);
+  const [isLoading, setLoading] = useState(false);
 
   useEffect(() => {
     if (getUserID() && !isOrganizer && userChecked) {
@@ -140,94 +147,48 @@ const EventDetails: NextPage<PageProps> = ({ event }) => {
     }
   };
 
+  const handleDeleteEvent = () => {
+    setDeleteModalVisible(false);
+    setLoading(true);
+
+    fetch(`/api/events/`, {
+      method: "DELETE",
+      body: JSON.stringify({ id: event.id, user_id: getUserID() }),
+    }).then((res) => {
+      if (res.status === 200) {
+        Router.push("/home");
+      } else {
+        setLoading(false);
+        logger.error({ message: "Error deleting event", res });
+        toast.error(t("common.error.deleteEvent"));
+      }
+    });
+  };
+
   return (
     <>
       <Head>
         <title>Bonout - {event.title}</title>
         <meta property="og:title" content={`Bonout - ${event.title}`} />
         <meta property="og:description" content={`${event.description}`} />
-        <meta
-          property="og:image"
-          content="https://bonout.com/header-30112021.png"
-        />
-        <link
-          rel="apple-touch-icon"
-          sizes="57x57"
-          href="/logos/apple-icon-57x57.png"
-        />
-        <link
-          rel="apple-touch-icon"
-          sizes="60x60"
-          href="/logos/apple-icon-60x60.png"
-        />
-        <link
-          rel="apple-touch-icon"
-          sizes="72x72"
-          href="/logos/apple-icon-72x72.png"
-        />
-        <link
-          rel="apple-touch-icon"
-          sizes="76x76"
-          href="/logos/apple-icon-76x76.png"
-        />
-        <link
-          rel="apple-touch-icon"
-          sizes="114x114"
-          href="/logos/apple-icon-114x114.png"
-        />
-        <link
-          rel="apple-touch-icon"
-          sizes="120x120"
-          href="/logos/apple-icon-120x120.png"
-        />
-        <link
-          rel="apple-touch-icon"
-          sizes="144x144"
-          href="/logos/apple-icon-144x144.png"
-        />
-        <link
-          rel="apple-touch-icon"
-          sizes="152x152"
-          href="/logos/apple-icon-152x152.png"
-        />
-        <link
-          rel="apple-touch-icon"
-          sizes="180x180"
-          href="/logos/apple-icon-180x180.png"
-        />
-        <link
-          rel="icon"
-          type="image/png"
-          sizes="192x192"
-          href="/logos/android-icon-192x192.png"
-        />
-        <link
-          rel="icon"
-          type="image/png"
-          sizes="32x32"
-          href="/logos/favicon-32x32.png"
-        />
-        <link
-          rel="icon"
-          type="image/png"
-          sizes="96x96"
-          href="/logos/favicon-96x96.png"
-        />
-        <link
-          rel="icon"
-          type="image/png"
-          sizes="16x16"
-          href="/logos/favicon-16x16.png"
-        />
-        <link rel="manifest" href="/manifest.json" />
-        <meta charSet="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta name="theme-color" content="#F3F2ED" />
       </Head>
-      <Modal
+      <ModalInvitation
         link={modalContent.link}
         userResponse={modalContent.userResponse}
       />
+
+      <DeleteModal
+        isOpen={isDeleteModalVisible}
+        content={{
+          title: t("deleteModal.title"),
+          description: t("deleteModal.description"),
+        }}
+        onClose={() => setDeleteModalVisible(false)}
+        onConfirm={handleDeleteEvent}
+        icon={<TrashIcon className="h-20 w-20" aria-hidden="true" />}
+      >
+        {" "}
+      </DeleteModal>
 
       <AddCalendarModal
         isOpen={isAddCalendarVisible}
@@ -245,7 +206,19 @@ const EventDetails: NextPage<PageProps> = ({ event }) => {
       {/*  Site header */}
       <Header />
       <section className="pt-24 md:mt-0 h-screen flex justify-center md:flex-row md:justify-between lg:px-48 md:px-12 px-4 bg-secondary">
-        <div className="md:max-w-3xl mx-auto w-full text-left">
+        {isLoading && (
+          <div className="absolute top-0 left-0 right-0 bottom-0">
+            <Loader />
+          </div>
+        )}
+
+        <div
+          className={
+            "md:max-w-3xl mx-auto w-full text-left" +
+            " " +
+            (isLoading ? "filter blur-sm pointer-events-none" : "")
+          }
+        >
           <div className="py-5 sm:px-4 grid grid-cols-5">
             <div className="col-span-4">
               <h3 className="text-lg leading-6 font-medium text-gray-900">
@@ -257,12 +230,21 @@ const EventDetails: NextPage<PageProps> = ({ event }) => {
             </div>
             {isOrganizer ? (
               <div className="flex justify-end items-center">
+                <TrashIcon
+                  onClick={(e) => setDeleteModalVisible(true)}
+                  className="block h-4 w-4 cursor-pointer"
+                  aria-hidden="true"
+                />
+
                 <Link
                   href="/events/edit/[link]"
                   as={`/events/edit/${event.link}`}
                 >
                   <a>
-                    <PencilIcon className="block h-4 w-4" aria-hidden="true" />
+                    <PencilIcon
+                      className="block ml-4 h-4 w-4"
+                      aria-hidden="true"
+                    />
                   </a>
                 </Link>
               </div>
