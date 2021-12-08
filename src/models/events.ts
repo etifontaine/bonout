@@ -247,13 +247,13 @@ async function deleteInvitationByEventDocumentSnapshot(
 ) {
   // Delete invitations linked to the event
   const docInvitation = doc.data() as BoEvent;
-  const invitations_query = db
+  return db
     .collection(COLLECTION_NAME_INVITATIONS)
-    .where("link", "==", docInvitation.link);
-
-  return invitations_query.get().then(function (querySnapshot) {
-    querySnapshot.forEach(function (doc) {
-      doc.ref.delete();
+    .where("link", "==", docInvitation.link)
+    .get()
+    .then(function (querySnapshot) {
+      querySnapshot.forEach(function (doc) {
+        doc.ref.delete();
+      });
     });
-  });
 }
