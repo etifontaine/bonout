@@ -1,10 +1,8 @@
 import {
-  DocumentReference,
   DocumentSnapshot,
   FieldValue,
   Firestore,
   Query,
-  QuerySnapshot,
 } from "firebase-admin/firestore";
 import db from "../db";
 import {
@@ -12,7 +10,6 @@ import {
   BoInvitationResponse,
   BoInvitationValidResponse,
 } from "../types";
-import { responses } from "content/responses";
 import logger from "@src/logger";
 
 const COLLECTION_NAME_EVENTS = `${process.env.DB_ENV}_events`;
