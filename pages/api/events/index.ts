@@ -6,8 +6,10 @@ import { API_ERROR_MESSAGES } from "@src/utils/errorMessages";
 import {
   createEvent,
   updateEvent,
+  deleteEvent,
   isOrganizerOf,
 } from "@src/models/events";
+import { pipe } from "fp-ts/lib/function";
 
 export default async function handler(
   req: NextApiRequest,
@@ -16,6 +18,10 @@ export default async function handler(
   >
 ) {
   try {
+    if (isDeleteRequest())
+      await deleteEventHandler().then(() =>
+        res.status(200).json({ message: "Event deleted" })
+      );
     if (isPostRequest())
       await createEventHandler().then((event) => {
         return res.status(201).json(event);
@@ -42,8 +48,19 @@ export default async function handler(
     return req.method === "PUT";
   }
 
+  function isDeleteRequest(): boolean {
+    return req.method === "DELETE";
+  }
+
   async function createEventHandler(): Promise<BoEvent> {
-    return await createEvent(setLink(setUserId(getBodyPayload())));
+    return pipe(
+      getBodyPayload(),
+      checkIfPorpertyMissing(fieldsToCheck()),
+      checkEventTypes(fieldsToCheck()),
+      setUserId,
+      setLink,
+      createEvent
+    );
 
     function setLink(payload: BoEvent): BoEvent {
       const uid = new ShortUniqueId({ length: 10 });
@@ -66,27 +83,42 @@ export default async function handler(
   }
 
   async function updateEventHandler(): Promise<void> {
-    return await updateEvent(
-      await checkIfUserIsOrganizer(checkIfEventIdIsDefined(getBodyPayload()))
-    );
+    return pipe(
+      getBodyPayload(),
+      checkIfPorpertyMissing([...fieldsToCheck(), "id"]),
+      checkEventTypes([...fieldsToCheck(), "id"]),
+      checkIfUserIsOrganizer
+    ).then(updateEvent);
+  }
 
-    function checkIfEventIdIsDefined(event: BoEvent): BoEvent {
-      if (!event.id)
-        throw new RequestError(API_ERROR_MESSAGES.EVENT_ID_REQUIRED);
-      return event;
-    }
+  function fieldsToCheck() {
+    return [
+      "title",
+      "description",
+      "address",
+      "start_at",
+      "end_at",
+      "user_name",
+    ];
+  }
 
-    async function checkIfUserIsOrganizer(event: BoEvent): Promise<BoEvent> {
-      if (!(await isOrganizerOf(event.user_id, event.id)))
-        throw new RequestError(API_ERROR_MESSAGES.NOT_ORGANIZER);
-      return event;
-    }
+  async function deleteEventHandler(): Promise<void> {
+    return await pipe(
+      getBodyPayload(),
+      checkIfPorpertyMissing(["id", "user_id"]),
+      checkEventTypes(["id", "user_id"]),
+      checkIfUserIsOrganizer
+    ).then(({ id }) => deleteEvent(id));
+  }
+
+  async function checkIfUserIsOrganizer(event: BoEvent): Promise<BoEvent> {
+    if (!(await isOrganizerOf(event.user_id, event.id)))
+      throw new RequestError(API_ERROR_MESSAGES.NOT_ORGANIZER);
+    return event;
   }
 
   function getBodyPayload(): BoEvent {
-    return checkEventTypes(
-      checkIfPorpertyMissing(checkJSONSyntax(checkIfBodyEmpty(req.body)))
-    );
+    return checkJSONSyntax(checkIfBodyEmpty(req.body));
 
     function checkIfBodyEmpty(body: string): string {
       if (!body) throw new RequestError(API_ERROR_MESSAGES.BODY_EMPTY);
@@ -100,9 +132,11 @@ export default async function handler(
         throw new RequestError(API_ERROR_MESSAGES.BODY_NOT_JSON);
       }
     }
+  }
 
-    function checkIfPorpertyMissing(event: BoEvent) {
-      const missingProperty = fieldsToCheck().filter(isPropertyMissing);
+  function checkIfPorpertyMissing(fieldsToCheck: string[]) {
+    return (event: BoEvent) => {
+      const missingProperty = fieldsToCheck.filter(isPropertyMissing);
       if (missingProperty.length > 0) {
         throw new RequestError(
           missingProperty.join(", ") + API_ERROR_MESSAGES.PROPERTY_NOT_FOUND
@@ -113,15 +147,17 @@ export default async function handler(
       function isPropertyMissing(field: string): boolean {
         return (
           Object.keys(event)
-            .filter((key) => fieldsToCheck().includes(key))
+            .filter((key) => fieldsToCheck.includes(key))
             .indexOf(field) === -1
         );
       }
-    }
+    };
+  }
 
-    function checkEventTypes(event: BoEvent): BoEvent {
+  function checkEventTypes(fieldsToCheck: string[]) {
+    return (event: BoEvent) => {
       Object.entries(event)
-        .filter(([key]) => fieldsToCheck().includes(key))
+        .filter(([key]) => fieldsToCheck.includes(key))
         .map(([key, value]) => ({
           key,
           value,
@@ -145,16 +181,6 @@ export default async function handler(
       function isEmpty(s: any): boolean {
         return !s || !s.trim();
       }
-    }
-    function fieldsToCheck() {
-      return [
-        "title",
-        "description",
-        "address",
-        "start_at",
-        "end_at",
-        "user_name",
-      ];
-    }
+    };
   }
 }

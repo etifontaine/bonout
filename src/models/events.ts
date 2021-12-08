@@ -198,6 +198,16 @@ export async function deletePastEvents() {
   });
 }
 
+export async function deleteEvent(eventID: BoEvent["id"]): Promise<void> {
+  const queryEvents = db
+    .collection(COLLECTION_NAME_EVENTS)
+    .where("id", "==", eventID);
+
+  return new Promise((resolve, reject) => {
+    deleteQueryBatch(db, queryEvents, resolve).catch(reject);
+  });
+}
+
 async function deleteQueryBatch(db: Firestore, query: Query, resolve: any) {
   const snapshot = await query.get();
 
@@ -207,7 +217,7 @@ async function deleteQueryBatch(db: Firestore, query: Query, resolve: any) {
     resolve();
     return;
   }
-  logger.info(`${snapshot.size} old events to delete`);
+  logger.info(`${snapshot.size} events to delete`);
 
   // Delete documents in a batch
   const batchEvents = db.batch();

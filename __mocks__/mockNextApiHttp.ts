@@ -16,9 +16,21 @@ export async function mockNextApiHttp(
 }
 
 export async function mockCreateEvent(event: any) {
+  return mockHttpRequestEvent("POST", event);
+}
+
+export async function mockUpdateEvent(event: any) {
+  return mockHttpRequestEvent("PUT", event);
+}
+
+export async function mockDeleteEvent(event: any) {
+  return mockHttpRequestEvent("DELETE", event);
+}
+
+function mockHttpRequestEvent(method: httpMocks.RequestMethod, event: any) {
   return mockNextApiHttp(
     {
-      method: "POST",
+      method,
       url: "api/events",
       body: event,
     },
