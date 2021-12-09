@@ -172,7 +172,6 @@ const EventDetails: NextPage<PageProps> = ({ event }) => {
         link={modalContent?.link}
         userResponse={modalContent?.userResponse}
       />
-      )
       <DeleteModal
         isOpen={isDeleteModalVisible}
         content={{
