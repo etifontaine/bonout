@@ -1,9 +1,6 @@
 import { Fragment, useEffect, useRef, useState } from "react";
 import { useTranslation } from "next-i18next";
-import Router from "next/router";
 import { Dialog, Transition } from "@headlessui/react";
-import { ExclamationIcon, ThumbUpIcon } from "@heroicons/react/outline";
-import { toast } from "react-toastify";
 
 interface IModalContent {
   title: string;
