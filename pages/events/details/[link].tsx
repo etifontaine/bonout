@@ -6,6 +6,7 @@ import Head from "next/head";
 import Skeleton from "react-loading-skeleton";
 import Header from "@components/Header";
 import ModalInvitation from "@components/Invitation/Modal";
+import type { IModal } from "@components/Invitation/Modal";
 import useIsOrganizerOfEvent from "hooks/useIsEventOrganiser";
 import GuestListModal from "@components/GuestListModal";
 import { BoEvent, BoInvitationValidResponse } from "src/types";
@@ -32,11 +33,6 @@ import { toast } from "react-toastify";
 
 interface PageProps {
   event: BoEvent & { comingGuestAmount: number };
-}
-
-export interface IModal {
-  link?: BoEvent["link"];
-  userResponse?: BoInvitationValidResponse;
 }
 
 export async function getServerSideProps(context: {
@@ -91,7 +87,7 @@ const EventDetails: NextPage<PageProps> = ({ event }) => {
   const [userInvitationResponseValue, setUserInvitationResponseValue] =
     useState<string>();
 
-  const [modalContent, setModal] = useState<IModal>({});
+  const [modalContent, setModal] = useState<IModal | null>(null);
   const [isGuestListVisible, setGuestListVisible] = useState(false);
   const [isDeleteModalVisible, setDeleteModalVisible] = useState(false);
   const [isAddCalendarVisible, setAddCalendarVisible] = useState(false);
@@ -116,7 +112,7 @@ const EventDetails: NextPage<PageProps> = ({ event }) => {
         }
       );
     }
-  }, [userChecked, isOrganizer, event]);
+  }, [userChecked, isOrganizer, event, t]);
 
   const setResponse = (userResponse: BoInvitationValidResponse) => {
     setModal({ userResponse, link: event.link });
@@ -173,10 +169,10 @@ const EventDetails: NextPage<PageProps> = ({ event }) => {
         <meta property="og:description" content={`${event.description}`} />
       </Head>
       <ModalInvitation
-        link={modalContent.link}
-        userResponse={modalContent.userResponse}
+        link={modalContent?.link}
+        userResponse={modalContent?.userResponse}
       />
-
+      )
       <DeleteModal
         isOpen={isDeleteModalVisible}
         content={{
@@ -189,7 +185,6 @@ const EventDetails: NextPage<PageProps> = ({ event }) => {
       >
         {" "}
       </DeleteModal>
-
       <AddCalendarModal
         isOpen={isAddCalendarVisible}
         event={event}
@@ -197,7 +192,6 @@ const EventDetails: NextPage<PageProps> = ({ event }) => {
           setAddCalendarVisible(false);
         }}
       />
-
       <GuestListModal
         isVisible={isGuestListVisible}
         setGuestListVisible={setGuestListVisible}
