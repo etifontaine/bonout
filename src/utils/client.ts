@@ -1,3 +1,3 @@
 export function isClientSide() {
-    return typeof window !== "undefined"
+  return typeof window !== "undefined";
 }
