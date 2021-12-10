@@ -6,7 +6,7 @@ import { useRouter } from "next/router";
 
 function HeroHome() {
   const { t } = useTranslation("landing");
-  const router = useRouter()
+  const router = useRouter();
   return (
     <section className="pt-24 md:mt-0 md:h-screen flex flex-col justify-center text-center md:text-left md:flex-row md:justify-between md:items-center lg:px-48 md:px-12 px-4 bg-secondary">
       <div className="md:flex-1 md:mr-10">
@@ -41,6 +41,7 @@ function HeroHome() {
           height="438"
           width="219"
           alt="iPhone"
+          priority={true}
         />
         <div className="relative">
           <img

@@ -14,7 +14,8 @@
         "create_event": "Create a event"
     },
     "footer": {
-        "copyright": "All rights reserved"
+        "copyright": "All rights reserved",
+        "why_bonout": "Bonout wishes to become the world reference for organizing private events, while respecting privacy."
     },
     "errors": {
         "catch_all": "An error has occurred",
@@ -25,5 +26,7 @@
     "response_success": "Thank you for your answer",
     "cancel": "Cancel",
     "confirm": "Confirm",
-    "close": "Close"
+    "close": "Close",
+    "privacy": "Privacy Policy",
+    "terms": "Terms and conditions"
 }
