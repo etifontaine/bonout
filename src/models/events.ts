@@ -9,11 +9,13 @@ import {
   BoEvent,
   BoInvitationResponse,
   BoInvitationValidResponse,
+  BoNotification,
 } from "../types";
 import logger from "@src/logger";
 
 const COLLECTION_NAME_EVENTS = `${process.env.DB_ENV}_events`;
 const COLLECTION_NAME_INVITATIONS = `${process.env.DB_ENV}_invitations`;
+const COLLECTION_NAME_NOTIFICATIONS = `${process.env.DB_ENV}_notifications`;
 
 export async function getEventByID(id: string): Promise<BoEvent | null> {
   const eventQuery = await db.collection(COLLECTION_NAME_EVENTS).doc(id).get();
@@ -256,4 +258,27 @@ async function deleteInvitationByEventDocumentSnapshot(
         doc.ref.delete();
       });
     });
+}
+
+export async function createNotification(notif: BoNotification) {
+  const notifRef = db.collection(COLLECTION_NAME_NOTIFICATIONS).doc();
+  await notifRef.set(notif);
+}
+
+export async function updateNotificationIsRead(id: string) {
+  const notifRef = db.collection(COLLECTION_NAME_NOTIFICATIONS).doc(id);
+  await notifRef.update({ is_read: true });
+}
+
+export async function deleteNotification(id: string) {
+  const notifRef = db.collection(COLLECTION_NAME_NOTIFICATIONS).doc(id);
+  await notifRef.delete();
+}
+
+export async function getUserNotifications(user_id: string) {
+  const notifs = await db
+    .collection(COLLECTION_NAME_NOTIFICATIONS)
+    .where("user_id", "==", user_id)
+    .get();
+  return notifs.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
 }
