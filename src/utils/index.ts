@@ -1,5 +1,7 @@
+import { isClientSide } from "./client";
+
 export function isInstalled() {
-  if (typeof window !== "undefined") {
+  if (isClientSide()) {
     // For iOS
     // @ts-ignore
     if (window.navigator.standalone) return true;
@@ -13,7 +15,7 @@ export function isInstalled() {
 }
 
 export function getQueries() {
-  if (typeof window !== "undefined") {
+  if (isClientSide()) {
     const urlSearchParams = new URLSearchParams(window.location.search);
     return Object.fromEntries(urlSearchParams.entries());
   }

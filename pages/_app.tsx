@@ -9,9 +9,10 @@ import manifest from "public/manifest.json";
 import { isInstalled, getQueries } from "@src/utils";
 import Head from "next/head";
 import { appWithTranslation } from "next-i18next";
+import { isClientSide } from "@src/utils/client";
 
 function MyApp({ Component, pageProps }: AppProps) {
-  if (typeof window !== "undefined") {
+  if (isClientSide()) {
     if (!isInstalled() && getUserID()) {
       const urlRoot = location.protocol + "//" + location.host;
       const manifestElement = document.getElementById("manifest");

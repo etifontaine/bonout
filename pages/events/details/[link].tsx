@@ -30,6 +30,7 @@ import { useTranslation } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import logger from "@src/logger";
 import { toast } from "react-toastify";
+import { isClientSide } from "@src/utils/client";
 
 interface PageProps {
   event: BoEvent & { comingGuestAmount: number };
@@ -209,7 +210,7 @@ const EventDetails: NextPage<PageProps> = ({ event }) => {
           className={
             "md:max-w-3xl mx-auto w-full text-left" +
             " " +
-            (isLoading ? "filter blur-sm pointer-events-none" : "")
+            (isLoading ? "filter blur-sm pointer-events-none" : null)
           }
         >
           <div className="py-5 sm:px-4 grid grid-cols-5">
@@ -290,9 +291,9 @@ const EventDetails: NextPage<PageProps> = ({ event }) => {
               <div className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2 flex items-center">
                 <LinkIcon className="block h-3 w-3 mr-2" aria-hidden="true" />
                 <button className="underline" onClick={() => shareEvent()}>{`${
-                  typeof window !== "undefined"
+                  isClientSide()
                     ? `${window.location.host}/events/details/`
-                    : ""
+                    : null
                 }${event.link}`}</button>
               </div>
             </div>
