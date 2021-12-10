@@ -14,6 +14,7 @@ import {
 import type { suggestion } from "./LocationSuggestions";
 import { BoEvent } from "src/types";
 import { getUserName } from "@src/utils/user";
+import { isClientSide } from "@src/utils/client";
 
 const GMapsLocationSuggestions =
   withGooglePlacesAutocomplete(LocationSuggestions);
@@ -92,7 +93,7 @@ export function Form(props: {
   );
 
   const [gmapIsLoad, setGmapIsLoad] = useState(false);
-  if (typeof window !== "undefined") {
+  if (isClientSide()) {
     if (window.google && !gmapIsLoad) {
       setGmapIsLoad(true);
     }
