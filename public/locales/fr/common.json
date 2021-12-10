@@ -14,7 +14,8 @@
         "create_event": "Créer un événement"
     },
     "footer": {
-        "copyright": "Tout droits réservés"
+        "copyright": "Tout droits réservés",
+        "why_bonout": "Bonout souhaite devenir la référence mondial pour organiser les événements privés, en respectant la vie privée."
     },
     "errors": {
         "catch_all": "Une erreur est survenue",
@@ -25,5 +26,7 @@
     "response_success": "Merci pour ta réponse",
     "cancel": "Annuler",
     "confirm": "Confirmer",
-    "close": "Fermer"
+    "close": "Fermer",
+    "privacy": "Politique de confidentialité",
+    "terms": "Conditions générales d'utilisation"
 }

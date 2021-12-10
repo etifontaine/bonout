@@ -12,8 +12,8 @@ function Question({ title, answer }: questionContent) {
 
   return (
     <>
-      <div onClick={() => setIsOpen(!isOpen)} className="w-full py-4">
-        <div className="flex justify-between items-center cursor-pointer">
+      <div className="w-full py-4">
+        <div className="flex justify-between items-center cursor-pointer"  onClick={() => setIsOpen(!isOpen)}>
           <div className="font-montserrat font-medium mr-auto">{title}</div>
           <Image
             src="/images/CaretRight.svg"

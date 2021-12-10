@@ -41,6 +41,7 @@ function HeroHome() {
           height="438"
           width="219"
           alt="iPhone"
+          priority={true}
         />
         <div className="relative">
           <img
