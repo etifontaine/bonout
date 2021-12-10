@@ -28,9 +28,13 @@ const Privacy: NextPage = () => {
         />
         <meta property="og:type" content="siteweb" />
         <meta property="og:description" content={t("site.description")} />
-        <link rel="alternate" href="https://bonout.com/fr/terms" hrefLang="fr" />
+        <link
+          rel="alternate"
+          href="https://bonout.com/fr/terms"
+          hrefLang="fr"
+        />
         <link rel="alternate" href="https://bonout.com/terms" hrefLang="en" />
-      </Head >
+      </Head>
       <div className="flex flex-col min-h-screen overflow-hidden">
         <Header />
         <section className="pt-24 md:mt-10 md:h-screen flex flex-col text-left lg:px-48 md:px-12 px-4 bg-secondary">
@@ -43,7 +47,6 @@ const Privacy: NextPage = () => {
             <p>{t("content")}</p>
           </div>
         </section>
-
 
         {/*  Site footer */}
         <Footer />

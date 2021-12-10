@@ -26,19 +26,13 @@ function Footer() {
       </div>
       <div className="text-white font-montserrat text-sm mt-10 w-full	flex flex-col md:flex-row justify-evenly">
         <Link href={`privacy`}>
-          <a className="mr-10 mb-5">
-            {t(`privacy`)}
-          </a>
+          <a className="mr-10 mb-5">{t(`privacy`)}</a>
         </Link>
-        <Link href={`terms`}>
-          {t(`terms`)}
-        </Link>
+        <Link href={`terms`}>{t(`terms`)}</Link>
       </div>
       <div className="text-white font-montserrat text-sm mt-10 flex flex-row justify-evenly">
         <Link href={`${router.asPath}`} locale="en">
-        <a className="mr-10">
-          {t(`locale.en`)}
-          </a>
+          <a className="mr-10">{t(`locale.en`)}</a>
         </Link>
         <br />
         <Link href={`${router.asPath}`} locale="fr">
