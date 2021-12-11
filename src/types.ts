@@ -35,10 +35,10 @@ export type BoInvitationResponse = {
 };
 
 export type BoNotification = {
-  id?: string;
+  id: string;
   isRead: boolean;
   user_id: string;
-  event_id: string;
+  link: string;
   message: string;
-  created_at?: string;
+  created_at: string;
 };

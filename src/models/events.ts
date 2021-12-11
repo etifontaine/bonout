@@ -261,13 +261,21 @@ async function deleteInvitationByEventDocumentSnapshot(
 }
 
 export async function createNotification(notif: BoNotification) {
+  const event = await getEventByLink(notif.link);
+  if (!event) throw new Error("Event don't exist");
   const notifRef = db.collection(COLLECTION_NAME_NOTIFICATIONS).doc();
-  await notifRef.set(notif);
+  await notifRef.set({ ...notif, user_id: event.user_id });
 }
 
-export async function updateNotificationIsRead(id: string) {
-  const notifRef = db.collection(COLLECTION_NAME_NOTIFICATIONS).doc(id);
-  await notifRef.update({ is_read: true });
+export async function updateNotificationIsRead(p: {
+  id: string;
+  user_id: string;
+}) {
+  const notifRef = db.collection(COLLECTION_NAME_NOTIFICATIONS).doc(p.id);
+  const notif = (await notifRef.get()).data();
+  if (notif && notif.user_id === p.user_id) {
+    await notifRef.update({ is_read: true });
+  }
 }
 
 export async function deleteNotification(id: string) {
@@ -280,5 +288,8 @@ export async function getUserNotifications(user_id: string) {
     .collection(COLLECTION_NAME_NOTIFICATIONS)
     .where("user_id", "==", user_id)
     .get();
-  return notifs.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+  console.log("coucou", notifs.docs);
+  return notifs.docs.map(
+    (doc) => ({ ...doc.data(), id: doc.id } as BoNotification)
+  );
 }

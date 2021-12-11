@@ -1,5 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { API_ERROR_MESSAGES } from "../../../../src/utils/errorMessages";
+import * as E from "fp-ts/lib/Either";
 import {
   BoInvitationResponse,
   BoInvitationValidResponse,
@@ -7,6 +8,7 @@ import {
 import {
   createInvitationResponse,
   deleteInvitationResponse,
+  createNotification,
   getEventByLink,
 } from "../../../../src/models/events";
 import ShortUniqueId from "short-unique-id";
@@ -82,7 +84,15 @@ export default async function handler(
   }
 
   return await createInvitationResponse(event.id, payload)
-    .then(() => {
+    .then(async () => {
+      if (!payload || !payload.user_id) return;
+      //@ts-ignore
+      await createNotification({
+        created_at: new Date().toISOString(),
+        message: `${payload.name} à répondu ${payload.response}`,
+        isRead: false,
+        link: payload.link,
+      });
       return res.status(201).json({
         message: existingInvitation ? "updated" : "created",
         user_id: payload?.user_id,
