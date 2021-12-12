@@ -110,10 +110,12 @@ const Home: NextPage = () => {
   );
 
   async function fetchEvents(userID: string | null): Promise<BoEvent[] | []> {
-    return await fetcher(`/api/users/${userID}/events`).then((res) => {
-      if (res.status !== 200) return [];
-      return res.json();
-    }).catch(err => err)
+    return await fetcher(`/api/users/${userID}/events`)
+      .then((res) => {
+        if (res.status !== 200) return [];
+        return res.json();
+      })
+      .catch((err) => err);
   }
 
   function getTodayEvents(events: BoEvent[]): BoEvent[] | null {

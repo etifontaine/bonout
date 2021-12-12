@@ -14,7 +14,9 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<BoEvent[] | { error: string }>
 ) {
-  const appCheck = await checkFirebaseAuth(req.headers['x-firebase-appcheck'] as string)
+  const appCheck = await checkFirebaseAuth(
+    req.headers["x-firebase-appcheck"] as string
+  );
   if (appCheck.error) return res.status(401).send({ error: appCheck.message });
 
   if (req.method !== "GET") return res.status(405).end();

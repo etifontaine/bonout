@@ -28,7 +28,9 @@ export default async function handler(
     return res.status(400).json({ error: API_ERROR_MESSAGES.BODY_EMPTY });
   }
 
-  const appCheck = await checkFirebaseAuth(req.headers['x-firebase-appcheck'] as string)
+  const appCheck = await checkFirebaseAuth(
+    req.headers["x-firebase-appcheck"] as string
+  );
   if (appCheck.error) return res.status(401).send({ error: appCheck.message });
 
   let payload: BoInvitationResponse | null = null;

@@ -11,7 +11,6 @@ import Head from "next/head";
 import { appWithTranslation } from "next-i18next";
 import { isClientSide } from "@src/utils/client";
 
-
 function MyApp({ Component, pageProps }: AppProps) {
   if (isClientSide()) {
     if (!isInstalled() && getUserID()) {
@@ -25,14 +24,15 @@ function MyApp({ Component, pageProps }: AppProps) {
         })),
         scope: urlRoot,
         start_url:
-          `${location.protocol + "//" + location.host
+          `${
+            location.protocol + "//" + location.host
           }/home?userID=${getUserID()}` +
           (getUserName() ? `&userName=${getUserName()}` : ""),
       });
       manifestElement?.setAttribute(
         "href",
         "data:application/json;charset=utf-8," +
-        encodeURIComponent(manifestString)
+          encodeURIComponent(manifestString)
       );
     }
     const queries = getQueries();

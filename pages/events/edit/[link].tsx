@@ -122,7 +122,8 @@ const EditEvent: NextPage<PageProps> = ({ event }) => {
       return;
     }
     setIsLoading(true);
-    fetcher("/api/events",
+    fetcher(
+      "/api/events",
       "PUT",
       JSON.stringify({
         id: event.id,
@@ -133,7 +134,7 @@ const EditEvent: NextPage<PageProps> = ({ event }) => {
         description: description.value,
         user_id: getUserID(),
         user_name: userName.value,
-      }),
+      })
     )
       .then(async (res) => {
         if (res.status === 201) {

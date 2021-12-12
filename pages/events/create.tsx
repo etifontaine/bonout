@@ -55,7 +55,8 @@ const Add: NextPage = () => {
       return;
     }
     setIsLoading(true);
-    fetcher("/api/events",
+    fetcher(
+      "/api/events",
       "POST",
       JSON.stringify({
         title: name.value,
@@ -65,7 +66,7 @@ const Add: NextPage = () => {
         description: description.value,
         user_id: localStorage.getItem("user_id") || undefined,
         user_name: userName.value,
-      }),
+      })
     )
       .then(async (res) => {
         if (res.status === 201) {

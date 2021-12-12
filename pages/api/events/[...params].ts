@@ -11,8 +11,9 @@ export default async function handler(
 ) {
   if (isNotGetRequest()) return;
 
-
-  const appCheck = await checkFirebaseAuth(req.headers['x-firebase-appcheck'] as string)
+  const appCheck = await checkFirebaseAuth(
+    req.headers["x-firebase-appcheck"] as string
+  );
   if (appCheck.error) return res.status(401).send({ error: appCheck.message });
 
   await getEventHandler()

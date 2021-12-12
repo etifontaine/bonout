@@ -43,14 +43,15 @@ export default function InvitationModal({ link, userResponse }: IModal) {
       return;
     }
     localStorage.setItem("user_pseudo", formContent.username);
-    fetcher("/api/events/invitations/response",
+    fetcher(
+      "/api/events/invitations/response",
       "POST",
       JSON.stringify({
         name: formContent.username,
         response: userResponse,
         link: link,
         user_id: localStorage.getItem("user_id") || undefined,
-      }),
+      })
     ).then(async (res) => {
       if (res.status === 201) {
         const { user_id } = await res.json();

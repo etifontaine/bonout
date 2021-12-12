@@ -19,9 +19,11 @@ export default async function handler(
   >
 ) {
   try {
-
-    const appCheck = await checkFirebaseAuth(req.headers['x-firebase-appcheck'] as string)
-    if (appCheck.error) return res.status(401).send({ error: appCheck.message });
+    const appCheck = await checkFirebaseAuth(
+      req.headers["x-firebase-appcheck"] as string
+    );
+    if (appCheck.error)
+      return res.status(401).send({ error: appCheck.message });
 
     if (isDeleteRequest())
       await deleteEventHandler().then(() =>
