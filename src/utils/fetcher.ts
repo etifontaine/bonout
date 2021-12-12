@@ -12,7 +12,7 @@ export default async function fetcher(
   body?: string
 ): Promise<Response> {
   //TODO: uncomment when developping
-  self.FIREBASE_APPCHECK_DEBUG_TOKEN = true;
+  //self.FIREBASE_APPCHECK_DEBUG_TOKEN = true;
   const captchaKey = process.env.FIREBASE_CAPTCHA;
   if (!captchaKey) {
     logger.error("no appCheck token response");
