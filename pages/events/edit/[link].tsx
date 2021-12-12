@@ -13,6 +13,7 @@ import { getUserID } from "src/utils/user";
 import Link from "next/link";
 import { useTranslation } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import fetcher from "@src/utils/fetcher";
 
 interface PageProps {
   event: BoEvent & { comingGuestAmount: number };
@@ -121,9 +122,9 @@ const EditEvent: NextPage<PageProps> = ({ event }) => {
       return;
     }
     setIsLoading(true);
-    fetch("/api/events", {
-      method: "PUT",
-      body: JSON.stringify({
+    fetcher("/api/events",
+      "PUT",
+      JSON.stringify({
         id: event.id,
         title: name.value,
         start_at: new Date(startAt.value).toISOString(),
@@ -133,7 +134,7 @@ const EditEvent: NextPage<PageProps> = ({ event }) => {
         user_id: getUserID(),
         user_name: userName.value,
       }),
-    })
+    )
       .then(async (res) => {
         if (res.status === 201) {
           await res.json();

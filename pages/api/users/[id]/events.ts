@@ -8,11 +8,15 @@ import {
 } from "@src/models/events";
 import { filterBy, sortByDate } from "@src/utils/array";
 import logger from "@src/logger";
+import { checkFirebaseAuth } from "@src/firebase/auth";
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<BoEvent[] | { error: string }>
 ) {
+  const appCheck = await checkFirebaseAuth(req.headers['x-firebase-appcheck'] as string)
+  if (appCheck.error) return res.status(401).send({ error: appCheck.message });
+
   if (req.method !== "GET") return res.status(405).end();
   try {
     const events = await getEventsByUserID(getIdParameter(req));

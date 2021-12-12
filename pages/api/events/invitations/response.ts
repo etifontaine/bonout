@@ -11,6 +11,7 @@ import {
 } from "../../../../src/models/events";
 import ShortUniqueId from "short-unique-id";
 import logger from "@src/logger";
+import { checkFirebaseAuth } from "@src/firebase/auth";
 
 export default async function handler(
   req: NextApiRequest,
@@ -26,6 +27,9 @@ export default async function handler(
   if (!req.body) {
     return res.status(400).json({ error: API_ERROR_MESSAGES.BODY_EMPTY });
   }
+
+  const appCheck = await checkFirebaseAuth(req.headers['x-firebase-appcheck'] as string)
+  if (appCheck.error) return res.status(401).send({ error: appCheck.message });
 
   let payload: BoInvitationResponse | null = null;
   try {

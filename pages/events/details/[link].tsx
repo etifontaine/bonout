@@ -31,6 +31,7 @@ import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import logger from "@src/logger";
 import { toast } from "react-toastify";
 import { isClientSide } from "@src/utils/client";
+import fetcher from "@src/utils/fetcher";
 
 interface PageProps {
   event: BoEvent & { comingGuestAmount: number };
@@ -96,7 +97,7 @@ const EventDetails: NextPage<PageProps> = ({ event }) => {
 
   useEffect(() => {
     if (getUserID() && !isOrganizer && userChecked) {
-      fetch(`/api/users/${getUserID()}/checkIfUserComing/${event.id}`).then(
+      fetcher(`/api/users/${getUserID()}/checkIfUserComing/${event.id}`).then(
         (res) => {
           if (res.status === 200) {
             res.json().then((data) => {
@@ -148,10 +149,10 @@ const EventDetails: NextPage<PageProps> = ({ event }) => {
     setDeleteModalVisible(false);
     setLoading(true);
 
-    fetch(`/api/events/`, {
-      method: "DELETE",
-      body: JSON.stringify({ id: event.id, user_id: getUserID() }),
-    }).then((res) => {
+    fetcher(`/api/events/`,
+      "DELETE",
+      JSON.stringify({ id: event.id, user_id: getUserID() }),
+    ).then((res) => {
       if (res.status === 200) {
         Router.push("/home");
       } else {
@@ -290,11 +291,10 @@ const EventDetails: NextPage<PageProps> = ({ event }) => {
               </div>
               <div className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2 flex items-center">
                 <LinkIcon className="block h-3 w-3 mr-2" aria-hidden="true" />
-                <button className="underline" onClick={() => shareEvent()}>{`${
-                  isClientSide()
-                    ? `${window.location.host}/events/details/`
-                    : null
-                }${event.link}`}</button>
+                <button className="underline" onClick={() => shareEvent()}>{`${isClientSide()
+                  ? `${window.location.host}/events/details/`
+                  : null
+                  }${event.link}`}</button>
               </div>
             </div>
             <div className="py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
@@ -344,33 +344,30 @@ const EventDetails: NextPage<PageProps> = ({ event }) => {
               <div className="py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 flex justify-between">
                 <button
                   onClick={() => setResponse(BoInvitationValidResponse.NO)}
-                  className={`btn border border-black ${
-                    userInvitationResponseValue === BoInvitationValidResponse.NO
-                      ? "bg-black text-white"
-                      : "text-black"
-                  } p-2 btn-sm hover:text-white hover:bg-black`}
+                  className={`btn border border-black ${userInvitationResponseValue === BoInvitationValidResponse.NO
+                    ? "bg-black text-white"
+                    : "text-black"
+                    } p-2 btn-sm hover:text-white hover:bg-black`}
                 >
                   {t("common.response.no")}
                 </button>
                 <button
                   onClick={() => setResponse(BoInvitationValidResponse.YES)}
-                  className={`btn border border-black ${
-                    userInvitationResponseValue ===
+                  className={`btn border border-black ${userInvitationResponseValue ===
                     BoInvitationValidResponse.YES
-                      ? "bg-black text-white"
-                      : "text-black"
-                  } p-2 btn-sm text-black ml-3 hover:text-white hover:bg-black`}
+                    ? "bg-black text-white"
+                    : "text-black"
+                    } p-2 btn-sm text-black ml-3 hover:text-white hover:bg-black`}
                 >
                   {t("common.response.yes")}
                 </button>
                 <button
                   onClick={() => setResponse(BoInvitationValidResponse.MAYBE)}
-                  className={`btn border border-black ${
-                    userInvitationResponseValue ===
+                  className={`btn border border-black ${userInvitationResponseValue ===
                     BoInvitationValidResponse.MAYBE
-                      ? "bg-black text-white"
-                      : "text-black"
-                  }  p-2 btn-sm text-black ml-3 hover:text-white hover:bg-black`}
+                    ? "bg-black text-white"
+                    : "text-black"
+                    }  p-2 btn-sm text-black ml-3 hover:text-white hover:bg-black`}
                 >
                   {t("common.response.maybe")}
                 </button>

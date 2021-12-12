@@ -4,13 +4,15 @@ import {
   Firestore,
   Query,
 } from "firebase-admin/firestore";
-import db from "../db";
+import admin from "../firebase/admin";
 import {
   BoEvent,
   BoInvitationResponse,
   BoInvitationValidResponse,
 } from "../types";
 import logger from "@src/logger";
+
+const db = admin.firestore()
 
 const COLLECTION_NAME_EVENTS = `${process.env.DB_ENV}_events`;
 const COLLECTION_NAME_INVITATIONS = `${process.env.DB_ENV}_invitations`;
