@@ -12,7 +12,7 @@ export default async function fetcher(
   method: string,
   body?: string
 ): Promise<Response> {
-  //  self.FIREBASE_APPCHECK_DEBUG_TOKEN = true;
+  // self.FIREBASE_APPCHECK_DEBUG_TOKEN = true;
   const captchaKey = process.env.NEXT_PUBLIC_FIREBASE_CAPTCHA;
   if (!captchaKey) {
     logger.error("no firebase captcha");

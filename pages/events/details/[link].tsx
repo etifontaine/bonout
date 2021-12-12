@@ -372,7 +372,7 @@ const EventDetails: NextPage<PageProps> = ({ event }) => {
                     BoInvitationValidResponse.MAYBE
                       ? "bg-black text-white"
                       : "text-black"
-                  }  p-2 btn-sm text-black ml-3 hover:text-white hover:bg-black`}
+                  }  p-2 btn-sm ml-3 hover:text-white hover:bg-black`}
                 >
                   {t("common.response.maybe")}
                 </button>
