@@ -97,7 +97,7 @@ const EventDetails: NextPage<PageProps> = ({ event }) => {
 
   useEffect(() => {
     if (getUserID() && !isOrganizer && userChecked) {
-      fetcher(`/api/users/${getUserID()}/checkIfUserComing/${event.id}`).then(
+      fetcher(`/api/users/${getUserID()}/checkIfUserComing/${event.id}`, 'GET').then(
         (res) => {
           if (res.status === 200) {
             res.json().then((data) => {

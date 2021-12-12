@@ -14,7 +14,7 @@ export default function useIsEventOrganiser(eventID: string) {
       setOnce(true);
       if (getUserID() !== null && !userChecked) {
         if (isLoading === false && !userChecked) setIsLoading(true);
-        fetcher(`/api/users/${getUserID()}/isOrganizerOf/${eventID}`)
+        fetcher(`/api/users/${getUserID()}/isOrganizerOf/${eventID}`, 'GET')
           .then((res) => {
             if (res.status === 200) {
               res.json().then((data) => {
