@@ -12,6 +12,7 @@ import { useTranslation } from "next-i18next";
 import Skeleton from "react-loading-skeleton";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import logger from "@src/logger";
+import fetcher from "@src/utils/fetcher";
 
 export const getStaticProps = async ({ locale }: any) => ({
   props: {
@@ -109,10 +110,12 @@ const Home: NextPage = () => {
   );
 
   async function fetchEvents(userID: string | null): Promise<BoEvent[] | []> {
-    return (await fetch(`/api/users/${userID}/events`).then((res) => {
-      if (res.status !== 200) return [];
-      return res.json();
-    })) as Promise<BoEvent[]>;
+    return await fetcher(`/api/users/${userID}/events`)
+      .then((res) => {
+        if (res.status !== 200) return [];
+        return res.json();
+      })
+      .catch((err) => err);
   }
 
   function getTodayEvents(events: BoEvent[]): BoEvent[] | null {

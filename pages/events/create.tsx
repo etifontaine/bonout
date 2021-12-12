@@ -8,6 +8,7 @@ import type { Tform } from "@components/CreateEvent/Form/types";
 import Loader from "@components/Loader";
 import { useTranslation } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import fetcher from "@src/utils/fetcher";
 
 export const getStaticProps = async ({ locale }: any) => ({
   props: {
@@ -54,9 +55,10 @@ const Add: NextPage = () => {
       return;
     }
     setIsLoading(true);
-    fetch("/api/events", {
-      method: "POST",
-      body: JSON.stringify({
+    fetcher(
+      "/api/events",
+      "POST",
+      JSON.stringify({
         title: name.value,
         start_at: new Date(startAt.value).toISOString(),
         end_at: new Date(endAt.value).toISOString(),
@@ -64,8 +66,8 @@ const Add: NextPage = () => {
         description: description.value,
         user_id: localStorage.getItem("user_id") || undefined,
         user_name: userName.value,
-      }),
-    })
+      })
+    )
       .then(async (res) => {
         if (res.status === 201) {
           const { link, user_id, user_name } = await res.json();

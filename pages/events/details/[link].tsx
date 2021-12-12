@@ -31,6 +31,7 @@ import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import logger from "@src/logger";
 import { toast } from "react-toastify";
 import { isClientSide } from "@src/utils/client";
+import fetcher from "@src/utils/fetcher";
 
 interface PageProps {
   event: BoEvent & { comingGuestAmount: number };
@@ -96,7 +97,7 @@ const EventDetails: NextPage<PageProps> = ({ event }) => {
 
   useEffect(() => {
     if (getUserID() && !isOrganizer && userChecked) {
-      fetch(`/api/users/${getUserID()}/checkIfUserComing/${event.id}`).then(
+      fetcher(`/api/users/${getUserID()}/checkIfUserComing/${event.id}`).then(
         (res) => {
           if (res.status === 200) {
             res.json().then((data) => {
@@ -148,10 +149,11 @@ const EventDetails: NextPage<PageProps> = ({ event }) => {
     setDeleteModalVisible(false);
     setLoading(true);
 
-    fetch(`/api/events/`, {
-      method: "DELETE",
-      body: JSON.stringify({ id: event.id, user_id: getUserID() }),
-    }).then((res) => {
+    fetcher(
+      `/api/events/`,
+      "DELETE",
+      JSON.stringify({ id: event.id, user_id: getUserID() })
+    ).then((res) => {
       if (res.status === 200) {
         Router.push("/home");
       } else {

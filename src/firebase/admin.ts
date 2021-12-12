@@ -22,4 +22,4 @@ if (!admin.apps.length) {
   }
 }
 
-export default admin.firestore();
+export default admin;
