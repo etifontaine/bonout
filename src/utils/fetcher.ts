@@ -8,8 +8,8 @@ import {
 
 export default async function fetcher(
   path: string,
-  method: string = "GET",
-  body: string
+  method?: string,
+  body?: string
 ): Promise<Response> {
   //TODO: uncomment when developping self.FIREBASE_APPCHECK_DEBUG_TOKEN = true;
   const captchaKey = process.env.NEXT_PUBLIC_FIREBASE_CAPTCHA;
@@ -35,7 +35,7 @@ export default async function fetcher(
     throw Error("no appCheck token response");
   }
   return fetch(path, {
-    method,
+    method: method || 'GET',
     body,
     headers: {
       "X-Firebase-AppCheck": appCheckTokenResponse.token,
