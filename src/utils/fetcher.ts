@@ -5,7 +5,6 @@ import {
   ReCaptchaV3Provider,
   getToken,
 } from "firebase/app-check";
-import { isClientSide } from "./client";
 
 export default async function fetcher(
   path: string,
