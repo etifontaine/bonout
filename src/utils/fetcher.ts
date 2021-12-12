@@ -5,18 +5,18 @@ import {
   ReCaptchaV3Provider,
   getToken,
 } from "firebase/app-check";
+import { isClientSide } from "./client";
 
 export default async function fetcher(
   path: string,
   method: string,
   body?: string
 ): Promise<Response> {
-  //TODO: uncomment when developping
-  //self.FIREBASE_APPCHECK_DEBUG_TOKEN = true;
-  const captchaKey = process.env.FIREBASE_CAPTCHA;
+  //  self.FIREBASE_APPCHECK_DEBUG_TOKEN = true;
+  const captchaKey = process.env.NEXT_PUBLIC_FIREBASE_CAPTCHA;
   if (!captchaKey) {
-    logger.error("no appCheck token response");
-    throw Error("no appCheck token response");
+    logger.error("no firebase captcha");
+    throw Error("no firebase captcha");
   }
   const appCheck = initializeAppCheck(app, {
     provider: new ReCaptchaV3Provider(captchaKey),
