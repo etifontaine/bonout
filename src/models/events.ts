@@ -12,6 +12,8 @@ import {
   BoNotification,
 } from "../types";
 import logger from "@src/logger";
+import * as T from "fp-ts/Task";
+import * as TE from "fp-ts/TaskEither";
 
 const COLLECTION_NAME_EVENTS = `${process.env.DB_ENV}_events`;
 const COLLECTION_NAME_INVITATIONS = `${process.env.DB_ENV}_invitations`;
@@ -171,6 +173,26 @@ export async function createInvitationResponse(
   return unionRes;
 }
 
+export async function updateInvitationResponse(
+  eventID: BoEvent["id"],
+  payload: BoInvitationResponse
+) {
+  const user_id = payload.user_id ? payload.user_id : "";
+  if (user_id.length === 0) {
+    throw new Error("user_id is undefined");
+  }
+  const eventRef = db.collection(COLLECTION_NAME_EVENTS).doc(eventID);
+  const unionRes = await eventRef.update({
+    invitations: FieldValue.arrayUnion(payload),
+  });
+
+  db.collection(COLLECTION_NAME_INVITATIONS)
+    .doc(`${user_id}_${eventID}`)
+    .update(payload);
+
+  return unionRes;
+}
+
 export async function deleteInvitationResponse(
   eventID: BoEvent["id"],
   payload: BoInvitationResponse
@@ -260,11 +282,9 @@ async function deleteInvitationByEventDocumentSnapshot(
     });
 }
 
-export async function createNotification(notif: BoNotification) {
-  const event = await getEventByLink(notif.link);
-  if (!event) throw new Error("Event don't exist");
+export function createNotification(notif: Omit<BoNotification, "id">) {
   const notifRef = db.collection(COLLECTION_NAME_NOTIFICATIONS).doc();
-  await notifRef.set({ ...notif, user_id: event.user_id });
+  return notifRef.set(notif);
 }
 
 export async function updateNotificationIsRead(p: {
@@ -274,7 +294,7 @@ export async function updateNotificationIsRead(p: {
   const notifRef = db.collection(COLLECTION_NAME_NOTIFICATIONS).doc(p.id);
   const notif = (await notifRef.get()).data();
   if (notif && notif.user_id === p.user_id) {
-    await notifRef.update({ is_read: true });
+    await notifRef.update({ isRead: true });
   }
 }
 

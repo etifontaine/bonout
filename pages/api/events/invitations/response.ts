@@ -1,18 +1,23 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { API_ERROR_MESSAGES } from "../../../../src/utils/errorMessages";
 import * as E from "fp-ts/lib/Either";
+import * as T from "fp-ts/lib/Task";
+import * as TE from "fp-ts/lib/TaskEither";
 import {
+  BoEvent,
   BoInvitationResponse,
   BoInvitationValidResponse,
 } from "../../../../src/types";
 import {
   createInvitationResponse,
-  deleteInvitationResponse,
   createNotification,
+  updateInvitationResponse,
   getEventByLink,
 } from "../../../../src/models/events";
 import ShortUniqueId from "short-unique-id";
 import logger from "@src/logger";
+import { pipe } from "fp-ts/lib/function";
+import { validateJson, validateProperties } from "@src/utils/api";
 
 export default async function handler(
   req: NextApiRequest,
@@ -25,81 +30,65 @@ export default async function handler(
       .status(400)
       .json({ error: API_ERROR_MESSAGES.METHOD_NOT_ALLOWED });
   }
-  if (!req.body) {
-    return res.status(400).json({ error: API_ERROR_MESSAGES.BODY_EMPTY });
-  }
 
-  let payload: BoInvitationResponse | null = null;
-  try {
-    payload = JSON.parse(req.body);
-  } catch (error) {
-    return res.status(400).json({ error: API_ERROR_MESSAGES.BODY_NOT_JSON });
-  }
-
-  if (!payload) {
-    return res.status(400).json({ error: "payload must be set" });
-  }
-  if (!payload.link) {
-    return res
-      .status(400)
-      .json({ error: "link" + API_ERROR_MESSAGES.PROPERTY_NOT_FOUND });
-  }
-  if (!payload.name) {
-    return res
-      .status(400)
-      .json({ error: "name" + API_ERROR_MESSAGES.PROPERTY_NOT_FOUND });
-  }
-  if (!payload.response) {
-    return res
-      .status(400)
-      .json({ error: "response" + API_ERROR_MESSAGES.PROPERTY_NOT_FOUND });
-  }
-  if (!Object.values(BoInvitationValidResponse).includes(payload.response)) {
-    return res
-      .status(400)
-      .json({ error: `${payload.response} is not a valid response` });
-  }
-
-  payload.created_at = new Date().toUTCString();
-
-  if (!payload.user_id || payload.user_id === "undefined") {
-    const uid = new ShortUniqueId({ length: 10 });
-    payload.user_id = uid();
-  }
-
-  const event = await getEventByLink(payload.link, { withUserIDs: true });
-  if (!event) {
-    return res
-      .status(400)
-      .json({ error: "event was not found with this link" });
-  }
-
-  // Response was already added with for name
-  const existingInvitation = event.invitations?.find(
-    (invitation) => invitation.user_id === payload?.user_id
+  const lol = pipe(
+    validateJson(req.body),
+    E.chain(
+      validateProperties<BoInvitationResponse>(["link", "name", "response"])
+    ),
+    E.chain((payload) =>
+      !Object.values(BoInvitationValidResponse).includes(payload.response)
+        ? E.left(`${payload.response} is not a valid response`)
+        : E.right(payload)
+    ),
+    E.map((payload) => ({
+      ...payload,
+      user_id: payload.user_id || new ShortUniqueId({ length: 10 })(),
+      created_at: payload.created_at || new Date().toUTCString(),
+    })),
+    TE.fromEither,
+    TE.chain((payload) =>
+      pipe(
+        () => getEventByLink(payload.link, { withUserIDs: true }),
+        T.chain((event) =>
+          event === null
+            ? TE.left("event was not found with this link")
+            : TE.right([payload, event] as [BoInvitationResponse, BoEvent])
+        )
+      )
+    ),
+    TE.chain(([payload, event]) =>
+      pipe(
+        TE.sequenceArray([
+          TE.tryCatch(
+            () =>
+              payload.user_id !== event.user_id
+                ? createInvitationResponse(event.id, payload)
+                : updateInvitationResponse(event.id, payload),
+            () => "error while creating invitation response"
+          ),
+          TE.tryCatch(
+            () =>
+              createNotification({
+                created_at: new Date().toISOString(),
+                message: `${payload.name} à répondu ${payload.response} | ${event.title}`,
+                isRead: false,
+                link: payload.link,
+                user_id: event.user_id,
+              }),
+            () => "error while creating notification"
+          ),
+        ]),
+        TE.map(([invitation, notification]) => ({
+          message: "Invitation updated",
+          user_id: event.user_id,
+        }))
+      )
+    ),
+    TE.mapLeft((err) => ({ error: err })),
+    TE.fold(
+      (e) => T.of(res.status(400).json(e)),
+      (x) => T.of(res.status(200).json(x))
+    )
   );
-
-  if (existingInvitation) {
-    await deleteInvitationResponse(event.id, existingInvitation);
-  }
-
-  return await createInvitationResponse(event.id, payload)
-    .then(async () => {
-      if (!payload || !payload.user_id) return;
-      //@ts-ignore
-      await createNotification({
-        created_at: new Date().toISOString(),
-        message: `${payload.name} à répondu ${payload.response}`,
-        isRead: false,
-        link: payload.link,
-      });
-      return res.status(201).json({
-        message: existingInvitation ? "updated" : "created",
-        user_id: payload?.user_id,
-      });
-    })
-    .catch((e: { message: string }) => {
-      logger.error(e);
-      return res.status(500).json({ error: e.message });
-    });
 }
