@@ -12,8 +12,6 @@ import {
   BoNotification,
 } from "../types";
 import logger from "@src/logger";
-import * as T from "fp-ts/Task";
-import * as TE from "fp-ts/TaskEither";
 
 const COLLECTION_NAME_EVENTS = `${process.env.DB_ENV}_events`;
 const COLLECTION_NAME_INVITATIONS = `${process.env.DB_ENV}_invitations`;
