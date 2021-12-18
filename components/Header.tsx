@@ -18,6 +18,7 @@ export default function Header() {
   const [isUserIDVisible, setUserIDVisible] = useState(false);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const [notifications, setNotifications] = useState<Array<BoNotification>>([]);
+  const [openNotifModal, setNotifModal] = useState(false);
 
   const router = useRouter();
 
@@ -59,11 +60,10 @@ export default function Header() {
   return (
     <>
       <Modal
-        isOpen={notifications.length > 0}
-        onClose={() => {}}
+        isOpen={openNotifModal}
+        onClose={() => setNotifModal(false)}
         content={{
-          title: t("header.notifications"),
-          description: t("header.notifications_description"),
+          title: t("notif.title"),
         }}
         icon={<EyeIcon className="h-6 w-6" aria-hidden="true" />}
       >
@@ -98,7 +98,10 @@ export default function Header() {
                       {t("header.my_events")}
                     </a>
                   </Link>
-                  <span className="text-gray-600 px-3 py-2 mr-10 rounded-md font-small inline-block relative">
+                  <span
+                    onClick={() => setNotifModal(true)}
+                    className="text-gray-600 px-3 py-2 mr-10 rounded-md font-small inline-block relative cursor-pointer"
+                  >
                     <svg
                       className="w-6 h-6 text-gray-700 fill-current"
                       viewBox="0 0 20 20"
@@ -109,9 +112,11 @@ export default function Header() {
                         fillRule="evenodd"
                       ></path>
                     </svg>
-                    <span className="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-red-100 transform translate-x-1/2 -translate-y-1/2 bg-red-600 rounded-full">
-                      99
-                    </span>
+                    {notifications && (
+                      <span className="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-red-100 transform translate-x-1/2 -translate-y-1/2 bg-red-600 rounded-full">
+                        {notifications.filter((e) => !e.isRead).length}
+                      </span>
+                    )}
                   </span>
                 </>
               ) : (

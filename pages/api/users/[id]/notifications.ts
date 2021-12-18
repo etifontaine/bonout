@@ -21,7 +21,6 @@ export default async function handler(
           (e) => res.status(400).json({ error: e }),
           (n) =>
             n.then((x) => {
-              console.log(x);
               res.status(200).json(x);
             })
         )

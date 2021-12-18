@@ -1,29 +1,40 @@
 {
-    "site": {
-        "title": "Bonout - Organize your next event",
-        "description": "Bonout helps you to organize your next event, one website with all the features and privacy in mind!"
-    },
-    "locale": {
-        "fr": "Français",
-        "en": "English"
-    },
-    "header": {
-        "user_id": "Username",
-        "my_events": "My events",
-        "login": "Login",
-        "create_event": "Create a event"
-    },
-    "footer": {
-        "copyright": "All rights reserved"
-    },
-    "errors": {
-        "catch_all": "An error has occurred",
-        "pseudo_missing": "You must enter a username",
-        "form_errors": "There are errors in the form"
-    },
-    "fill_user_id": "Fill your user_id (not your pseudo)",
-    "response_success": "Thank you for your answer",
-    "cancel": "Cancel",
-    "confirm": "Confirm",
-    "close": "Close"
+  "site": {
+    "title": "Bonout - Organize your next event",
+    "description": "Bonout helps you to organize your next event, one website with all the features and privacy in mind!"
+  },
+  "locale": {
+    "fr": "Français",
+    "en": "English"
+  },
+  "header": {
+    "user_id": "Username",
+    "my_events": "My events",
+    "login": "Login",
+    "create_event": "Create a event",
+    "intlDateTime": "{{val, datetime}}"
+  },
+  "notif": {
+    "title": "Notifications",
+    "intlDateTime": "{{val, datetime}}",
+    "eventResponse": "{{name}} {{response}} your invitation for : {{event}}",
+    "response": {
+      "yes": "accepted",
+      "no": "refused",
+      "maybe": "come maybe to"
+    }
+  },
+  "footer": {
+    "copyright": "All rights reserved"
+  },
+  "errors": {
+    "catch_all": "An error has occurred",
+    "pseudo_missing": "You must enter a username",
+    "form_errors": "There are errors in the form"
+  },
+  "fill_user_id": "Fill your user_id (not your pseudo)",
+  "response_success": "Thank you for your answer",
+  "cancel": "Cancel",
+  "confirm": "Confirm",
+  "close": "Close"
 }

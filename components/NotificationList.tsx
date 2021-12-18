@@ -1,4 +1,6 @@
 import { BoNotification } from "@src/types";
+import { useTranslation } from "next-i18next";
+import Router from "next/router";
 
 export default function NotificationList(props: {
   data: Array<BoNotification>;
@@ -14,23 +16,53 @@ export function NotificationItem(props: {
   data: BoNotification;
   key?: string;
 }) {
+  const { t } = useTranslation("common");
+  const handleClick = () => {
+    fetch("/api/notifications", {
+      method: "PUT",
+      body: JSON.stringify({
+        id: props.data.id,
+        user_id: props.data.organizer_id,
+      }),
+    });
+    Router.push(`/events/details/${props.data.link}`);
+  };
   // create a notification with message and badge read tailwind
   return (
-    <div key={props.key} className="flex items-center mb-4">
-      {/* <div className="flex-shrink-0">
-        <img
-          className="h-10 w-10 rounded-full"
-          src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-          alt=""
+    <div
+      key={props.key}
+      className="flex items-center mb-4 cursor-pointer"
+      onClick={handleClick}
+    >
+      <div className="flex-shrink-0">
+        <div
+          className={`h-2 w-2 rounded-full ${
+            props.data.isRead ? "bg-gray-500" : "bg-blue-500"
+          }`}
         />
-      </div> */}
+      </div>
       <div className="ml-3">
         <p className="text-sm leading-5 font-medium text-gray-900">
-          {props.data.message}
+          {t("notif.eventResponse", {
+            name: props.data.message.responseUserName,
+            response: t(`notif.response.${props.data.message.response}`),
+            event: props.data.message.eventTitle,
+          })}
         </p>
         <div className="flex text-sm leading-5 text-gray-500">
           <time className="mr-1" dateTime={props.data.created_at}>
-            {props.data.created_at}
+            {t("notif.intlDateTime", {
+              val: new Date(props.data.created_at),
+              formatParams: {
+                val: {
+                  weekday: "long",
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                  hour: "numeric",
+                },
+              },
+            })}
           </time>
           <span>
             <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
