@@ -29,7 +29,7 @@ export default function Header() {
     if (user) {
       setUser(user);
       getNotif(user);
-      const intervalId = setInterval(() => getNotif(user), 5000);
+      const intervalId = setInterval(() => getNotif(user), 60000);
       return () => clearInterval(intervalId);
     }
   }, []);
