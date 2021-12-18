@@ -33,3 +33,16 @@ export type BoInvitationResponse = {
   response: BoInvitationValidResponse;
   created_at?: string;
 };
+
+export type BoNotification = {
+  id: string;
+  isRead: boolean;
+  organizer_id: string;
+  link: string;
+  message: {
+    responseUserName: string;
+    eventTitle: string;
+    response: BoInvitationValidResponse;
+  };
+  created_at: string;
+};

@@ -72,7 +72,7 @@ export default function InvitationModal({ link, userResponse }: IModal) {
               data.error ? data.error : t("errors.catch_all", { ns: "common" })
             );
           })
-          .catch(() => {
+          .catch((e) => {
             toast.error(t("errors.catch_all", { ns: "common" }));
           });
       }

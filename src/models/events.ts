@@ -3,12 +3,14 @@ import {
   FieldValue,
   Firestore,
   Query,
+  QuerySnapshot,
 } from "firebase-admin/firestore";
 import admin from "../firebase/admin";
 import {
   BoEvent,
   BoInvitationResponse,
   BoInvitationValidResponse,
+  BoNotification,
 } from "../types";
 import logger from "@src/logger";
 
@@ -16,6 +18,7 @@ const db = admin.firestore();
 
 const COLLECTION_NAME_EVENTS = `${process.env.DB_ENV}_events`;
 const COLLECTION_NAME_INVITATIONS = `${process.env.DB_ENV}_invitations`;
+const COLLECTION_NAME_NOTIFICATIONS = `${process.env.DB_ENV}_notifications`;
 
 export async function getEventByID(id: string): Promise<BoEvent | null> {
   const eventQuery = await db.collection(COLLECTION_NAME_EVENTS).doc(id).get();
@@ -171,6 +174,26 @@ export async function createInvitationResponse(
   return unionRes;
 }
 
+export async function updateInvitationResponse(
+  eventID: BoEvent["id"],
+  payload: BoInvitationResponse
+) {
+  const user_id = payload.user_id ? payload.user_id : "";
+  if (user_id.length === 0) {
+    throw new Error("user_id is undefined");
+  }
+  const eventRef = db.collection(COLLECTION_NAME_EVENTS).doc(eventID);
+  const unionRes = await eventRef.update({
+    invitations: FieldValue.arrayUnion(payload),
+  });
+
+  db.collection(COLLECTION_NAME_INVITATIONS)
+    .doc(`${user_id}_${eventID}`)
+    .update(payload);
+
+  return unionRes;
+}
+
 export async function deleteInvitationResponse(
   eventID: BoEvent["id"],
   payload: BoInvitationResponse
@@ -212,6 +235,7 @@ export async function deleteEvent(eventID: BoEvent["id"]): Promise<void> {
     .then(async (doc) => {
       logger.info(`${eventID}-event will be deleted`);
       await deleteInvitationByEventDocumentSnapshot(db, doc);
+      await deleteNotificationsByDoc(doc);
       doc.ref.delete();
     });
 }
@@ -232,6 +256,8 @@ async function deleteQueryBatch(db: Firestore, query: Query, resolve: any) {
   snapshot.docs.forEach((doc) => {
     // Delete invitations linked to the event
     deleteInvitationByEventDocumentSnapshot(db, doc);
+    // Delete notifications linked to the event
+    deleteNotificationsByDoc(doc);
     batchEvents.delete(doc.ref);
   });
   await batchEvents.commit();
@@ -258,4 +284,48 @@ async function deleteInvitationByEventDocumentSnapshot(
         doc.ref.delete();
       });
     });
+}
+
+export async function deleteNotificationsByDoc(eventDoc: DocumentSnapshot) {
+  const event = eventDoc.data() as BoEvent;
+  return db
+    .collection(COLLECTION_NAME_NOTIFICATIONS)
+    .where("link", "==", event.link)
+    .get()
+    .then((querySnapshot) => {
+      querySnapshot.forEach(function (doc) {
+        doc.ref.delete();
+      });
+    });
+}
+
+export function createNotification(notif: Omit<BoNotification, "id">) {
+  const notifRef = db.collection(COLLECTION_NAME_NOTIFICATIONS).doc();
+  return notifRef.set(notif);
+}
+
+export async function updateNotificationIsRead(p: {
+  id: string;
+  user_id: string;
+}) {
+  const notifRef = db.collection(COLLECTION_NAME_NOTIFICATIONS).doc(p.id);
+  const notif = (await notifRef.get()).data() as BoNotification;
+  if (notif && notif.organizer_id === p.user_id) {
+    await notifRef.update({ isRead: true });
+  }
+}
+
+export async function deleteNotification(id: string) {
+  const notifRef = db.collection(COLLECTION_NAME_NOTIFICATIONS).doc(id);
+  await notifRef.delete();
+}
+
+export async function getUserNotifications(user_id: string) {
+  const notifs = await db
+    .collection(COLLECTION_NAME_NOTIFICATIONS)
+    .where("organizer_id", "==", user_id)
+    .get();
+  return notifs.docs.map(
+    (doc) => ({ ...doc.data(), id: doc.id } as BoNotification)
+  );
 }
