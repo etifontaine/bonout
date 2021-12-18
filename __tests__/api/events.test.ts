@@ -10,6 +10,9 @@ import * as EventModel from "../../src/models/events";
 jest.mock("../../src/models/events.ts", () => ({
   createEvent: jest.fn((d) => d),
 }));
+jest.mock("../../src/firebase/auth.ts", () => ({
+  checkFirebaseAuth: jest.fn((appCheck) => true),
+}));
 
 describe("Events API", () => {
   it("should be an error if body is not a JSON", () => {

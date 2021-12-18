@@ -16,6 +16,9 @@ jest.mock("../../src/models/events.ts", () => ({
     mockEvent.link === link ? mockEvent : null
   ),
 }));
+jest.mock("../../src/firebase/auth.ts", () => ({
+  checkFirebaseAuth: jest.fn((appCheck) => true),
+}));
 
 describe("GET api/events/[...params]/[id/link]", () => {
   it("should be an error if params is not link or id", async () => {
