@@ -3,6 +3,7 @@ import {
   FieldValue,
   Firestore,
   Query,
+  QuerySnapshot,
 } from "firebase-admin/firestore";
 import admin from "../firebase/admin";
 import {
@@ -234,6 +235,7 @@ export async function deleteEvent(eventID: BoEvent["id"]): Promise<void> {
     .then(async (doc) => {
       logger.info(`${eventID}-event will be deleted`);
       await deleteInvitationByEventDocumentSnapshot(db, doc);
+      await deleteNotificationsByDoc(doc);
       doc.ref.delete();
     });
 }
@@ -254,6 +256,8 @@ async function deleteQueryBatch(db: Firestore, query: Query, resolve: any) {
   snapshot.docs.forEach((doc) => {
     // Delete invitations linked to the event
     deleteInvitationByEventDocumentSnapshot(db, doc);
+    // Delete notifications linked to the event
+    deleteNotificationsByDoc(doc);
     batchEvents.delete(doc.ref);
   });
   await batchEvents.commit();
@@ -276,6 +280,19 @@ async function deleteInvitationByEventDocumentSnapshot(
     .where("link", "==", docInvitation.link)
     .get()
     .then(function (querySnapshot) {
+      querySnapshot.forEach(function (doc) {
+        doc.ref.delete();
+      });
+    });
+}
+
+export async function deleteNotificationsByDoc(eventDoc: DocumentSnapshot) {
+  const event = eventDoc.data() as BoEvent;
+  return db
+    .collection(COLLECTION_NAME_NOTIFICATIONS)
+    .where("link", "==", event.link)
+    .get()
+    .then((querySnapshot) => {
       querySnapshot.forEach(function (doc) {
         doc.ref.delete();
       });
