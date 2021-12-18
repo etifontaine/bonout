@@ -1,6 +1,7 @@
 import { BoNotification } from "@src/types";
 import { useTranslation } from "next-i18next";
 import Router from "next/router";
+import fetcher from "@src/utils/fetcher";
 
 export default function NotificationList(props: {
   data: Array<BoNotification>;
@@ -18,13 +19,14 @@ export function NotificationItem(props: {
 }) {
   const { t } = useTranslation("common");
   const handleClick = () => {
-    fetch("/api/notifications", {
-      method: "PUT",
-      body: JSON.stringify({
+    fetcher(
+      "/api/notifications",
+      "PUT",
+      JSON.stringify({
         id: props.data.id,
         user_id: props.data.organizer_id,
-      }),
-    });
+      })
+    );
     Router.push(`/events/details/${props.data.link}`);
   };
   // create a notification with message and badge read tailwind

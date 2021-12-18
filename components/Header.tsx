@@ -11,6 +11,7 @@ import { useRouter } from "next/router";
 import { BoNotification } from "@src/types";
 import Modal from "./Modal";
 import NotificationList from "./NotificationList";
+import fetcher from "@src/utils/fetcher";
 
 export default function Header() {
   const [user, setUser] = useState("");
@@ -35,7 +36,7 @@ export default function Header() {
   }, []);
 
   const getNotif = (user: string) => {
-    fetch(`/api/users/${user}/notifications`).then((res) => {
+    fetcher(`/api/users/${user}/notifications`, "GET").then((res) => {
       if (res.ok) {
         res.json().then((data) => {
           setNotifications(data);
