@@ -115,7 +115,10 @@ export default function Header() {
                     </a>
                   </Link>
                   <span
-                    onClick={() => setNotifModal(true)}
+                    onClick={() => {
+                      if (user) getNotif(user);
+                      setNotifModal(true);
+                    }}
                     className="text-gray-600 px-3 py-2 mr-10 rounded-md font-small inline-block relative cursor-pointer"
                   >
                     <svg
