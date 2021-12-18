@@ -206,7 +206,11 @@ export default function Header() {
           onClick={() => setShowMobileMenu(false)}
           className="flex justify-end"
         >
-          <img src="/images/Cross.svg" alt="Menu icon" className="h-16 w-16" />
+          <Image
+            src="/images/Cross.svg"
+            alt="Menu icon"
+            className="h-16 w-16"
+          />
         </div>
         <ul className="font-montserrat flex flex-col mx-8 my-24 items-center text-xl">
           <li className="my-6">
