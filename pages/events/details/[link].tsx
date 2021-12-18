@@ -97,22 +97,23 @@ const EventDetails: NextPage<PageProps> = ({ event }) => {
 
   useEffect(() => {
     if (getUserID() && !isOrganizer && userChecked) {
-      fetcher(`/api/users/${getUserID()}/checkIfUserComing/${event.id}`, 'GET').then(
-        (res) => {
-          if (res.status === 200) {
-            res.json().then((data) => {
-              if (data.response && data.response !== "undefined") {
-                setUserInvitationResponseValue(data.response);
-                setUserInvitationResponse(
-                  t("common.userResponse", {
-                    response: t(`common.response.${data.response}`),
-                  })
-                );
-              }
-            });
-          }
+      fetcher(
+        `/api/users/${getUserID()}/checkIfUserComing/${event.id}`,
+        "GET"
+      ).then((res) => {
+        if (res.status === 200) {
+          res.json().then((data) => {
+            if (data.response && data.response !== "undefined") {
+              setUserInvitationResponseValue(data.response);
+              setUserInvitationResponse(
+                t("common.userResponse", {
+                  response: t(`common.response.${data.response}`),
+                })
+              );
+            }
+          });
         }
-      );
+      });
     }
   }, [userChecked, isOrganizer, event, t]);
 
