@@ -3,10 +3,7 @@ import {
   BoInvitationResponse,
   BoInvitationValidResponse,
 } from "../../src/types";
-import {
-  mockCreateEvent,
-  mockNextApiHttp,
-} from "../../__mocks__/mockNextApiHttp";
+import { mockNextApiHttp } from "../../__mocks__/mockNextApiHttp";
 import { mockEvent as fakeEvent } from "../../__mocks__/mockEvent";
 import responseHandler from "./../../pages/api/events/invitations/response";
 
@@ -35,16 +32,19 @@ const mockEvent2: { [key: string]: any } = {
       response: BoInvitationValidResponse.YES,
       name: "test1",
       link: "test-link-2",
+      user_id: "user2",
     },
     {
       response: BoInvitationValidResponse.YES,
       name: "test2",
       link: "test-link-2",
+      user_id: "user2",
     },
     {
       response: BoInvitationValidResponse.YES,
       name: "test3",
       link: "test-link-2",
+      user_id: "user2",
     },
   ] as BoInvitationResponseTest[],
 };
@@ -52,7 +52,11 @@ jest.mock("../../src/models/events.ts", () => ({
   createInvitationResponse: jest.fn(
     (id, reponse) => new Promise((resolve) => resolve(id))
   ),
-  deleteInvitationResponse: jest.fn(),
+  updateInvitationResponse: jest.fn(
+    (id, reponse) => new Promise((resolve) => resolve(id))
+  ),
+
+  createNotification: jest.fn(() => new Promise((resolve) => resolve(null))),
   getEventByLink: jest.fn((link) =>
     mockEvent.link === link
       ? mockEvent
@@ -132,6 +136,7 @@ describe("POST api/events/invitation/response", () => {
     const test = async (body: BoInvitationResponse) =>
       await postResponse(JSON.stringify(body)).then((res) => {
         expect(res.statusCode).toBe(201);
+        expect(res._getJSONData()).toMatchObject({ message: "updated" });
       });
     await test(mockEvent2.invitations[0]);
     await test(mockEvent2.invitations[1]);

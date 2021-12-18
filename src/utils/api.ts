@@ -14,10 +14,10 @@ export function validateProperties<T>(properties: Array<string>) {
   return (body: { [key: string]: any }) =>
     pipe(
       properties,
-      filter((key) => !(key in body)),
+      filter((key) => !(key in body) || !body[key]),
       (keys) =>
         keys.length === 0
           ? E.right(body as T)
-          : E.left(API_ERROR_MESSAGES.VALUE_MISSING + " : " + keys.join(", "))
+          : E.left(keys.join(", ") + API_ERROR_MESSAGES.PROPERTY_NOT_FOUND)
     );
 }

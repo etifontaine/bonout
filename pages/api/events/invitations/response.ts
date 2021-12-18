@@ -22,7 +22,9 @@ import { validateJson, validateProperties } from "@src/utils/api";
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<
-    BoInvitationResponse | { error: string } | { message: string }
+    | BoInvitationResponse
+    | { error: string }
+    | { message: string; user_id: string }
   >
 ) {
   if (req.method !== "POST") {
@@ -31,15 +33,33 @@ export default async function handler(
       .json({ error: API_ERROR_MESSAGES.METHOD_NOT_ALLOWED });
   }
 
-  const lol = pipe(
+  await handleCreateUpdateBoInvitationRes(req).then(
+    E.fold(
+      ([message, exception]) => {
+        if (exception) logger.error(exception, message);
+        res.status(exception ? 500 : 400).json({ error: message });
+      },
+      ([invitation, event]) =>
+        res.status(201).json({
+          message: invitation.user_id === event.user_id ? "updated" : "created",
+          user_id: invitation.user_id,
+        })
+    )
+  );
+}
+
+function handleCreateUpdateBoInvitationRes(req: NextApiRequest) {
+  return pipe(
     validateJson(req.body),
     E.chain(
       validateProperties<BoInvitationResponse>(["link", "name", "response"])
     ),
-    E.chain((payload) =>
-      !Object.values(BoInvitationValidResponse).includes(payload.response)
-        ? E.left(`${payload.response} is not a valid response`)
-        : E.right(payload)
+    E.chain(
+      E.fromPredicate(
+        (payload) =>
+          Object.values(BoInvitationValidResponse).includes(payload.response),
+        (payload) => `${payload.response} is not a valid response`
+      )
     ),
     E.map((payload) => ({
       ...payload,
@@ -53,10 +73,14 @@ export default async function handler(
         T.chain((event) =>
           event === null
             ? TE.left("event was not found with this link")
-            : TE.right([payload, event] as [BoInvitationResponse, BoEvent])
+            : TE.right([payload, event] as [
+                BoInvitationResponse & { user_id: string },
+                BoEvent
+              ])
         )
       )
     ),
+    TE.mapLeft((error) => [error, null] as [string, null | unknown]),
     TE.chain(([payload, event]) =>
       pipe(
         TE.sequenceArray([
@@ -65,7 +89,10 @@ export default async function handler(
               payload.user_id !== event.user_id
                 ? createInvitationResponse(event.id, payload)
                 : updateInvitationResponse(event.id, payload),
-            () => "error while creating invitation response"
+            (e): [string, unknown] => [
+              "error while creating invitation response",
+              e,
+            ]
           ),
           TE.tryCatch(
             () =>
@@ -76,19 +103,11 @@ export default async function handler(
                 link: payload.link,
                 user_id: event.user_id,
               }),
-            () => "error while creating notification"
+            (e): [string, unknown] => ["error while creating notification", e]
           ),
         ]),
-        TE.map(([invitation, notification]) => ({
-          message: "Invitation updated",
-          user_id: event.user_id,
-        }))
+        TE.map(() => [payload, event])
       )
-    ),
-    TE.mapLeft((err) => ({ error: err })),
-    TE.fold(
-      (e) => T.of(res.status(400).json(e)),
-      (x) => T.of(res.status(200).json(x))
     )
-  );
+  )();
 }
