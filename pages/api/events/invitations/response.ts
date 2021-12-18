@@ -98,10 +98,14 @@ function handleCreateUpdateBoInvitationRes(req: NextApiRequest) {
             () =>
               createNotification({
                 created_at: new Date().toISOString(),
-                message: `${payload.name} à répondu ${payload.response} | ${event.title}`,
+                message: {
+                  responseUserName: payload.name,
+                  response: payload.response,
+                  eventTitle: event.title,
+                },
                 isRead: false,
                 link: payload.link,
-                user_id: event.user_id,
+                organizer_id: event.user_id,
               }),
             (e): [string, unknown] => ["error while creating notification", e]
           ),

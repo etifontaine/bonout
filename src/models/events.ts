@@ -292,8 +292,8 @@ export async function updateNotificationIsRead(p: {
   user_id: string;
 }) {
   const notifRef = db.collection(COLLECTION_NAME_NOTIFICATIONS).doc(p.id);
-  const notif = (await notifRef.get()).data();
-  if (notif && notif.user_id === p.user_id) {
+  const notif = (await notifRef.get()).data() as BoNotification;
+  if (notif && notif.organizer_id === p.user_id) {
     await notifRef.update({ isRead: true });
   }
 }
@@ -306,9 +306,8 @@ export async function deleteNotification(id: string) {
 export async function getUserNotifications(user_id: string) {
   const notifs = await db
     .collection(COLLECTION_NAME_NOTIFICATIONS)
-    .where("user_id", "==", user_id)
+    .where("organizer_id", "==", user_id)
     .get();
-  console.log("coucou", notifs.docs);
   return notifs.docs.map(
     (doc) => ({ ...doc.data(), id: doc.id } as BoNotification)
   );
