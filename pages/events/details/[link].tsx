@@ -15,6 +15,7 @@ import { getUserID } from "src/utils/user";
 import AddCalendarModal from "@components/AddCalendarModal";
 import Modal from "@components/Modal";
 import Loader from "@components/Loader";
+import { useRouter } from "next/router";
 
 const DeleteModal = Modal;
 import {
@@ -94,6 +95,14 @@ const EventDetails: NextPage<PageProps> = ({ event }) => {
   const [isDeleteModalVisible, setDeleteModalVisible] = useState(false);
   const [isAddCalendarVisible, setAddCalendarVisible] = useState(false);
   const [isLoading, setLoading] = useState(false);
+
+  const { query } = useRouter();
+
+  useEffect(() => {
+    if (query.openGuestList && query.openGuestList === "true") {
+      setGuestListVisible(true);
+    }
+  }, [query]);
 
   useEffect(() => {
     if (getUserID() && !isOrganizer && userChecked) {

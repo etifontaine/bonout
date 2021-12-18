@@ -5,10 +5,13 @@ import fetcher from "@src/utils/fetcher";
 
 export default function NotificationList(props: {
   data: Array<BoNotification>;
+  onClick?: () => void;
 }) {
   return (
     <div>
-      {props.data.map((item) => NotificationItem({ data: item, key: item.id }))}
+      {props.data.map((item) =>
+        NotificationItem({ data: item, key: item.id, onClick: props.onClick })
+      )}
     </div>
   );
 }
@@ -16,6 +19,7 @@ export default function NotificationList(props: {
 export function NotificationItem(props: {
   data: BoNotification;
   key?: string;
+  onClick?: () => void;
 }) {
   const { t } = useTranslation("common");
   const handleClick = () => {
@@ -27,7 +31,13 @@ export function NotificationItem(props: {
         user_id: props.data.organizer_id,
       })
     );
-    Router.push(`/events/details/${props.data.link}`);
+    props.onClick && props.onClick();
+    Router.push({
+      pathname: `/events/details/${props.data.link}`,
+      query: {
+        openGuestList: true,
+      },
+    });
   };
   // create a notification with message and badge read tailwind
   return (

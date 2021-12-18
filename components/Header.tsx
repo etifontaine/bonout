@@ -8,7 +8,7 @@ import { ChevronDownIcon } from "@heroicons/react/solid";
 import { getUserID } from "src/utils/user";
 import LoginModal from "./LoginModal";
 import { useRouter } from "next/router";
-import { BoNotification } from "@src/types";
+import { BoInvitationResponse, BoNotification } from "@src/types";
 import Modal from "./Modal";
 import NotificationList from "./NotificationList";
 import fetcher from "@src/utils/fetcher";
@@ -38,8 +38,14 @@ export default function Header() {
   const getNotif = (user: string) => {
     fetcher(`/api/users/${user}/notifications`, "GET").then((res) => {
       if (res.ok) {
-        res.json().then((data) => {
-          setNotifications(data);
+        res.json().then((data: Array<BoNotification>) => {
+          setNotifications(
+            data.sort(
+              (a, b) =>
+                new Date(b.created_at).getTime() -
+                new Date(a.created_at).getTime()
+            )
+          );
         });
       }
     });
@@ -74,7 +80,10 @@ export default function Header() {
         }}
         icon={<EyeIcon className="h-6 w-6" aria-hidden="true" />}
       >
-        <NotificationList data={notifications} />
+        <NotificationList
+          data={notifications}
+          onClick={() => setNotifModal(false)}
+        />
       </Modal>
       <LoginModal
         isVisible={isLoginVisible}
