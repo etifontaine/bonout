@@ -18,6 +18,7 @@ import ShortUniqueId from "short-unique-id";
 import logger from "@src/logger";
 import { pipe } from "fp-ts/lib/function";
 import { validateJson, validateProperties } from "@src/utils/api";
+import { checkFirebaseAuth } from "@src/firebase/auth";
 
 export default async function handler(
   req: NextApiRequest,
@@ -32,6 +33,12 @@ export default async function handler(
       .status(400)
       .json({ error: API_ERROR_MESSAGES.METHOD_NOT_ALLOWED });
   }
+
+  const appCheck = await checkFirebaseAuth(
+    req.headers["x-firebase-appcheck"] as string
+  );
+
+  if (appCheck.error) return res.status(401).send({ error: appCheck.message });
 
   await handleCreateUpdateBoInvitationRes(req).then(
     E.fold(

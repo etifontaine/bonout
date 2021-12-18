@@ -12,21 +12,26 @@ function Question({ title, answer }: questionContent) {
 
   return (
     <>
-      <div onClick={() => setIsOpen(!isOpen)} className="w-full py-4">
-        <div className="flex justify-between items-center cursor-pointer">
+      <div className="w-full py-4">
+        <div
+          className="flex justify-between items-center cursor-pointer"
+          onClick={() => setIsOpen(!isOpen)}
+        >
           <div className="font-montserrat font-medium mr-auto">{title}</div>
           <Image
             src="/images/CaretRight.svg"
             alt="Caret"
             height="58"
             width="58"
-            className={`transform transition-transform ${isOpen ? "rotate-90" : ""
-              }`}
+            className={`transform transition-transform ${
+              isOpen ? "rotate-90" : ""
+            }`}
           />
         </div>
         <div
-          className={`font-montserrat text-sm font-extralight pb-8 ${isOpen ? "" : "hidden"
-            }`}
+          className={`font-montserrat text-sm font-extralight pb-8 ${
+            isOpen ? "" : "hidden"
+          }`}
           dangerouslySetInnerHTML={{ __html: answer }}
         />
       </div>
@@ -45,12 +50,30 @@ function FAQ() {
           {t("title")}
         </h2>
       </div>
-      <Question answer={t("howIsItDifferent.answer")} title={t("howIsItDifferent.title")} />
-      <Question answer={t("howToInvite.answer")} title={t("howToInvite.title")} />
-      <Question answer={t("howIsItFinanced.answer")} title={t("howIsItFinanced.title")} />
-      <Question answer={t("isAccountRequired.answer")} title={t("isAccountRequired.title")} />
-      <Question answer={t("howToSaveUserID.answer")} title={t("howToSaveUserID.title")} />
-      <Question answer={t("isThereAnApp.answer")} title={t("isThereAnApp.title")} />
+      <Question
+        answer={t("howIsItDifferent.answer")}
+        title={t("howIsItDifferent.title")}
+      />
+      <Question
+        answer={t("howToInvite.answer")}
+        title={t("howToInvite.title")}
+      />
+      <Question
+        answer={t("howIsItFinanced.answer")}
+        title={t("howIsItFinanced.title")}
+      />
+      <Question
+        answer={t("isAccountRequired.answer")}
+        title={t("isAccountRequired.title")}
+      />
+      <Question
+        answer={t("howToSaveUserID.answer")}
+        title={t("howToSaveUserID.title")}
+      />
+      <Question
+        answer={t("isThereAnApp.answer")}
+        title={t("isThereAnApp.title")}
+      />
     </section>
   );
 }

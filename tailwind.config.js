@@ -1,5 +1,5 @@
 module.exports = {
-  purge: [
+  content: [
     "src/**/*.js",
     "src/**/*.ts",
     "src/**/*.jsx",
@@ -50,8 +50,4 @@ module.exports = {
       },
     },
   },
-  variants: {
-    extend: {},
-  },
-  plugins: [],
 };

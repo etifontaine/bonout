@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { getUserID } from "src/utils/user";
 import { toast } from "react-toastify";
+import { isClientSide } from "@src/utils/client";
+import fetcher from "@src/utils/fetcher";
 
 export default function useIsEventOrganiser(eventID: string) {
   const [isLoading, setIsLoading] = useState(false);
@@ -8,11 +10,11 @@ export default function useIsEventOrganiser(eventID: string) {
   const [isOrganizer, setIsOrganizer] = useState(false);
   const [once, setOnce] = useState(false);
   useEffect(() => {
-    if (typeof window !== "undefined" && !once) {
+    if (isClientSide() && !once) {
       setOnce(true);
       if (getUserID() !== null && !userChecked) {
         if (isLoading === false && !userChecked) setIsLoading(true);
-        fetch(`/api/users/${getUserID()}/isOrganizerOf/${eventID}`)
+        fetcher(`/api/users/${getUserID()}/isOrganizerOf/${eventID}`, 'GET')
           .then((res) => {
             if (res.status === 200) {
               res.json().then((data) => {

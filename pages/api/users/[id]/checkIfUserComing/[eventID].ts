@@ -3,12 +3,19 @@ import { RequestError } from "src/utils/CustomErrors";
 import { API_ERROR_MESSAGES } from "src/utils/errorMessages";
 import { isUserComing } from "src/models/events";
 import logger from "@src/logger";
+import { checkFirebaseAuth } from "@src/firebase/auth";
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<{ response?: string; error?: string }>
 ) {
   if (req.method !== "GET") return res.status(405).end();
+
+  const appCheck = await checkFirebaseAuth(
+    req.headers["x-firebase-appcheck"] as string
+  );
+  if (appCheck.error) return res.status(401).send({ error: appCheck.message });
+
   try {
     const userInvitation = await isUserComing(
       getUserIdParameter(req),

@@ -5,6 +5,7 @@ import { toast } from "react-toastify";
 import { useTranslation } from "next-i18next";
 import { BoInvitationValidResponse, BoEvent } from "../../src/types";
 import Modal from "@components/Modal";
+import fetcher from "@src/utils/fetcher";
 
 export interface IModal {
   link?: BoEvent["link"];
@@ -42,15 +43,16 @@ export default function InvitationModal({ link, userResponse }: IModal) {
       return;
     }
     localStorage.setItem("user_pseudo", formContent.username);
-    fetch("/api/events/invitations/response", {
-      method: "POST",
-      body: JSON.stringify({
+    fetcher(
+      "/api/events/invitations/response",
+      "POST",
+      JSON.stringify({
         name: formContent.username,
         response: userResponse,
         link: link,
         user_id: localStorage.getItem("user_id") || undefined,
-      }),
-    }).then(async (res) => {
+      })
+    ).then(async (res) => {
       if (res.status === 201) {
         const { user_id } = await res.json();
         if (
