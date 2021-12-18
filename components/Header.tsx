@@ -28,15 +28,21 @@ export default function Header() {
     const user = getUserID();
     if (user) {
       setUser(user);
-      fetch(`/api/users/${user}/notifications`).then((res) => {
-        if (res.ok) {
-          res.json().then((data) => {
-            setNotifications(data);
-          });
-        }
-      });
+      getNotif(user);
+      const intervalId = setInterval(() => getNotif(user), 5000);
+      return () => clearInterval(intervalId);
     }
   }, []);
+
+  const getNotif = (user: string) => {
+    fetch(`/api/users/${user}/notifications`).then((res) => {
+      if (res.ok) {
+        res.json().then((data) => {
+          setNotifications(data);
+        });
+      }
+    });
+  };
 
   const toggleUserID = (user: string) => {
     return (
@@ -209,6 +215,8 @@ export default function Header() {
           <Image
             src="/images/Cross.svg"
             alt="Menu icon"
+            width="50"
+            height="50"
             className="h-16 w-16"
           />
         </div>
