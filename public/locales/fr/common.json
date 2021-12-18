@@ -18,8 +18,8 @@
     "intlDateTime": "{{val, datetime}}",
     "eventResponse": "{{name}} {{response}} votre invitation pour : {{event}}",
     "response": {
-      "yes": "à accepté",
-      "no": "à refusé",
+      "yes": "a accepté",
+      "no": "a refusé",
       "maybe": "viendra peut-être à"
     }
   },
