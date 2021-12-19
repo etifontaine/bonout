@@ -26,11 +26,12 @@ type BoInvitationResponseDefined = BoInvitationResponse & {
   created_at: string;
 };
 
-const safeGetReqPost: (r: NextApiRequest) => E.Either<string, NextApiRequest> =
-  E.fromPredicate(
-    ({ method }) => method === "POST",
-    () => API_ERROR_MESSAGES.METHOD_NOT_ALLOWED
-  );
+const safeGetPostRequest: (
+  r: NextApiRequest
+) => E.Either<string, NextApiRequest> = E.fromPredicate(
+  ({ method }) => method === "POST",
+  () => API_ERROR_MESSAGES.METHOD_NOT_ALLOWED
+);
 
 const validateResponseProp: (
   x: BoInvitationResponse
@@ -120,7 +121,7 @@ export default async function handler(
     TE.Do,
     TE.bind("invitationResponse", () =>
       pipe(
-        safeGetReqPost(req),
+        safeGetPostRequest(req),
         E.chain(safeGetBodyPayload),
         E.map(fillInvitationResponse),
         TE.fromEither
