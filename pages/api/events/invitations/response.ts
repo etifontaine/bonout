@@ -50,16 +50,10 @@ const safeGetBodyPayload: (
   E.chain(validateResponseProp)
 );
 
-const validateEvent: (e: BoEvent | null) => E.Either<string, BoEvent> =
-  E.fromPredicate(
-    (e) => e !== null,
-    () => `event was not found with this link`
-  ) as () => E.Either<string, BoEvent>;
-
 const safeGetEventByLink: (link: string) => TE.TaskEither<string, BoEvent> =
   flow(
     (link) => () => getEventByLink(link, { withUserIDs: true }),
-    T.map(validateEvent)
+    T.map(E.fromNullable(`event was not found with this link`))
   );
 
 const fillInvitationResponse: (
