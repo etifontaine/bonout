@@ -46,7 +46,7 @@ export default function InvitationModal({ link, userResponse }: IModal) {
     if (isLoading) {
       return;
     }
-    setIsLoading(true)
+    setIsLoading(true);
     localStorage.setItem("user_pseudo", formContent.username);
     fetcher(
       "/api/events/invitations/response",
@@ -67,20 +67,20 @@ export default function InvitationModal({ link, userResponse }: IModal) {
           localStorage.setItem("user_id", user_id);
         }
         toast.info(t("response_success", { ns: "common" }));
-        setIsLoading(false)
+        setIsLoading(false);
         setIsOpen(false);
         Router.push(`/events/details/${link}`);
       } else {
         res
           .json()
           .then((data) => {
-            setIsLoading(false)
+            setIsLoading(false);
             toast.error(
               data.error ? data.error : t("errors.catch_all", { ns: "common" })
             );
           })
           .catch((e) => {
-            setIsLoading(false)
+            setIsLoading(false);
             toast.error(t("errors.catch_all", { ns: "common" }));
           });
       }
