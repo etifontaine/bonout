@@ -11,6 +11,9 @@ jobs:
     - uses: actions/setup-node@v3
       with:
         node-version: 16
+        cache: 'npm'
+    - name: npm ci
+      run: npm ci
     - name: run build
       run: npm run build
       env:
