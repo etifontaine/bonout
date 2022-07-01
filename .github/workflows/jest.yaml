@@ -13,4 +13,4 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
         DB_ENV: staging
       with:
-        test-command: "npm run test:ci"
+        test-command: "npm run test:ci -- --testLocationInResults --json --coverage --outputFile="jest.results.json""
