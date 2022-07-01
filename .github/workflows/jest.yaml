@@ -7,10 +7,15 @@ jobs:
     name: Jest test:ci
     runs-on: ubuntu-20.04
     steps:
-    - name: Test
-      uses: willcaul/jest-github-action@v2
-      env:
-        GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
-        DB_ENV: staging
+    - uses: actions/checkout@v3
+    - uses: actions/setup-node@v3
       with:
-        test-command: 'npm run test:ci -- --testLocationInResults --json --coverage --outputFile="jest.results.json"'
+        node-version: 16
+    - name: run build
+      run: npm run build
+      env:
+        DB_ENV: staging
+    - name: run test:ci
+      run: npm run test:ci
+      env:
+        DB_ENV: staging
