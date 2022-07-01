@@ -1,13 +1,10 @@
 FROM node:16-alpine AS dependencies
 
-# RUN apk add --no-cache libc6-compat
-
 WORKDIR /app
 
-COPY package.json pnpm-lock.yaml ./
+COPY package.json package-lock.json ./
 
-RUN npm install -g pnpm
-RUN pnpm install --frozen-lockfile
+RUN npm install --frozen-lockfile
 
 
 # Rebuild the source code only when needed
@@ -21,12 +18,11 @@ COPY . .
 COPY --from=dependencies /app/node_modules ./node_modules
 
 ENV DB_ENV=build
-RUN npm install -g pnpm
 
 ENV NODE_ENV production
-RUN pnpm run build
+RUN npm run build
 RUN rm -rf node_modules
-RUN pnpm install --production --frozen-lockfile --ignore-scripts --prefer-offline
+RUN npm install --production --frozen-lockfile --ignore-scripts --prefer-offline
 
 # Production image, copy all the files and run next
 FROM node:16-alpine AS runner
@@ -39,7 +35,7 @@ ENV NEXT_TELEMETRY_DISABLED 1
 RUN addgroup -g 1001 -S nodejs
 RUN adduser -S nextjs -u 1001
 
-COPY --from=builder --chown=nextjs:nodejs /app/package.json /app/pnpm-lock.yaml ./
+COPY --from=builder --chown=nextjs:nodejs /app/package.json /app/package-lock.json ./
 COPY --from=builder --chown=nextjs:nodejs /app/node_modules ./node_modules
 COPY --from=builder --chown=nextjs:nodejs /app/.next ./.next
 COPY --from=builder --chown=nextjs:nodejs /app/public ./public

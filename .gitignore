@@ -44,6 +44,5 @@ yarn-error.log*
 /cypress/videos/
 
 yarn.lock
-package-lock.json
 
 bonout-web-app-sa.json

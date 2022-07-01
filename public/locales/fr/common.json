@@ -16,11 +16,11 @@
   "notif": {
     "title": "Notifications",
     "intlDateTime": "{{val, datetime}}",
-    "eventResponse": "{{name}} {{response}} votre invitation pour : {{event}}",
+    "eventResponse": "{{event}}: {{name}} a répondu {{response}}",
     "response": {
-      "yes": "a accepté",
-      "no": "a refusé",
-      "maybe": "viendra peut-être à"
+      "yes": "oui",
+      "no": "non",
+      "maybe": "peut-être"
     }
   },
   "footer": {

@@ -22,6 +22,7 @@ interface IModalForm {
 export default function InvitationModal({ link, userResponse }: IModal) {
   const { t } = useTranslation(["events", "common"]);
   let [isOpen, setIsOpen] = useState(false);
+  let [isLoading, setIsLoading] = useState(false);
   const [formContent, setFormContent] = useState<IModalForm>();
 
   useEffect(() => {
@@ -42,6 +43,10 @@ export default function InvitationModal({ link, userResponse }: IModal) {
       toast.error(t("errors.pseudo_missing", { ns: "common" }));
       return;
     }
+    if (isLoading) {
+      return;
+    }
+    setIsLoading(true);
     localStorage.setItem("user_pseudo", formContent.username);
     fetcher(
       "/api/events/invitations/response",
@@ -62,17 +67,20 @@ export default function InvitationModal({ link, userResponse }: IModal) {
           localStorage.setItem("user_id", user_id);
         }
         toast.info(t("response_success", { ns: "common" }));
+        setIsLoading(false);
         setIsOpen(false);
         Router.push(`/events/details/${link}`);
       } else {
         res
           .json()
           .then((data) => {
+            setIsLoading(false);
             toast.error(
               data.error ? data.error : t("errors.catch_all", { ns: "common" })
             );
           })
           .catch((e) => {
+            setIsLoading(false);
             toast.error(t("errors.catch_all", { ns: "common" }));
           });
       }

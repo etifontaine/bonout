@@ -8,7 +8,7 @@
     "lint": "next lint",
     "prettier": "prettier --write **/*.{ts,tsx,js,md}",
     "test": "jest --watch",
-    "test:ci": "jest --ci"
+    "test:ci": "jest --runInBand"
   },
   "dependencies": {
     "@headlessui/react": "1.4.2",
@@ -16,9 +16,9 @@
     "datebook": "^7.0.7",
     "dayjs": "^1.10.7",
     "firebase": "^9.6.1",
-    "firebase-admin": "10.0.0",
+    "firebase-admin": "^10.3.0",
     "fp-ts": "^2.11.5",
-    "next": "12.0.7",
+    "next": "^12.2.0",
     "next-i18next": "^10.0.1",
     "nextjs-progressbar": "^0.0.13",
     "pino": "^7.5.1",
@@ -28,7 +28,7 @@
     "react-loading-skeleton": "^3.0.1",
     "react-toastify": "8.1.0",
     "react-transition-group": "4.4.2",
-    "sharp": "0.29.3",
+    "sharp": "^0.30.7",
     "short-unique-id": "4.4.4",
     "use-places-autocomplete": "1.10.0",
     "uuid": "8.3.2"
