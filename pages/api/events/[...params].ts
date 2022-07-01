@@ -67,11 +67,11 @@ export default async function handler(
     }
 
     function getFirstParam() {
-      return req.query.params[0];
+      return req.query.params ? req.query.params[0] : "";
     }
 
     function getSecondParam() {
-      return req.query.params[1];
+      return req.query.params ? req.query.params[1] : "";
     }
   }
 }
