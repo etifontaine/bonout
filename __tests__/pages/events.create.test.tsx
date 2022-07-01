@@ -10,6 +10,11 @@ import {
   add1h,
   add10min,
 } from "@components/CreateEvent/Form/utils";
+
+jest.mock('react-i18next', () => ({
+  useTranslation: () => ({t: key => key})
+}));
+
 const ok = "OK";
 const error = "ERROR";
 const data = [{ place_id: "0109", description: "test" }];
