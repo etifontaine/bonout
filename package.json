@@ -8,7 +8,7 @@
     "lint": "next lint",
     "prettier": "prettier --write **/*.{ts,tsx,js,md}",
     "test": "jest --watch",
-    "test:ci": "jest --ci"
+    "test:ci": "jest --runInBand"
   },
   "dependencies": {
     "@headlessui/react": "1.4.2",
