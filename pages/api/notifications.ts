@@ -4,7 +4,6 @@ import { validateJson, validateProperties } from "@src/utils/api";
 import { updateNotificationIsRead } from "@src/models/events";
 import { pipe } from "fp-ts/lib/function";
 import * as E from "fp-ts/lib/Either";
-import { checkFirebaseAuth } from "@src/firebase/auth";
 
 export default async function handler(
   req: NextApiRequest,
@@ -12,11 +11,6 @@ export default async function handler(
     { error: string } | { message: string } | Array<BoNotification>
   >
 ) {
-  const appCheck = await checkFirebaseAuth(
-    req.headers["x-firebase-appcheck"] as string
-  );
-
-  if (appCheck.error) return res.status(401).send({ error: appCheck.message });
   if (req.method === "PUT") {
     return pipe(
       validateJson(req.body),

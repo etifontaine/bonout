@@ -3,18 +3,12 @@ import type { BoEvent } from "../../../src/types";
 import { RequestError } from "../../../src/utils/CustomErrors";
 import { API_ERROR_MESSAGES } from "../../../src/utils/errorMessages";
 import { getEventByID, getEventByLink } from "../../../src/models/events";
-import { checkFirebaseAuth } from "@src/firebase/auth";
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<BoEvent | { error: string }>
 ) {
   if (isNotGetRequest()) return;
-
-  const appCheck = await checkFirebaseAuth(
-    req.headers["x-firebase-appcheck"] as string
-  );
-  if (appCheck.error) return res.status(401).send({ error: appCheck.message });
 
   await getEventHandler()
     .then((event) => {

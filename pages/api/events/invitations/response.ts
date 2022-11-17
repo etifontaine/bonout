@@ -18,7 +18,6 @@ import ShortUniqueId from "short-unique-id";
 import logger from "@src/logger";
 import { pipe, flow } from "fp-ts/lib/function";
 import { validateJson, validateProperties } from "@src/utils/api";
-import { checkFirebaseAuth } from "@src/firebase/auth";
 import { WriteResult } from "firebase-admin/firestore";
 
 type BoInvitationResponseDefined = BoInvitationResponse & {
@@ -111,12 +110,6 @@ export default async function handler(
     | { message: string; user_id: string }
   >
 ) {
-  const appCheck = await checkFirebaseAuth(
-    req.headers["x-firebase-appcheck"] as string
-  );
-
-  if (appCheck.error) return res.status(401).send({ error: appCheck.message });
-
   await pipe(
     TE.Do,
     TE.bind("invitationResponse", () =>
