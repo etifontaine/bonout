@@ -10,7 +10,6 @@ import {
   isOrganizerOf,
 } from "@src/models/events";
 import { pipe } from "fp-ts/lib/function";
-import { checkFirebaseAuth } from "@src/firebase/auth";
 
 export default async function handler(
   req: NextApiRequest,
@@ -19,12 +18,6 @@ export default async function handler(
   >
 ) {
   try {
-    const appCheck = await checkFirebaseAuth(
-      req.headers["x-firebase-appcheck"] as string
-    );
-    if (appCheck.error)
-      return res.status(401).send({ error: appCheck.message });
-
     if (isDeleteRequest())
       await deleteEventHandler().then(() =>
         res.status(200).json({ message: "Event deleted" })

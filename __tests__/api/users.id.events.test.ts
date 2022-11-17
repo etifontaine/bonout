@@ -15,9 +15,6 @@ jest.mock("@src/models/events.ts", () => ({
     mockEvent.id === id ? [mockEvent] : null
   ),
 }));
-jest.mock("../../src/firebase/auth.ts", () => ({
-  checkFirebaseAuth: jest.fn((appCheck) => true),
-}));
 describe("GET api/users/[id]/events", () => {
   it("should be an error if not a get request", async () => {
     await mockGetEvents("", "POST").then((res) => {

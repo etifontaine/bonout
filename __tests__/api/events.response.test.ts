@@ -66,10 +66,6 @@ jest.mock("../../src/models/events.ts", () => ({
   ),
 }));
 
-jest.mock("../../src/firebase/auth.ts", () => ({
-  checkFirebaseAuth: jest.fn((appCheck) => true),
-}));
-
 describe("POST api/events/invitation/response", () => {
   it("should be an error if body is not a JSON", () => {
     postResponse({}).then((res) => {
