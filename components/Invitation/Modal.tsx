@@ -93,16 +93,12 @@ export default function InvitationModal({ event, userResponse }: IModal) {
       }
       content={{
         title: `Votre réponse`,
-<<<<<<< HEAD
         description:
           userResponse === BoInvitationValidResponse.YES
             ? "Veuillez confirmer votre venue en indiquant votre nom"
             : userResponse === BoInvitationValidResponse.NO
             ? "Veuillez confirmer que vous ne viendrez pas à cet événement"
             : "Veuillez confirmer indiquer votre nom ou pseudo pour confirmer votre choix",
-=======
-        description: userResponse === BoInvitationValidResponse.YES ? "Veuillez confirmer votre venue en indiquant votre nom" : userResponse === BoInvitationValidResponse.NO ? "Veuillez confirmer que vous ne viendrez pas à cet événement" : "Veuillez confirmer indiquer votre nom ou pseudo pour confirmer votre choix",
->>>>>>> 08f9ccd (feat(firebase): Use client side)
       }}
     >
       <form
