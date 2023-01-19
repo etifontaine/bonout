@@ -46,43 +46,43 @@ export default function InvitationModal({ link, userResponse }: IModal) {
     }
     setIsLoading(true);
     localStorage.setItem("user_pseudo", formContent.username);
-    fetcher(
-      "/api/events/invitations/response",
-      "POST",
-      JSON.stringify({
-        name: formContent.username,
-        response: userResponse,
-        link: link,
-        user_id: localStorage.getItem("user_id") || undefined,
-      })
-    ).then(async (res) => {
-      if (res.status === 201) {
-        const { user_id } = await res.json();
-        if (
-          localStorage.getItem("user_id") === null ||
-          localStorage.getItem("user_id") === "undefined"
-        ) {
-          localStorage.setItem("user_id", user_id);
-        }
-        toast.info("Merci pour ta réponse");
-        setIsLoading(false);
-        setIsOpen(false);
-        Router.push(`/events/details/${link}`);
-      } else {
-        res
-          .json()
-          .then((data) => {
-            setIsLoading(false);
-            toast.error(
-              data.error ? data.error : "Une erreur est survenue"
-            );
-          })
-          .catch((e) => {
-            setIsLoading(false);
-            toast.error("Une erreur est survenue");
-          });
-      }
-    });
+    // fetcher(
+    //   "/api/events/invitations/response",
+    //   "POST",
+    //   JSON.stringify({
+    //     name: formContent.username,
+    //     response: userResponse,
+    //     link: link,
+    //     user_id: localStorage.getItem("user_id") || undefined,
+    //   })
+    // ).then(async (res) => {
+    //   if (res.status === 201) {
+    //     const { user_id } = await res.json();
+    //     if (
+    //       localStorage.getItem("user_id") === null ||
+    //       localStorage.getItem("user_id") === "undefined"
+    //     ) {
+    //       localStorage.setItem("user_id", user_id);
+    //     }
+    //     toast.info("Merci pour ta réponse");
+    //     setIsLoading(false);
+    //     setIsOpen(false);
+    //     Router.push(`/events/details/${link}`);
+    //   } else {
+    //     res
+    //       .json()
+    //       .then((data) => {
+    //         setIsLoading(false);
+    //         toast.error(
+    //           data.error ? data.error : "Une erreur est survenue"
+    //         );
+    //       })
+    //       .catch((e) => {
+    //         setIsLoading(false);
+    //         toast.error("Une erreur est survenue");
+    //       });
+    //   }
+    // });
   };
 
   return (
@@ -97,12 +97,12 @@ export default function InvitationModal({ link, userResponse }: IModal) {
             aria-hidden="true"
           />
         ) : (
-          <ThumbUpIcon className="h-6 w-6 text-red-600" aria-hidden="true" />
+          <ThumbUpIcon className="h-6 w-6 text-green-600" aria-hidden="true" />
         )
       }
       content={{
-        title: "t(`responses.${userResponse}.title`)",
-        description: "t(`responses.${userResponse}.description`)",
+        title: `Votre réponse`,
+        description: userResponse === BoInvitationValidResponse.YES ? "Veuillez confirmer votre venue en indiquant votre nom" : userResponse === BoInvitationValidResponse.NO ? "Veuillez confirmer que vous ne viendrez pas à cet événement" : "Veuillez confirmer indiquer votre nom ou pseudo pour confirmer votre choix",
       }}
     >
       <form

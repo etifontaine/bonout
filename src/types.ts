@@ -9,9 +9,9 @@ export type BoEvent = {
   end_at: string;
   main_asset?: string;
   link: string;
-  comingGuestAmount?: number;
-  maybeComingGuestAmount?: number;
-  notComingGuestAmount?: number;
+  comingGuestAmount: number;
+  maybeComingGuestAmount: number;
+  notComingGuestAmount: number;
   invitations: BoInvitationResponse[];
 };
 

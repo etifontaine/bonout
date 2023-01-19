@@ -2,7 +2,7 @@ import type { NextPage } from "next";
 import EventItem from "../components/HomeScreen/EventItem";
 import EventCard from "../components/HomeScreen/EventCard";
 import Header from "../components/Header";
-import { BoEvent } from "../src/types";
+import { BoEvent, BoInvitationResponse } from "../src/types";
 import { useEffect, useState } from "react";
 import { getUserID } from "src/utils/user";
 import Router from "next/router";
@@ -24,6 +24,12 @@ const Home: NextPage = () => {
         if (doc.data().user_id === getUserID()) {
           events.push(doc.data() as BoEvent);
         }
+        doc.data().invitations?.forEach((invitation: BoInvitationResponse) => {
+          if (invitation.user_id === getUserID()) {
+            events.push(doc.data() as BoEvent);
+          }
+
+        })
       })
       setEvents(getComingEvents(events));
       setTodayEvents(getTodayEvents(events));
