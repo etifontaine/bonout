@@ -45,7 +45,7 @@ export default function InvitationModal({ link, userResponse }: IModal) {
     }
     setIsLoading(true);
     localStorage.setItem("user_pseudo", formContent.username);
-    
+
     // fetcher(
     //   "/api/events/invitations/response",
     //   "POST",
@@ -102,7 +102,12 @@ export default function InvitationModal({ link, userResponse }: IModal) {
       }
       content={{
         title: `Votre réponse`,
-        description: userResponse === BoInvitationValidResponse.YES ? "Veuillez confirmer votre venue en indiquant votre nom" : userResponse === BoInvitationValidResponse.NO ? "Veuillez confirmer que vous ne viendrez pas à cet événement" : "Veuillez confirmer indiquer votre nom ou pseudo pour confirmer votre choix",
+        description:
+          userResponse === BoInvitationValidResponse.YES
+            ? "Veuillez confirmer votre venue en indiquant votre nom"
+            : userResponse === BoInvitationValidResponse.NO
+            ? "Veuillez confirmer que vous ne viendrez pas à cet événement"
+            : "Veuillez confirmer indiquer votre nom ou pseudo pour confirmer votre choix",
       }}
     >
       <form

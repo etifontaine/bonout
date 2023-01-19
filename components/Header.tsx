@@ -8,7 +8,7 @@ import { useRouter } from "next/router";
 import { BoNotification } from "@src/types";
 import Modal from "./Modal";
 import NotificationList from "./NotificationList";
-import { collection, getDocs} from "firebase/firestore";
+import { collection, getDocs } from "firebase/firestore";
 import { db } from "@src/firebase/client";
 
 export default function Header() {
@@ -32,8 +32,10 @@ export default function Header() {
   }, []);
 
   const getNotif = async (user: string) => {
-    let notifs: Array<BoNotification> = []
-    const querySnapshot = await getDocs(collection(db, `${process.env.NEXT_PUBLIC_DB_ENV}_notifications`))
+    let notifs: Array<BoNotification> = [];
+    const querySnapshot = await getDocs(
+      collection(db, `${process.env.NEXT_PUBLIC_DB_ENV}_notifications`)
+    );
     querySnapshot.forEach((doc) => {
       if (doc.data().organizer_id === user) {
         notifs.push({
@@ -50,8 +52,7 @@ export default function Header() {
     setNotifications(
       notifs.sort(
         (a, b) =>
-          new Date(b.created_at).getTime() -
-          new Date(a.created_at).getTime()
+          new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
       )
     );
   };
@@ -112,7 +113,10 @@ export default function Header() {
                   <div className="text-gray-600 px-3 py-2 mr-10 rounded-md font-small inline">
                     {toggleUserID(user)}
                   </div>
-                  <Link className="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md font-medium" href="/home">
+                  <Link
+                    className="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md font-medium"
+                    href="/home"
+                  >
                     Mes événements
                   </Link>
                 </>
@@ -182,8 +186,9 @@ export default function Header() {
       {/* Mobile menu */}
       <div
         id="mobileNav"
-        className={`${showMobileMenu ? "block" : "hidden"
-          } px-4 py-6 fixed top-0 left-0 h-full w-full bg-secondary z-20 animate-fade-in-down`}
+        className={`${
+          showMobileMenu ? "block" : "hidden"
+        } px-4 py-6 fixed top-0 left-0 h-full w-full bg-secondary z-20 animate-fade-in-down`}
       >
         <div
           onClick={() => setShowMobileMenu(false)}

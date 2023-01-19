@@ -4,7 +4,6 @@ import type { BoInvitationResponse } from "../../src/types";
 import Router from "next/router";
 
 export default function EventCard({ event, ...props }: { event: BoEvent }) {
-
   function getHoursAndMinuteLeft(date: string) {
     const jsDate = new Date(date);
     const now = new Date();
@@ -39,7 +38,7 @@ export default function EventCard({ event, ...props }: { event: BoEvent }) {
       return "1 personne à prévu de venir";
     }
     if (usersWhoAreComing > 0) {
-      return `${usersWhoAreComing} personnes ont prévu de venir`
+      return `${usersWhoAreComing} personnes ont prévu de venir`;
     }
     return "";
   }
