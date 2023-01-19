@@ -35,7 +35,7 @@ function HeroHome() {
           />
         </div>
         <Image
-          src={`/images/iphone-fr.webp`}
+          src={`/images/iphone-fr.png`}
           height="438"
           width="219"
           alt="iPhone"
