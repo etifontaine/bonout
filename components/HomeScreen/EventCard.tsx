@@ -4,19 +4,18 @@ import type { BoInvitationResponse } from "../../src/types";
 import Router from "next/router";
 
 export default function EventCard({ event, ...props }: { event: BoEvent }) {
-
   function getHoursAndMinuteLeft(date: string) {
     const jsDate = new Date(date);
     const now = new Date();
     const diff = jsDate.getTime() - now.getTime();
     const hours = Math.floor(diff / (1000 * 60 * 60));
     const minutes = Math.floor(diff / (1000 * 60)) % 60;
-    // if (hours == 0) {
-    //   return t("in_x_minutes", { minutes });
-    // } else if (hours > 0) {
-    //   const minutesFormated = ("0" + minutes).slice(-2);
-    //   return t("in_hours_x_minutes", { hours, minutesFormated });
-    // }
+    if (hours == 0) {
+      return `Dans ${minutes} min`;
+    } else if (hours > 0) {
+      const minutesFormated = ("0" + minutes).slice(-2);
+      return `Dans ${hours}h${minutesFormated}`;
+    }
     return "En cours";
   }
 
@@ -38,9 +37,9 @@ export default function EventCard({ event, ...props }: { event: BoEvent }) {
     if (usersWhoAreComing === 1) {
       return "1 personne à prévu de venir";
     }
-    // if (usersWhoAreComing > 0) {
-    //   return t("comingGuests", { count: usersWhoAreComing });
-    // }
+    if (usersWhoAreComing > 0) {
+      return `${usersWhoAreComing} personnes ont prévu de venir`;
+    }
     return "";
   }
 

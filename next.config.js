@@ -22,9 +22,6 @@ const securityHeaders = [
 module.exports = {
   reactStrictMode: true,
   poweredByHeader: false,
-  experimental: {
-    runtime: 'edge',
-  },
   async headers() {
     return [
       {

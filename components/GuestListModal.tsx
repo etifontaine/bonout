@@ -21,7 +21,7 @@ export default function GuestListModal({
 }: IModal) {
   const renderGuestsList = () => {
     const guestsGroup: guestsGroup = { yes: [], no: [], maybe: [] };
-    guests.map((g) => {
+    guests?.map((g) => {
       return guestsGroup[g.response].push(g.name);
     });
 

@@ -1,16 +1,15 @@
-import { Fragment, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { EyeIcon, EyeOffIcon } from "@heroicons/react/outline";
-import { Menu, Transition } from "@headlessui/react";
-import { ChevronDownIcon } from "@heroicons/react/solid";
 import { getUserID } from "src/utils/user";
 import LoginModal from "./LoginModal";
 import { useRouter } from "next/router";
 import { BoNotification } from "@src/types";
 import Modal from "./Modal";
 import NotificationList from "./NotificationList";
-import fetcher from "@src/utils/fetcher";
+import { collection, getDocs } from "firebase/firestore";
+import { db } from "@src/firebase/client";
 
 export default function Header() {
   const [user, setUser] = useState("");
@@ -32,20 +31,30 @@ export default function Header() {
     }
   }, []);
 
-  const getNotif = (user: string) => {
-    fetcher(`/api/users/${user}/notifications`, "GET").then((res) => {
-      if (res.ok) {
-        res.json().then((data: Array<BoNotification>) => {
-          setNotifications(
-            data.sort(
-              (a, b) =>
-                new Date(b.created_at).getTime() -
-                new Date(a.created_at).getTime()
-            )
-          );
+  const getNotif = async (user: string) => {
+    let notifs: Array<BoNotification> = [];
+    const querySnapshot = await getDocs(
+      collection(db, `${process.env.NEXT_PUBLIC_DB_ENV}_notifications`)
+    );
+    querySnapshot.forEach((doc) => {
+      if (doc.data().organizer_id === user) {
+        notifs.push({
+          id: doc.id,
+          isRead: doc.data().isRead,
+          organizer_id: doc.data().organizer_id,
+          link: doc.data().link,
+          message: doc.data().message,
+          created_at: doc.data().created_at,
         });
       }
     });
+
+    setNotifications(
+      notifs.sort(
+        (a, b) =>
+          new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+      )
+    );
   };
 
   const toggleUserID = (user: string) => {
@@ -69,11 +78,11 @@ export default function Header() {
 
   return (
     <>
-      {/* <Modal
+      <Modal
         isOpen={openNotifModal}
         onClose={() => setNotifModal(false)}
         content={{
-          title: 't("notif.title")',
+          title: "Notifications",
         }}
         icon={<EyeIcon className="h-6 w-6" aria-hidden="true" />}
       >
@@ -81,7 +90,7 @@ export default function Header() {
           data={notifications}
           onClick={() => setNotifModal(false)}
         />
-      </Modal> */}
+      </Modal>
       <LoginModal
         isVisible={isLoginVisible}
         setLoginVisible={setLoginVisible}
@@ -104,7 +113,10 @@ export default function Header() {
                   <div className="text-gray-600 px-3 py-2 mr-10 rounded-md font-small inline">
                     {toggleUserID(user)}
                   </div>
-                  <Link className="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md font-medium" href="/home">
+                  <Link
+                    className="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md font-medium"
+                    href="/home"
+                  >
                     Mes événements
                   </Link>
                 </>
@@ -130,7 +142,7 @@ export default function Header() {
               </Link>
             </div>
           </div>
-          {/* {user.length > 0 && (
+          {user.length > 0 && (
             <span
               onClick={() => {
                 if (user) getNotif(user);
@@ -154,7 +166,7 @@ export default function Header() {
                 </span>
               )}
             </span>
-          )} */}
+          )}
         </div>
 
         <div
@@ -174,8 +186,9 @@ export default function Header() {
       {/* Mobile menu */}
       <div
         id="mobileNav"
-        className={`${showMobileMenu ? "block" : "hidden"
-          } px-4 py-6 fixed top-0 left-0 h-full w-full bg-secondary z-20 animate-fade-in-down`}
+        className={`${
+          showMobileMenu ? "block" : "hidden"
+        } px-4 py-6 fixed top-0 left-0 h-full w-full bg-secondary z-20 animate-fade-in-down`}
       >
         <div
           onClick={() => setShowMobileMenu(false)}
@@ -191,12 +204,12 @@ export default function Header() {
         </div>
         <ul className="font-montserrat flex flex-col mx-8 my-24 items-center text-xl">
           <li className="my-6">
-            {/* <Link legacyBehavior href="/events/create">{t("header.create_event")}</Link> */}
+            <Link href="/events/create">Créer un événement</Link>
           </li>
           {user.length > 0 ? (
             <>
               <li className="my-6">
-                <Link href="/home">
+                <Link href="/home" onClick={() => setShowMobileMenu(false)}>
                   Mes événements
                 </Link>
               </li>
@@ -204,48 +217,9 @@ export default function Header() {
             </>
           ) : (
             <button onClick={() => setLoginVisible(true)} className="mr-6">
-              {/* {t("header.login")} */}
+              Se connecter
             </button>
           )}
-          <Menu as="div" className="relative inline-block text-left">
-            <div>
-              <Menu.Button className="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-indigo-500">
-                {/* {t(`locale.${router.locale}`)} */}
-                <ChevronDownIcon
-                  className="-mr-1 ml-2 h-5 w-5"
-                  aria-hidden="true"
-                />
-              </Menu.Button>
-            </div>
-            <Transition
-              as={Fragment}
-              enter="transition ease-out duration-100"
-              enterFrom="transform opacity-0 scale-95"
-              enterTo="transform opacity-100 scale-100"
-              leave="transition ease-in duration-75"
-              leaveFrom="transform opacity-100 scale-100"
-              leaveTo="transform opacity-0 scale-95"
-            >
-              <Menu.Items className="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
-                <div className="py-1">
-                  <Menu.Item>
-                    <Link legacyBehavior href={`${router.asPath}`} locale="en">
-                      <a className="text-gray-700 block px-4 py-2 text-sm">
-                        {/* {t(`locale.en`)} */}
-                      </a>
-                    </Link>
-                  </Menu.Item>
-                  <Menu.Item>
-                    <Link legacyBehavior href={`${router.asPath}`} locale="fr">
-                      <a className="text-gray-700 block px-4 py-2 text-sm">
-                        {/* {t(`locale.fr`)} */}
-                      </a>
-                    </Link>
-                  </Menu.Item>
-                </div>
-              </Menu.Items>
-            </Transition>
-          </Menu>
         </ul>
       </div>
     </>

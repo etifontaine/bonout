@@ -46,52 +46,52 @@ const Add: NextPage = () => {
       return;
     }
     setIsLoading(true);
-    fetcher(
-      "/api/events",
-      "POST",
-      JSON.stringify({
-        title: name.value,
-        start_at: new Date(startAt.value).toISOString(),
-        end_at: new Date(endAt.value).toISOString(),
-        address: location.value,
-        description: description.value,
-        user_id: localStorage.getItem("user_id") || undefined,
-        user_name: userName.value,
-      })
-    )
-      .then(async (res) => {
-        if (res.status === 201) {
-          const { link, user_id, user_name } = await res.json();
-          Router.push(`/events/details/${link}`);
-          if (
-            localStorage.getItem("user_id") === null ||
-            localStorage.getItem("user_id") === "undefined"
-          ) {
-            localStorage.setItem("user_id", user_id);
-          }
+    // fetcher(
+    //   "/api/events",
+    //   "POST",
+    //   JSON.stringify({
+    //     title: name.value,
+    //     start_at: new Date(startAt.value).toISOString(),
+    //     end_at: new Date(endAt.value).toISOString(),
+    //     address: location.value,
+    //     description: description.value,
+    //     user_id: localStorage.getItem("user_id") || undefined,
+    //     user_name: userName.value,
+    //   })
+    // )
+    //   .then(async (res) => {
+    //     if (res.status === 201) {
+    //       const { link, user_id, user_name } = await res.json();
+    //       Router.push(`/events/details/${link}`);
+    //       if (
+    //         localStorage.getItem("user_id") === null ||
+    //         localStorage.getItem("user_id") === "undefined"
+    //       ) {
+    //         localStorage.setItem("user_id", user_id);
+    //       }
 
-          if (
-            localStorage.getItem("user_name") === null ||
-            localStorage.getItem("user_name") === "undefined"
-          ) {
-            localStorage.setItem("user_name", user_name);
-          }
-        } else {
-          res
-            .json()
-            .then((data) => {
-              toast.error(
-                data.error
-                  ? data.error
-                  : "Une erreur est survenue"
-              );
-            })
-            .catch(() => {
-              toast.error("Une erreur est survenue");
-            });
-        }
-      })
-      .finally(() => setIsLoading(false));
+    //       if (
+    //         localStorage.getItem("user_name") === null ||
+    //         localStorage.getItem("user_name") === "undefined"
+    //       ) {
+    //         localStorage.setItem("user_name", user_name);
+    //       }
+    //     } else {
+    //       res
+    //         .json()
+    //         .then((data) => {
+    //           toast.error(
+    //             data.error
+    //               ? data.error
+    //               : "Une erreur est survenue"
+    //           );
+    //         })
+    //         .catch(() => {
+    //           toast.error("Une erreur est survenue");
+    //         });
+    //     }
+    //   })
+    //   .finally(() => setIsLoading(false));
   }
 };
 
