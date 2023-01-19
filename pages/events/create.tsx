@@ -1,14 +1,17 @@
 import type { NextPage } from "next";
 import { useState } from "react";
-import Router from "next/router";
 import Header from "@components/Header";
 import { toast } from "react-toastify";
 import { Form } from "@components/CreateEvent/Form/Form";
 import type { Tform } from "@components/CreateEvent/Form/types";
 import Loader from "@components/Loader";
-import fetcher from "@src/utils/fetcher";
+import { addDoc, collection } from "firebase/firestore";
+import { db } from "@src/firebase/client";
+import { useRouter } from "next/router";
+import ShortUniqueId from "short-unique-id";
 
 const Add: NextPage = () => {
+  const { push } = useRouter()
   const [isLoading, setIsLoading] = useState(false);
   return (
     <>
@@ -42,56 +45,26 @@ const Add: NextPage = () => {
   ) {
     e.preventDefault();
     if (!isValid) {
-      //toast.error(t("errors.form_errors", { ns: "common" }));
+      toast.error("Il y a des erreurs dans le formulaire");
       return;
     }
     setIsLoading(true);
-    // fetcher(
-    //   "/api/events",
-    //   "POST",
-    //   JSON.stringify({
-    //     title: name.value,
-    //     start_at: new Date(startAt.value).toISOString(),
-    //     end_at: new Date(endAt.value).toISOString(),
-    //     address: location.value,
-    //     description: description.value,
-    //     user_id: localStorage.getItem("user_id") || undefined,
-    //     user_name: userName.value,
-    //   })
-    // )
-    //   .then(async (res) => {
-    //     if (res.status === 201) {
-    //       const { link, user_id, user_name } = await res.json();
-    //       Router.push(`/events/details/${link}`);
-    //       if (
-    //         localStorage.getItem("user_id") === null ||
-    //         localStorage.getItem("user_id") === "undefined"
-    //       ) {
-    //         localStorage.setItem("user_id", user_id);
-    //       }
-
-    //       if (
-    //         localStorage.getItem("user_name") === null ||
-    //         localStorage.getItem("user_name") === "undefined"
-    //       ) {
-    //         localStorage.setItem("user_name", user_name);
-    //       }
-    //     } else {
-    //       res
-    //         .json()
-    //         .then((data) => {
-    //           toast.error(
-    //             data.error
-    //               ? data.error
-    //               : "Une erreur est survenue"
-    //           );
-    //         })
-    //         .catch(() => {
-    //           toast.error("Une erreur est survenue");
-    //         });
-    //     }
-    //   })
-    //   .finally(() => setIsLoading(false));
+    setIsLoading(false);
+    const uid = new ShortUniqueId({ length: 10 });
+    addDoc(collection(db, `${process.env.NEXT_PUBLIC_DB_ENV}_events`), {
+      title: name.value,
+      start_at: new Date(startAt.value).toISOString(),
+      end_at: new Date(endAt.value).toISOString(),
+      address: location.value,
+      description: description.value,
+      user_id: localStorage.getItem("user_id") || undefined,
+      user_name: userName.value,
+      link: uid(),
+      created_at: new Date().toISOString(),
+    }).then(() => {
+      setIsLoading(false);
+      push('/home')
+    })
   }
 };
 

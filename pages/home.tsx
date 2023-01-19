@@ -28,7 +28,6 @@ const Home: NextPage = () => {
           if (invitation.user_id === getUserID()) {
             events.push(doc.data() as BoEvent);
           }
-
         })
       })
       setEvents(getComingEvents(events));

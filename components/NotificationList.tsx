@@ -1,6 +1,4 @@
 import { BoNotification } from "@src/types";
-import Router from "next/router";
-import fetcher from "@src/utils/fetcher";
 
 export default function NotificationList(props: {
   data: Array<BoNotification>;
@@ -21,21 +19,8 @@ export function NotificationItem(props: {
   onClick?: () => void;
 }) {
   const handleClick = () => {
-    fetcher(
-      "/api/notifications",
-      "PUT",
-      JSON.stringify({
-        id: props.data.id,
-        user_id: props.data.organizer_id,
-      })
-    );
-    props.onClick && props.onClick();
-    Router.push({
-      pathname: `/events/details/${props.data.link}`,
-      query: {
-        openGuestList: true,
-      },
-    });
+   console.log("Handle click notif");
+   
   };
   // create a notification with message and badge read tailwind
   return (
