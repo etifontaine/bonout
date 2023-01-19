@@ -10,7 +10,8 @@ import { useRouter } from "next/router";
 import { BoNotification } from "@src/types";
 import Modal from "./Modal";
 import NotificationList from "./NotificationList";
-import fetcher from "@src/utils/fetcher";
+import { collection, getDocs} from "firebase/firestore";
+import { db } from "@src/firebase/client";
 
 export default function Header() {
   const [user, setUser] = useState("");
@@ -32,20 +33,29 @@ export default function Header() {
     }
   }, []);
 
-  const getNotif = (user: string) => {
-    fetcher(`/api/users/${user}/notifications`, "GET").then((res) => {
-      if (res.ok) {
-        res.json().then((data: Array<BoNotification>) => {
-          setNotifications(
-            data.sort(
-              (a, b) =>
-                new Date(b.created_at).getTime() -
-                new Date(a.created_at).getTime()
-            )
-          );
+  const getNotif = async (user: string) => {
+    let notifs: Array<BoNotification> = []
+    const querySnapshot = await getDocs(collection(db, `${process.env.NEXT_PUBLIC_DB_ENV}_notifications`))
+    querySnapshot.forEach((doc) => {
+      if (doc.data().organizer_id === user) {
+        notifs.push({
+          id: doc.id,
+          isRead: doc.data().isRead,
+          organizer_id: doc.data().organizer_id,
+          link: doc.data().link,
+          message: doc.data().message,
+          created_at: doc.data().created_at,
         });
       }
     });
+
+    setNotifications(
+      notifs.sort(
+        (a, b) =>
+          new Date(b.created_at).getTime() -
+          new Date(a.created_at).getTime()
+      )
+    );
   };
 
   const toggleUserID = (user: string) => {
@@ -69,11 +79,11 @@ export default function Header() {
 
   return (
     <>
-      {/* <Modal
+      <Modal
         isOpen={openNotifModal}
         onClose={() => setNotifModal(false)}
         content={{
-          title: 't("notif.title")',
+          title: "Notifications",
         }}
         icon={<EyeIcon className="h-6 w-6" aria-hidden="true" />}
       >
@@ -81,7 +91,7 @@ export default function Header() {
           data={notifications}
           onClick={() => setNotifModal(false)}
         />
-      </Modal> */}
+      </Modal>
       <LoginModal
         isVisible={isLoginVisible}
         setLoginVisible={setLoginVisible}
@@ -130,7 +140,7 @@ export default function Header() {
               </Link>
             </div>
           </div>
-          {/* {user.length > 0 && (
+          {user.length > 0 && (
             <span
               onClick={() => {
                 if (user) getNotif(user);
@@ -154,7 +164,7 @@ export default function Header() {
                 </span>
               )}
             </span>
-          )} */}
+          )}
         </div>
 
         <div

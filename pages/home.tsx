@@ -4,13 +4,12 @@ import EventCard from "../components/HomeScreen/EventCard";
 import Header from "../components/Header";
 import { BoEvent } from "../src/types";
 import { useEffect, useState } from "react";
-import { toast } from "react-toastify";
 import { getUserID } from "src/utils/user";
 import Router from "next/router";
 import Head from "next/head";
 import Skeleton from "react-loading-skeleton";
-import logger from "@src/logger";
-import fetcher from "@src/utils/fetcher";
+import { collection, getDocs } from "firebase/firestore";
+import { db } from "@src/firebase/client";
 
 const Home: NextPage = () => {
   const [events, setEvents] = useState<BoEvent[] | null>(null);
@@ -18,16 +17,17 @@ const Home: NextPage = () => {
   const [todayEvents, setTodayEvents] = useState<BoEvent[] | null>(null);
 
   useEffect(() => {
-    fetchEvents(getUserID())
-      .then((events) => {
-        setEvents(getComingEvents(events));
-        setTodayEvents(getTodayEvents(events));
+
+    let events: Array<BoEvent> = []
+    getDocs(collection(db, `${process.env.NEXT_PUBLIC_DB_ENV}_events`)).then(querySnapshot => {
+      querySnapshot.forEach((doc) => {
+        if (doc.data().user_id === getUserID()) {
+          events.push(doc.data() as BoEvent);
+        }
       })
-      .catch((err) => {
-        logger.error(err);
-        toast.error("Can't get events");
-      })
-      .finally(() => setIsLoading(false));
+      setEvents(getComingEvents(events));
+      setTodayEvents(getTodayEvents(events));
+    }).finally(() => setIsLoading(false))
   }, []);
 
   return (
@@ -98,15 +98,6 @@ const Home: NextPage = () => {
       </section>
     </div>
   );
-
-  async function fetchEvents(userID: string | null): Promise<BoEvent[] | []> {
-    return await fetcher(`/api/users/${userID}/events`, "GET")
-      .then((res) => {
-        if (res.status !== 200) return [];
-        return res.json();
-      })
-      .catch((err) => err);
-  }
 
   function getTodayEvents(events: BoEvent[]): BoEvent[] | null {
     return events.filter(({ start_at }) => isToday(start_at));

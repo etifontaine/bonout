@@ -15,12 +15,7 @@ export default function EventItem({
       <div className="bg-white overflow-hidden shadow-lg w-12 h-12 border-black border-2 border-solid text-right leading-none p-2">
         <div>{day}</div>
         <div className="">
-          {/* {t("intlDateTime", {
-            val: date,
-            formatParams: {
-              val: { month: "short" },
-            },
-          })} */}
+          {jsDate.toLocaleDateString('default', { month: 'short' })}
         </div>
       </div>
     );
