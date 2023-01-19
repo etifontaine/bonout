@@ -1,5 +1,4 @@
 import { Fragment, useEffect, useRef, useState } from "react";
-import { useTranslation } from "next-i18next";
 import { Dialog, Transition } from "@headlessui/react";
 
 interface IModalContent {
@@ -19,7 +18,6 @@ export interface ModalProps {
 export default function Modal(props: ModalProps) {
   const cancelButtonRef = useRef(null);
   let [isOpen, setIsOpen] = useState(props.isOpen);
-  const { t } = useTranslation("common");
 
   useEffect(() => {
     setIsOpen(props.isOpen);
@@ -31,7 +29,7 @@ export default function Modal(props: ModalProps) {
         as="div"
         className="fixed z-40 inset-0 overflow-y-auto"
         initialFocus={cancelButtonRef}
-        onClose={() => {}}
+        onClose={() => { }}
       >
         <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
           <Transition.Child
@@ -92,7 +90,7 @@ export default function Modal(props: ModalProps) {
                     className={`w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-black text-base font-medium text-white focus:outline-none focus:ring-2 focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm`}
                     onClick={props.onConfirm}
                   >
-                    {t("confirm", { ns: "common" })}
+                    Confirmer
                   </button>
                 )}
                 <button
@@ -104,7 +102,7 @@ export default function Modal(props: ModalProps) {
                   }}
                   ref={cancelButtonRef}
                 >
-                  {t("cancel")}
+                  Annuler
                 </button>
               </div>
             </div>

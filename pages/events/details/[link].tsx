@@ -27,8 +27,6 @@ import {
   UserIcon,
   TrashIcon,
 } from "@heroicons/react/outline";
-import { useTranslation } from "next-i18next";
-import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import logger from "@src/logger";
 import { toast } from "react-toastify";
 import { isClientSide } from "@src/utils/client";
@@ -73,7 +71,6 @@ export async function getServerSideProps(context: {
   return {
     props: {
       event: cleanedEvent,
-      ...(await serverSideTranslations(context.locale, ["common", "events"])),
     },
   };
 }
@@ -84,7 +81,6 @@ const EventDetails: NextPage<PageProps> = ({ event }) => {
   }
   const { isOrganizer, userChecked } = useIsOrganizerOfEvent(event.id);
 
-  const { t } = useTranslation("events");
   const [userInvitationResponse, setUserInvitationResponse] =
     useState<string>();
   const [userInvitationResponseValue, setUserInvitationResponseValue] =
@@ -114,17 +110,17 @@ const EventDetails: NextPage<PageProps> = ({ event }) => {
           res.json().then((data) => {
             if (data.response && data.response !== "undefined") {
               setUserInvitationResponseValue(data.response);
-              setUserInvitationResponse(
-                t("common.userResponse", {
-                  response: t(`common.response.${data.response}`),
-                })
-              );
+              // setUserInvitationResponse(
+              //   t("common.userResponse", {
+              //     response: t(`common.response.${data.response}`),
+              //   })
+              // );
             }
           });
         }
       });
     }
-  }, [userChecked, isOrganizer, event, t]);
+  }, [userChecked, isOrganizer, event]);
 
   const setResponse = (userResponse: BoInvitationValidResponse) => {
     setModal({ userResponse, link: event.link });
@@ -169,7 +165,7 @@ const EventDetails: NextPage<PageProps> = ({ event }) => {
       } else {
         setLoading(false);
         logger.error({ message: "Error deleting event", res });
-        toast.error(t("common.error.deleteEvent"));
+        toast.error("Une erreur est survenue lors de la suppression de l'événement");
       }
     });
   };
@@ -188,8 +184,8 @@ const EventDetails: NextPage<PageProps> = ({ event }) => {
       <DeleteModal
         isOpen={isDeleteModalVisible}
         content={{
-          title: t("deleteModal.title"),
-          description: t("deleteModal.description"),
+          title: "Supprimer l'événement",
+          description: "Êtes-vous sûr de vouloir supprimer cet événement ?",
         }}
         onClose={() => setDeleteModalVisible(false)}
         onConfirm={handleDeleteEvent}
@@ -259,7 +255,7 @@ const EventDetails: NextPage<PageProps> = ({ event }) => {
           <div className="border-t border-gray-200">
             <div className="py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
               <div className="text-sm font-medium text-gray-500">
-                {t("common.date")}
+                Date
               </div>
               <div className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2 flex items-center">
                 <CalendarIcon
@@ -271,20 +267,20 @@ const EventDetails: NextPage<PageProps> = ({ event }) => {
                   onClick={() => setAddCalendarVisible(true)}
                 >
                   {" "}
-                  {t("date.intlDateTimeFromTo", {
+                  {/* {t("date.intlDateTimeFromTo", {
                     start_at: event.start_at,
                     end_at: event.end_at,
                     formatParams: {
                       start_at: { dateStyle: "medium", timeStyle: "short" },
                       end_at: { dateStyle: "medium", timeStyle: "short" },
                     },
-                  })}
+                  })} */}
                 </button>
               </div>
             </div>
             <div className="py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
               <div className="text-sm font-medium text-gray-500">
-                {t("common.address")}
+                Adresse
               </div>
               <div className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2 flex items-center">
                 <LocationMarkerIcon
@@ -298,28 +294,27 @@ const EventDetails: NextPage<PageProps> = ({ event }) => {
             </div>
             <div className="py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
               <div className="text-sm font-medium text-gray-500">
-                {t("common.link")}
+                Lien
               </div>
               <div className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2 flex items-center">
                 <LinkIcon className="block h-3 w-3 mr-2" aria-hidden="true" />
-                <button className="underline" onClick={() => shareEvent()}>{`${
-                  isClientSide()
-                    ? `${window.location.host}/events/details/`
-                    : null
-                }${event.link}`}</button>
+                <button className="underline" onClick={() => shareEvent()}>{`${isClientSide()
+                  ? `${window.location.host}/events/details/`
+                  : null
+                  }${event.link}`}</button>
               </div>
             </div>
             <div className="py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
               <div className="text-sm font-medium text-gray-500">
-                {t("common.organizer")}
+                Organisateur
               </div>
               <div className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2 flex items-center">
                 <UserIcon className="block h-3 w-3 mr-2" aria-hidden="true" />
                 {userChecked ? (
                   isOrganizer ? (
-                    t("common.yourEvent")
+                    "C'est votre événement"
                   ) : (
-                    event.user_name || t("common.anonymous")
+                    event.user_name || "Anonyme"
                   )
                 ) : (
                   <Skeleton width="50" />
@@ -328,13 +323,13 @@ const EventDetails: NextPage<PageProps> = ({ event }) => {
             </div>
             <div className="py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
               <div className="text-sm flex justify-between font-medium text-gray-500">
-                <span>{t("common.guests")}</span>
+                <span>Invités</span>
                 {event.invitations.length > 0 ? (
                   <button
                     className="text-yellow-500 text-sm underline"
                     onClick={() => setGuestListVisible(true)}
                   >
-                    {t("common.guestsList")}
+                    "Voir la liste"
                   </button>
                 ) : null}
               </div>
@@ -344,11 +339,11 @@ const EventDetails: NextPage<PageProps> = ({ event }) => {
                   aria-hidden="true"
                 />
                 <p>
-                  {t("common.response.yes")}: {event.comingGuestAmount}
+                  Accepter: {event.comingGuestAmount}
                   <br />
-                  {t("common.response.no")}: {event.notComingGuestAmount}
+                  Refuser: {event.notComingGuestAmount}
                   <br />
-                  {t("common.response.maybe")}: {event.maybeComingGuestAmount}
+                  Peut-être: {event.maybeComingGuestAmount}
                 </p>
               </div>
             </div>
@@ -356,35 +351,32 @@ const EventDetails: NextPage<PageProps> = ({ event }) => {
               <div className="py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 flex justify-between">
                 <button
                   onClick={() => setResponse(BoInvitationValidResponse.NO)}
-                  className={`btn border border-black ${
-                    userInvitationResponseValue === BoInvitationValidResponse.NO
-                      ? "bg-black text-white"
-                      : "text-black"
-                  } p-2 btn-sm hover:text-white hover:bg-black`}
+                  className={`btn border border-black ${userInvitationResponseValue === BoInvitationValidResponse.NO
+                    ? "bg-black text-white"
+                    : "text-black"
+                    } p-2 btn-sm hover:text-white hover:bg-black`}
                 >
-                  {t("common.response.no")}
+                  Refuser
                 </button>
                 <button
                   onClick={() => setResponse(BoInvitationValidResponse.YES)}
-                  className={`btn border border-black ${
-                    userInvitationResponseValue ===
+                  className={`btn border border-black ${userInvitationResponseValue ===
                     BoInvitationValidResponse.YES
-                      ? "bg-black text-white"
-                      : "text-black"
-                  } p-2 btn-sm ml-3 hover:text-white hover:bg-black`}
+                    ? "bg-black text-white"
+                    : "text-black"
+                    } p-2 btn-sm ml-3 hover:text-white hover:bg-black`}
                 >
-                  {t("common.response.yes")}
+                  Accepter
                 </button>
                 <button
                   onClick={() => setResponse(BoInvitationValidResponse.MAYBE)}
-                  className={`btn border border-black ${
-                    userInvitationResponseValue ===
+                  className={`btn border border-black ${userInvitationResponseValue ===
                     BoInvitationValidResponse.MAYBE
-                      ? "bg-black text-white"
-                      : "text-black"
-                  }  p-2 btn-sm ml-3 hover:text-white hover:bg-black`}
+                    ? "bg-black text-white"
+                    : "text-black"
+                    }  p-2 btn-sm ml-3 hover:text-white hover:bg-black`}
                 >
-                  {t("common.response.maybe")}
+                  Peut-être
                 </button>
               </div>
             )}

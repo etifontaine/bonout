@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { useTranslation } from "next-i18next";
 import Script from "next/script";
 import Input from "../../Input";
 import type { TdefaultInputState, Tform, TinputsStaticProps } from "./types";
@@ -34,62 +33,61 @@ export function Form(props: {
   ) => void;
   event?: BoEvent;
 }) {
-  const { t } = useTranslation(["events", "errors"]);
   const [form, setForm] = useState(
     props.event
       ? {
-          userName: {
-            ...defaultInputState,
-            value: props.event.user_name || "",
-            isValid: true,
-          },
-          name: {
-            ...defaultInputState,
-            value: props.event.title,
-            isValid: true,
-          },
-          description: {
-            ...defaultInputState,
-            value: props.event.description,
-            isValid: true,
-          },
-          location: {
-            ...defaultInputState,
-            hideSuggestions: false,
-            value: props.event.address,
-            isValid: true,
-          },
-          startAt: {
-            ...defaultInputState,
-            value: getDateTime(new Date(props.event.start_at)),
-            isValid: true,
-          },
-          endAt: {
-            ...defaultInputState,
-            value: getDateTime(new Date(props.event.end_at)),
-            isValid: true,
-          },
-        }
+        userName: {
+          ...defaultInputState,
+          value: props.event.user_name || "",
+          isValid: true,
+        },
+        name: {
+          ...defaultInputState,
+          value: props.event.title,
+          isValid: true,
+        },
+        description: {
+          ...defaultInputState,
+          value: props.event.description,
+          isValid: true,
+        },
+        location: {
+          ...defaultInputState,
+          hideSuggestions: false,
+          value: props.event.address,
+          isValid: true,
+        },
+        startAt: {
+          ...defaultInputState,
+          value: getDateTime(new Date(props.event.start_at)),
+          isValid: true,
+        },
+        endAt: {
+          ...defaultInputState,
+          value: getDateTime(new Date(props.event.end_at)),
+          isValid: true,
+        },
+      }
       : ({
-          userName: {
-            ...defaultInputState,
-            value: getUserName() || "",
-            isValid: getUserName() ? true : false,
-          },
-          name: defaultInputState,
-          description: defaultInputState,
-          location: { ...defaultInputState, hideSuggestions: false },
-          startAt: {
-            ...defaultInputState,
-            value: getDateTime(add10min(new Date())),
-            isValid: true,
-          },
-          endAt: {
-            ...defaultInputState,
-            value: getDateTime(add1h(add10min(new Date()))),
-            isValid: true,
-          },
-        } as Tform)
+        userName: {
+          ...defaultInputState,
+          value: getUserName() || "",
+          isValid: getUserName() ? true : false,
+        },
+        name: defaultInputState,
+        description: defaultInputState,
+        location: { ...defaultInputState, hideSuggestions: false },
+        startAt: {
+          ...defaultInputState,
+          value: getDateTime(add10min(new Date())),
+          isValid: true,
+        },
+        endAt: {
+          ...defaultInputState,
+          value: getDateTime(add1h(add10min(new Date()))),
+          isValid: true,
+        },
+      } as Tform)
   );
 
   const [gmapIsLoad, setGmapIsLoad] = useState(false);
@@ -127,8 +125,8 @@ export function Form(props: {
         <input
           value={
             props.event
-              ? t<string>("common.update")
-              : t<string>("common.create")
+              ? "Modifier"
+              : "Créer"
           }
           type="submit"
           className={`${isFormValid ? "" : "cursor-not-allowed opacity-30"}
@@ -157,9 +155,9 @@ export function Form(props: {
             className={setInvalidClass(form[props.id])}
           />
           {props.id === "location" &&
-          !form.location.hideSuggestions &&
-          gmapIsLoad &&
-          form.location.isTouched ? (
+            !form.location.hideSuggestions &&
+            gmapIsLoad &&
+            form.location.isTouched ? (
             <GMapsLocationSuggestions
               onSelect={onSuggestionSelectHandler}
               inputValue={form.location.value}
@@ -200,19 +198,19 @@ export function Form(props: {
         isInput("userName", (f) =>
           pipe(
             setProp("isValid", isLongEnough(2, value))(f),
-            setHelperText(t("LENGTH_ERROR", { nb: 2, ns: "errors" }))
+            setHelperText(`Ce champ requiert au moins 2 caractères`)
           )
         ),
         isInput("name", (f) =>
           pipe(
             setProp("isValid", isLongEnough(3, value))(f),
-            setHelperText(t("LENGTH_ERROR", { nb: 3, ns: "errors" }))
+            setHelperText(`Ce champ requiert au moins 3 caractères`)
           )
         ),
         isInput("description", (f) =>
           pipe(
             setProp("isValid", isLongEnough(5, value))(f),
-            setHelperText(t("LENGTH_ERROR", { nb: 5, ns: "errors" }))
+            setHelperText(`Ce champ requiert au moins 5 caractères`)
           )
         ),
         isInput("startAt", (f) =>
@@ -225,23 +223,20 @@ export function Form(props: {
               "endAt"
             )(f),
             setProp("isValid", isNotPassedDate(value)),
-            setHelperText(t("DATE_PASSED_ERROR_FUTURE", { ns: "errors" }))
+            setHelperText("La date de l'événement ne peut pas être dans le passé")
           )
         ),
         isInput("endAt", (f) =>
           pipe(
             setProp("isValid", isNotPassedDate(value, f.startAt.value))(f),
-            setHelperText(t("DATE_PASSED_ERROR", { ns: "errors" }))
+            setHelperText("La date de l'événement doit être supérieur à la date de début")
           )
         ),
         isInput("location", (f) =>
           pipe(
             setProp("isValid", false)(f),
             setHelperText(
-              t("INVALID_PLACE_ERROR", {
-                payload: f.location.value,
-                ns: "errors",
-              })
+              `Le lieu ${f.location.value} semble incorrect, veuillez utiliser les suggestions`
             )
           )
         )
@@ -300,24 +295,34 @@ export function inputsStaticProps(): TinputsStaticProps[] {
   return [
     {
       id: "userName",
+      placeholder: "Nom ou pseudo",
+      label: "Nom"
     },
     {
       id: "name",
+      placeholder: "Nom de l'événement",
+      label: "Nom de l'événement"
     },
     {
       id: "description",
       type: "textarea",
+      placeholder: "Description de l'événement",
+      label: "Et quelques infos ?"
     },
     {
       id: "startAt",
       type: "datetime-local",
+      label: "On commence quand ?"
     },
     {
       id: "endAt",
       type: "datetime-local",
+      label: "Jusqu'à quand ?"
     },
     {
       id: "location",
+      placeholder: "Lieu de l'événement",
+      label: "Un lieu ?"
     },
   ];
 }

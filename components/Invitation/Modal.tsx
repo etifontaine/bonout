@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import Router from "next/router";
 import { ExclamationIcon, ThumbUpIcon } from "@heroicons/react/outline";
 import { toast } from "react-toastify";
-import { useTranslation } from "next-i18next";
 import { BoInvitationValidResponse, BoEvent } from "../../src/types";
 import Modal from "@components/Modal";
 import fetcher from "@src/utils/fetcher";
@@ -20,7 +19,6 @@ interface IModalForm {
 }
 
 export default function InvitationModal({ link, userResponse }: IModal) {
-  const { t } = useTranslation(["events", "common"]);
   let [isOpen, setIsOpen] = useState(false);
   let [isLoading, setIsLoading] = useState(false);
   const [formContent, setFormContent] = useState<IModalForm>();
@@ -40,7 +38,7 @@ export default function InvitationModal({ link, userResponse }: IModal) {
 
   const postInvitationResponse = () => {
     if (!formContent?.username) {
-      toast.error(t("errors.pseudo_missing", { ns: "common" }));
+      toast.error("Vous devez renseigner un pseudo");
       return;
     }
     if (isLoading) {
@@ -66,7 +64,7 @@ export default function InvitationModal({ link, userResponse }: IModal) {
         ) {
           localStorage.setItem("user_id", user_id);
         }
-        toast.info(t("response_success", { ns: "common" }));
+        toast.info("Merci pour ta réponse");
         setIsLoading(false);
         setIsOpen(false);
         Router.push(`/events/details/${link}`);
@@ -76,12 +74,12 @@ export default function InvitationModal({ link, userResponse }: IModal) {
           .then((data) => {
             setIsLoading(false);
             toast.error(
-              data.error ? data.error : t("errors.catch_all", { ns: "common" })
+              data.error ? data.error : "Une erreur est survenue"
             );
           })
           .catch((e) => {
             setIsLoading(false);
-            toast.error(t("errors.catch_all", { ns: "common" }));
+            toast.error("Une erreur est survenue");
           });
       }
     });
@@ -103,8 +101,8 @@ export default function InvitationModal({ link, userResponse }: IModal) {
         )
       }
       content={{
-        title: t(`responses.${userResponse}.title`),
-        description: t(`responses.${userResponse}.description`),
+        title: "t(`responses.${userResponse}.title`)",
+        description: "t(`responses.${userResponse}.description`)",
       }}
     >
       <form
@@ -119,7 +117,7 @@ export default function InvitationModal({ link, userResponse }: IModal) {
             className="block text-gray-700 text-sm font-bold mb-2"
             htmlFor="username"
           >
-            {t("common.userName.label")}
+            Nom
           </label>
           <input
             autoComplete="on"
@@ -131,7 +129,7 @@ export default function InvitationModal({ link, userResponse }: IModal) {
             id="username"
             name="username"
             type="text"
-            placeholder={t("common.userName.placeholder")}
+            placeholder="Nom ou pseudo"
           />
         </div>
       </form>

@@ -11,8 +11,6 @@ import { BoEvent } from "src/types";
 import { getEventByLink } from "src/models/events";
 import { getUserID } from "src/utils/user";
 import Link from "next/link";
-import { useTranslation } from "next-i18next";
-import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import fetcher from "@src/utils/fetcher";
 
 interface PageProps {
@@ -39,17 +37,11 @@ export async function getServerSideProps(context: {
   return {
     props: {
       event: cleanedEvent,
-      ...(await serverSideTranslations(context.locale, [
-        "common",
-        "events",
-        "errors",
-      ])),
     },
   };
 }
 
 const EditEvent: NextPage<PageProps> = ({ event }) => {
-  const { t } = useTranslation(["events", "common"]);
   const [isLoading, setIsLoading] = useState(false);
   const {
     isOrganizer,
@@ -70,7 +62,7 @@ const EditEvent: NextPage<PageProps> = ({ event }) => {
           {(userChecked && isOrganizer) || isLoading ? (
             <>
               <h1 className="text-3xl md:text-5xl font-extrabold leading-tighter tracking-tighter mb-4 mt-5">
-                {t("edit.title")}
+                Modification de l'événement
               </h1>
               <div className="max-w-3xl mt-5 mx-auto relative">
                 {isLoading && (
@@ -94,14 +86,14 @@ const EditEvent: NextPage<PageProps> = ({ event }) => {
                 {event.title}
               </h1>
               <h1 className="text-3xl md:text-5xl font-extrabold leading-tighter tracking-tighter mb-4 mt-5">
-                {t("edit.unauthorized")}
+                Vous n'etes pas autorisé à modifier cet événement
               </h1>
               <Link
                 href="/events/details/[link]"
                 as={`/events/details/${event.link}`}
               >
                 <a className="text-lg font-semibold text-center mt-5 underline">
-                  {"<"} {t("edit.backToEvent")}
+                  {"<"} Retourner à l'événement
                 </a>
               </Link>
             </>
@@ -118,7 +110,7 @@ const EditEvent: NextPage<PageProps> = ({ event }) => {
   ) {
     e.preventDefault();
     if (!isValid) {
-      toast.error(t("errors.form_errors", { ns: "common" }));
+      toast.error("Il y a des erreurs dans le formulaire");
       return;
     }
     setIsLoading(true);
@@ -148,11 +140,11 @@ const EditEvent: NextPage<PageProps> = ({ event }) => {
               toast.error(
                 data.error
                   ? data.error
-                  : t("errors.catch_all", { ns: "common" })
+                  : "Une erreur est survenue"
               );
             })
             .catch(() => {
-              toast.error(t("errors.catch_all", { ns: "common" }));
+              toast.error("Une erreur est survenue");
             });
         }
       })

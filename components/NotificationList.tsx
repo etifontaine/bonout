@@ -1,5 +1,4 @@
 import { BoNotification } from "@src/types";
-import { useTranslation } from "next-i18next";
 import Router from "next/router";
 import fetcher from "@src/utils/fetcher";
 
@@ -21,7 +20,6 @@ export function NotificationItem(props: {
   key?: string;
   onClick?: () => void;
 }) {
-  const { t } = useTranslation("common");
   const handleClick = () => {
     fetcher(
       "/api/notifications",
@@ -55,15 +53,15 @@ export function NotificationItem(props: {
       </div>
       <div className="ml-3">
         <p className="text-sm leading-5 font-medium text-gray-900">
-          {t("notif.eventResponse", {
+          {/* {t("notif.eventResponse", {
             name: props.data.message.responseUserName,
             response: t(`notif.response.${props.data.message.response}`),
             event: props.data.message.eventTitle,
-          })}
+          })} */}
         </p>
         <div className="flex text-sm leading-5 text-gray-500">
           <time className="mr-1" dateTime={props.data.created_at}>
-            {t("notif.intlDateTime", {
+            {/* {t("notif.intlDateTime", {
               val: new Date(props.data.created_at),
               formatParams: {
                 val: {
@@ -74,7 +72,7 @@ export function NotificationItem(props: {
                   hour: "numeric",
                 },
               },
-            })}
+            })} */}
           </time>
           <span>
             <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">

@@ -1,13 +1,11 @@
-import { useTranslation } from "next-i18next";
 import React from "react";
 
 function HowItWorks() {
-  const { t } = useTranslation("landing");
   return (
     <section className="bg-black text-white sectionSize">
       <div>
         <h2 className="secondaryTitle bg-underline2 bg-100%">
-          {t("howItWorks.howDoesItWork")}
+          Comment ça marche
         </h2>
       </div>
       <div className="flex flex-col md:flex-row">
@@ -16,10 +14,10 @@ function HowItWorks() {
             1
           </div>
           <h3 className="font-montserrat font-medium text-xl mb-2">
-            {t("howItWorks.create")}
+            Crée
           </h3>
           <p className="text-center font-montserrat">
-            {t("howItWorks.create_content")}
+            Crée ton événement en quelques clics, sans inscription et gratuitement!
           </p>
         </div>
         <div className="flex-1 mx-8 flex flex-col items-center my-4">
@@ -27,10 +25,10 @@ function HowItWorks() {
             2
           </div>
           <h3 className="font-montserrat font-medium text-xl mb-2">
-            {t("howItWorks.share")}
+            Partage
           </h3>
           <p className="text-center font-montserrat">
-            {t("howItWorks.share_content")}
+            Envoi ton lien unique à tes amis pour les inviter.
           </p>
         </div>
         <div className="flex-1 mx-8 flex flex-col items-center my-4">
@@ -38,10 +36,10 @@ function HowItWorks() {
             3
           </div>
           <h3 className="font-montserrat font-medium text-xl mb-2">
-            {t("howItWorks.organise")}
+            Organise
           </h3>
           <p className="text-center font-montserrat">
-            {t("howItWorks.organise_content")}
+            Suis les réponses et commentaires pour finaliser ton organisation.
           </p>
         </div>
       </div>

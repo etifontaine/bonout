@@ -1,5 +1,4 @@
 /** @type {import('next').NextConfig} */
-const { i18n } = require("./next-i18next.config");
 
 const securityHeaders = [
   {
@@ -23,7 +22,9 @@ const securityHeaders = [
 module.exports = {
   reactStrictMode: true,
   poweredByHeader: false,
-  i18n,
+  experimental: {
+    runtime: 'edge',
+  },
   async headers() {
     return [
       {

@@ -3,7 +3,6 @@ import { CalendarIcon } from "@heroicons/react/outline";
 import { BoEvent } from "@src/types";
 import { useState, useEffect } from "react";
 import Image from "next/image";
-import { useTranslation } from "next-i18next";
 import {
   ICalendar,
   OutlookCalendar,
@@ -20,7 +19,6 @@ interface props {
 
 export default function AddCalendarModal(props: props) {
   const [isOpen, setIsOpen] = useState(props.isOpen);
-  const { t } = useTranslation("events");
   useEffect(() => {
     setIsOpen(props.isOpen);
   }, [props.isOpen]);
@@ -29,7 +27,7 @@ export default function AddCalendarModal(props: props) {
     { name: "Outlook" },
     { name: "Yahoo" },
     { name: "Apple" },
-    { name: t("common.other") },
+    { name: "Autre" },
   ];
 
   const hanldeClick = (service: string) => {
@@ -49,7 +47,7 @@ export default function AddCalendarModal(props: props) {
     if (service === "Yahoo") {
       renderAndOpen(new YahooCalendar(config));
     }
-    if (service === "Apple" || service === t("common.other")) {
+    if (service === "Apple" || service === "Autre") {
       const cal = new ICalendar(config);
       setIsOpen(false);
       cal.download();
@@ -67,8 +65,8 @@ export default function AddCalendarModal(props: props) {
   return (
     <Modal
       content={{
-        title: t("calendar.addToCalendar.title"),
-        description: t("calendar.addToCalendar.description"),
+        title: "Ajouter à mon calendrier",
+        description: "Choisis ton calendrier préféré !",
       }}
       icon={<CalendarIcon className="h-20 w-20" aria-hidden="true" />}
       isOpen={isOpen}
@@ -83,7 +81,7 @@ export default function AddCalendarModal(props: props) {
             key={name}
           >
             <span className="h-2">
-              {name !== t("common.other") ? (
+              {name !== "Autre" ? (
                 <Image
                   src={`/images/icon-${name.toLowerCase()}.svg`}
                   width={20}

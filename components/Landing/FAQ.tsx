@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import Image from "next/image";
-import { useTranslation } from "next-i18next";
 
 interface questionContent {
   title: string;
@@ -23,15 +22,13 @@ function Question({ title, answer }: questionContent) {
             alt="Caret"
             height="58"
             width="58"
-            className={`transform transition-transform ${
-              isOpen ? "rotate-90" : ""
-            }`}
+            className={`transform transition-transform ${isOpen ? "rotate-90" : ""
+              }`}
           />
         </div>
         <div
-          className={`font-montserrat text-sm font-extralight pb-8 ${
-            isOpen ? "" : "hidden"
-          }`}
+          className={`font-montserrat text-sm font-extralight pb-8 ${isOpen ? "" : "hidden"
+            }`}
           dangerouslySetInnerHTML={{ __html: answer }}
         />
       </div>
@@ -41,38 +38,33 @@ function Question({ title, answer }: questionContent) {
 }
 
 function FAQ() {
-  const { t } = useTranslation("faq");
 
   return (
     <section className="sectionSize items-start pt-8 md:pt-36 bg-black text-white">
       <div>
         <h2 className="secondaryTitle bg-highlight3 p-10 mb-0 bg-center bg-100%">
-          {t("title")}
+          FAQ
         </h2>
       </div>
       <Question
-        answer={t("howIsItDifferent.answer")}
-        title={t("howIsItDifferent.title")}
+        title="En quoi Bonout est différent?"
+        answer="Bonout te permet d'organiser tes événements sans créer de compte, sans cookies, on respecte ta vie privée!"
       />
       <Question
-        answer={t("howToInvite.answer")}
-        title={t("howToInvite.title")}
+        title="Comment inviter des gens à mon événement?"
+        answer="Une fois ton évènement crée, tu vas obtenir un lien unique. Partage ton lien par messagerie ou transforme le en QRCode afin d'inviter qui tu veux."
       />
       <Question
-        answer={t("howIsItFinanced.answer")}
-        title={t("howIsItFinanced.title")}
+        title="Mes invités doivent-ils avoir un compte Bonout?"
+        answer="Non, tu peux juste partager le lien de ton évènement et ils pourront répondre avec un pseudo ou leur nom."
       />
       <Question
-        answer={t("isAccountRequired.answer")}
-        title={t("isAccountRequired.title")}
+        title="Comment je fais pour me souvenir de mon identifiant?"
+        answer="Tu peux l'enregistrer dans ton gestionnaire de mot de passe ou dans une note. Sinon, tu peux en recréer un nouveau lors de ton prochain événement!"
       />
       <Question
-        answer={t("howToSaveUserID.answer")}
-        title={t("howToSaveUserID.title")}
-      />
-      <Question
-        answer={t("isThereAnApp.answer")}
-        title={t("isThereAnApp.title")}
+        title="Existe-t-il une app Bonout?"
+        answer="Pas pour l'instant. Si de plus en plus de monde utilise Bonout on pourra en créer une avec plaisir!"
       />
     </section>
   );

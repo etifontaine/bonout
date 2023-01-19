@@ -8,7 +8,6 @@ import { getUserID, getUserName } from "@src/utils/user";
 import manifest from "public/manifest.json";
 import { isInstalled, getQueries } from "@src/utils";
 import Head from "next/head";
-import { appWithTranslation } from "next-i18next";
 import { isClientSide } from "@src/utils/client";
 
 function MyApp({ Component, pageProps }: AppProps) {
@@ -67,4 +66,4 @@ function MyApp({ Component, pageProps }: AppProps) {
   );
 }
 
-export default appWithTranslation(MyApp);
+export default MyApp;

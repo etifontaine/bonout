@@ -1,11 +1,9 @@
 import React from "react";
-import { useTranslation } from "next-i18next";
 import { BoEvent, BoInvitationValidResponse } from "../../src/types";
 import type { BoInvitationResponse } from "../../src/types";
 import Router from "next/router";
 
 export default function EventCard({ event, ...props }: { event: BoEvent }) {
-  const { t } = useTranslation("home");
 
   function getHoursAndMinuteLeft(date: string) {
     const jsDate = new Date(date);
@@ -13,13 +11,13 @@ export default function EventCard({ event, ...props }: { event: BoEvent }) {
     const diff = jsDate.getTime() - now.getTime();
     const hours = Math.floor(diff / (1000 * 60 * 60));
     const minutes = Math.floor(diff / (1000 * 60)) % 60;
-    if (hours == 0) {
-      return t("in_x_minutes", { minutes });
-    } else if (hours > 0) {
-      const minutesFormated = ("0" + minutes).slice(-2);
-      return t("in_hours_x_minutes", { hours, minutesFormated });
-    }
-    return t("inProgress");
+    // if (hours == 0) {
+    //   return t("in_x_minutes", { minutes });
+    // } else if (hours > 0) {
+    //   const minutesFormated = ("0" + minutes).slice(-2);
+    //   return t("in_hours_x_minutes", { hours, minutesFormated });
+    // }
+    return "En cours";
   }
 
   function calcHowManyUsers(users: Array<BoInvitationResponse>) {
@@ -30,19 +28,19 @@ export default function EventCard({ event, ...props }: { event: BoEvent }) {
 
   function presenceSentences(users: Array<BoInvitationResponse>): string {
     if (!users || users.length === 0) {
-      return t("noAnswers");
+      return "Personne n'a encore répondu";
     }
     const usersWhoAreComing = calcHowManyUsers(users);
     if (usersWhoAreComing === 0) {
-      return t("noGuests");
+      return "Personne n'est présent";
     }
 
     if (usersWhoAreComing === 1) {
-      return t("comingGuest");
+      return "1 personne à prévu de venir";
     }
-    if (usersWhoAreComing > 0) {
-      return t("comingGuests", { count: usersWhoAreComing });
-    }
+    // if (usersWhoAreComing > 0) {
+    //   return t("comingGuests", { count: usersWhoAreComing });
+    // }
     return "";
   }
 
