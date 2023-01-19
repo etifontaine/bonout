@@ -31,7 +31,7 @@ import { collection, getDocs } from "firebase/firestore";
 import { db } from "@src/firebase/client";
 
 const EventDetails: NextPage = () => {
-    const router = useRouter();
+    const { query } = useRouter();
     //   const [userInvitationResponse, setUserInvitationResponse] =
     //     useState<string>();
     const [userInvitationResponseValue, setUserInvitationResponseValue] =
@@ -48,7 +48,7 @@ const EventDetails: NextPage = () => {
     useEffect(() => {
         getDocs(collection(db, `${process.env.NEXT_PUBLIC_DB_ENV}_events`)).then(querySnapshot => {
             querySnapshot.forEach((doc) => {
-                if (doc.data().link === router.query.link) {
+                if (doc.data().link === query.link) {
                     let e = doc.data() as BoEvent;
                     setIsOrganizer(doc.data().user_id === getUserID())
 
@@ -73,11 +73,11 @@ const EventDetails: NextPage = () => {
         }).finally(() => setIsLoading(false))
     }, []);
 
-    //   useEffect(() => {
-    //     if (query.openGuestList && query.openGuestList === "true") {
-    //       setGuestListVisible(true);
-    //     }
-    //   }, [query]);
+    useEffect(() => {
+        if (query.openGuestList && query.openGuestList === "true") {
+            setGuestListVisible(true);
+        }
+    }, [query]);
 
     const setResponse = (userResponse: BoInvitationValidResponse, event: BoEvent) => {
         setModal({ userResponse, link: event.link });
