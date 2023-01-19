@@ -27,13 +27,11 @@ import {
 } from "@heroicons/react/outline";
 import logger from "@src/logger";
 import { toast } from "react-toastify";
-import { collection, getDocs } from "firebase/firestore";
+import { collection, deleteDoc, doc, getDocs } from "firebase/firestore";
 import { db } from "@src/firebase/client";
 
 const EventDetails: NextPage = () => {
     const { query } = useRouter();
-    //   const [userInvitationResponse, setUserInvitationResponse] =
-    //     useState<string>();
     const [userInvitationResponseValue, setUserInvitationResponseValue] =
         useState<string>();
 
@@ -48,8 +46,11 @@ const EventDetails: NextPage = () => {
     useEffect(() => {
         getDocs(collection(db, `${process.env.NEXT_PUBLIC_DB_ENV}_events`)).then(querySnapshot => {
             querySnapshot.forEach((doc) => {
+                console.log();
+                
                 if (doc.data().link === query.link) {
                     let e = doc.data() as BoEvent;
+                    e.id = doc.id
                     setIsOrganizer(doc.data().user_id === getUserID())
 
                     e.comingGuestAmount = 0
@@ -108,27 +109,12 @@ const EventDetails: NextPage = () => {
         }
     };
 
-    const handleDeleteEvent = () => {
+    const handleDeleteEvent = async (event: BoEvent) => {
         setDeleteModalVisible(false);
         setIsLoading(true);
-
-        setTimeout(() => {
-            setIsLoading(false);
-        }, 2000);
-
-        // fetcher(
-        //   `/api/events/`,
-        //   "DELETE",
-        //   JSON.stringify({ id: event.id, user_id: getUserID() })
-        // ).then((res) => {
-        //   if (res.status === 200) {
-        //     Router.push("/home");
-        //   } else {
-        //     setLoading(false);
-        //     logger.error({ message: "Error deleting event", res });
-        //     toast.error("Une erreur est survenue lors de la suppression de l'événement");
-        //   }
-        // });
+        await deleteDoc(doc(db, `${process.env.NEXT_PUBLIC_DB_ENV}_events`, event.id))
+        setIsLoading(false);
+        Router.push("/home");
     };
 
     if (!event) {
@@ -153,7 +139,7 @@ const EventDetails: NextPage = () => {
                     description: "Êtes-vous sûr de vouloir supprimer cet événement ?",
                 }}
                 onClose={() => setDeleteModalVisible(false)}
-                onConfirm={handleDeleteEvent}
+                onConfirm={() => handleDeleteEvent(event)}
                 icon={<TrashIcon className="h-20 w-20" aria-hidden="true" />}
             >
                 {" "}

@@ -4,7 +4,6 @@ import { ExclamationIcon, ThumbUpIcon } from "@heroicons/react/outline";
 import { toast } from "react-toastify";
 import { BoInvitationValidResponse, BoEvent } from "../../src/types";
 import Modal from "@components/Modal";
-import fetcher from "@src/utils/fetcher";
 
 export interface IModal {
   link?: BoEvent["link"];
@@ -46,6 +45,7 @@ export default function InvitationModal({ link, userResponse }: IModal) {
     }
     setIsLoading(true);
     localStorage.setItem("user_pseudo", formContent.username);
+    
     // fetcher(
     //   "/api/events/invitations/response",
     //   "POST",
