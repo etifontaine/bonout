@@ -34,12 +34,11 @@ function HeroHome() {
             className="absolute -top-16 -left-10"
           />
         </div>
-        <Image
+        <img
           src={`/images/iphone-fr.png`}
           height="438"
           width="219"
           alt="iPhone"
-          priority={true}
         />
         <div className="relative">
           <img
