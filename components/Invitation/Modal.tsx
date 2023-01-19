@@ -20,7 +20,7 @@ interface IModalForm {
 }
 
 export default function InvitationModal({ event, userResponse }: IModal) {
-  const router = useRouter()
+  const router = useRouter();
   let [isOpen, setIsOpen] = useState(false);
   let [isLoading, setIsLoading] = useState(false);
   const [formContent, setFormContent] = useState<IModalForm>();
@@ -43,16 +43,18 @@ export default function InvitationModal({ event, userResponse }: IModal) {
       toast.error("Vous devez renseigner un pseudo");
       return;
     }
-    
+
     if (isLoading) {
       return;
     }
     setIsLoading(true);
-    const user_id = localStorage.getItem("user_id") || undefined
+    const user_id = localStorage.getItem("user_id") || undefined;
     localStorage.setItem("user_pseudo", formContent.username);
 
-    const hasInvitation = event.invitations.findIndex(i => i.user_id === user_id)
-    
+    const hasInvitation = event.invitations.findIndex(
+      (i) => i.user_id === user_id
+    );
+
     if (hasInvitation >= 0) {
       event.invitations[hasInvitation].response = userResponse as string;
     } else {
@@ -61,19 +63,19 @@ export default function InvitationModal({ event, userResponse }: IModal) {
         link: event.link,
         eventID: event.id,
         user_id: user_id,
-        response: userResponse as string
-      })
+        response: userResponse as string,
+      });
     }
     updateDoc(doc(db, `${process.env.NEXT_PUBLIC_DB_ENV}_events`, event.id), {
-      invitations: event.invitations
-    })
+      invitations: event.invitations,
+    });
 
     setIsLoading(false);
     setIsOpen(false);
     router.push({
       pathname: `/events/details/${event.link}`,
-      search: '?refresh=true',
-    })
+      search: "?refresh=true",
+    });
   };
 
   return (
