@@ -53,8 +53,8 @@ const Add: NextPage = () => {
     const uid = new ShortUniqueId({ length: 10 });
     let user_id = localStorage.getItem("user_id")
     if (!user_id) {
-      user_id = uid()
-      localStorage.setItem("user_id", user_id)
+      const newUserId = uid()
+      localStorage.setItem("user_id", newUserId)
     }
     addDoc(collection(db, `${process.env.NEXT_PUBLIC_DB_ENV}_events`), {
       title: name.value,
