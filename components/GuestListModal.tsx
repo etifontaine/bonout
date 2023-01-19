@@ -22,7 +22,7 @@ export default function GuestListModal({
   const renderGuestsList = () => {
     const guestsGroup: guestsGroup = { yes: [], no: [], maybe: [] };
     guests?.map((g) => {
-      return guestsGroup[g.response].push(g.name);
+      return guestsGroup[g.response as keyof guestsGroup].push(g.name);
     });
 
     return (

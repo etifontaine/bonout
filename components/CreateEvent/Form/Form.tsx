@@ -13,7 +13,6 @@ import {
 import type { suggestion } from "./LocationSuggestions";
 import { BoEvent } from "src/types";
 import { getUserName } from "@src/utils/user";
-import { isClientSide } from "@src/utils/client";
 
 const GMapsLocationSuggestions =
   withGooglePlacesAutocomplete(LocationSuggestions);
@@ -76,7 +75,7 @@ export function Form(props: {
         },
         name: defaultInputState,
         description: defaultInputState,
-        location: { ...defaultInputState, hideSuggestions: false },
+        location: { ...defaultInputState, hideSuggestions: false, isValid: true, },
         startAt: {
           ...defaultInputState,
           value: getDateTime(add10min(new Date())),
@@ -90,12 +89,7 @@ export function Form(props: {
       } as Tform)
   );
 
-  const [gmapIsLoad, setGmapIsLoad] = useState(false);
-  if (isClientSide()) {
-    if (window.google && !gmapIsLoad) {
-      setGmapIsLoad(true);
-    }
-  }
+  const [gmapIsLoad, setGmapIsLoad] = useState(true);
 
   const isFormValid = Object.values(form).every((input) => input.isValid);
 
@@ -232,14 +226,14 @@ export function Form(props: {
             setHelperText("La date de l'événement doit être supérieur à la date de début")
           )
         ),
-        isInput("location", (f) =>
-          pipe(
-            setProp("isValid", false)(f),
-            setHelperText(
-              `Le lieu ${f.location.value} semble incorrect, veuillez utiliser les suggestions`
-            )
-          )
-        )
+        // isInput("location", (f) =>
+        //   pipe(
+        //     setProp("isValid", false)(f),
+        //     setHelperText(
+        //       `Le lieu ${f.location.value} semble incorrect, veuillez utiliser les suggestions`
+        //     )
+        //   )
+        // )
       );
       setForm(newForm);
       return newForm;

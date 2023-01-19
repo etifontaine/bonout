@@ -30,7 +30,7 @@ export type BoInvitationResponse = {
   link: string;
   eventID: string;
   user_id?: string;
-  response: BoInvitationValidResponse;
+  response: string;
   created_at?: string;
 };
 

@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
-import Router from "next/router";
+import Router, { useRouter } from "next/router";
 import { ExclamationIcon, ThumbUpIcon } from "@heroicons/react/outline";
 import { toast } from "react-toastify";
 import { BoInvitationValidResponse, BoEvent } from "../../src/types";
 import Modal from "@components/Modal";
+import { doc, updateDoc } from "firebase/firestore";
+import { db } from "@src/firebase/client";
 
 export interface IModal {
-  link?: BoEvent["link"];
+  event: BoEvent;
   userResponse?: BoInvitationValidResponse;
 }
 interface IModalContent {
@@ -17,7 +19,8 @@ interface IModalForm {
   username: string;
 }
 
-export default function InvitationModal({ link, userResponse }: IModal) {
+export default function InvitationModal({ event, userResponse }: IModal) {
+  const router = useRouter()
   let [isOpen, setIsOpen] = useState(false);
   let [isLoading, setIsLoading] = useState(false);
   const [formContent, setFormContent] = useState<IModalForm>();
@@ -30,59 +33,47 @@ export default function InvitationModal({ link, userResponse }: IModal) {
   }, []);
 
   useEffect(() => {
-    if (link && userResponse) {
+    if (event?.link && userResponse) {
       setIsOpen(true);
     }
-  }, [userResponse, link]);
+  }, [userResponse, event]);
 
   const postInvitationResponse = () => {
     if (!formContent?.username) {
       toast.error("Vous devez renseigner un pseudo");
       return;
     }
+    
     if (isLoading) {
       return;
     }
     setIsLoading(true);
+    const user_id = localStorage.getItem("user_id") || undefined
     localStorage.setItem("user_pseudo", formContent.username);
 
-    // fetcher(
-    //   "/api/events/invitations/response",
-    //   "POST",
-    //   JSON.stringify({
-    //     name: formContent.username,
-    //     response: userResponse,
-    //     link: link,
-    //     user_id: localStorage.getItem("user_id") || undefined,
-    //   })
-    // ).then(async (res) => {
-    //   if (res.status === 201) {
-    //     const { user_id } = await res.json();
-    //     if (
-    //       localStorage.getItem("user_id") === null ||
-    //       localStorage.getItem("user_id") === "undefined"
-    //     ) {
-    //       localStorage.setItem("user_id", user_id);
-    //     }
-    //     toast.info("Merci pour ta réponse");
-    //     setIsLoading(false);
-    //     setIsOpen(false);
-    //     Router.push(`/events/details/${link}`);
-    //   } else {
-    //     res
-    //       .json()
-    //       .then((data) => {
-    //         setIsLoading(false);
-    //         toast.error(
-    //           data.error ? data.error : "Une erreur est survenue"
-    //         );
-    //       })
-    //       .catch((e) => {
-    //         setIsLoading(false);
-    //         toast.error("Une erreur est survenue");
-    //       });
-    //   }
-    // });
+    const hasInvitation = event.invitations.findIndex(i => i.user_id === user_id)
+    
+    if (hasInvitation >= 0) {
+      event.invitations[hasInvitation].response = userResponse as string;
+    } else {
+      event.invitations.push({
+        name: formContent.username,
+        link: event.link,
+        eventID: event.id,
+        user_id: user_id,
+        response: userResponse as string
+      })
+    }
+    updateDoc(doc(db, `${process.env.NEXT_PUBLIC_DB_ENV}_events`, event.id), {
+      invitations: event.invitations
+    })
+
+    setIsLoading(false);
+    setIsOpen(false);
+    router.push({
+      pathname: `/events/details/${event.link}`,
+      search: '?refresh=true',
+    })
   };
 
   return (
@@ -102,12 +93,16 @@ export default function InvitationModal({ link, userResponse }: IModal) {
       }
       content={{
         title: `Votre réponse`,
+<<<<<<< HEAD
         description:
           userResponse === BoInvitationValidResponse.YES
             ? "Veuillez confirmer votre venue en indiquant votre nom"
             : userResponse === BoInvitationValidResponse.NO
             ? "Veuillez confirmer que vous ne viendrez pas à cet événement"
             : "Veuillez confirmer indiquer votre nom ou pseudo pour confirmer votre choix",
+=======
+        description: userResponse === BoInvitationValidResponse.YES ? "Veuillez confirmer votre venue en indiquant votre nom" : userResponse === BoInvitationValidResponse.NO ? "Veuillez confirmer que vous ne viendrez pas à cet événement" : "Veuillez confirmer indiquer votre nom ou pseudo pour confirmer votre choix",
+>>>>>>> 08f9ccd (feat(firebase): Use client side)
       }}
     >
       <form
