@@ -44,11 +44,19 @@ const EventDetails: NextPage = () => {
     const [event, setEvent] = useState<BoEvent>();
 
     useEffect(() => {
+        getEvent()
+    }, [])
+
+    useEffect(() => {
         setIsLoading(false)
         setModal(null)
         if (query.openGuestList && query.openGuestList === "true") {
             setGuestListVisible(true);
         }
+        getEvent()
+    }, [query]);
+
+    const getEvent = () => {
         setIsLoading(true)
         getDocs(collection(db, `${process.env.NEXT_PUBLIC_DB_ENV}_events`)).then(querySnapshot => {
             querySnapshot.forEach((doc) => {
@@ -76,7 +84,7 @@ const EventDetails: NextPage = () => {
                 }
             })
         }).finally(() => setIsLoading(false))
-    }, [query]);
+    }
 
     const setResponse = (userResponse: BoInvitationValidResponse, event: BoEvent) => {
         setModal({ userResponse, event });
