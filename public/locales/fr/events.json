@@ -66,10 +66,10 @@
       "label": "Un lieu ?"
     },
     "response": {
-      "yes": "Accepter",
-      "oui": "Accepter",
-      "no": "Refuser",
-      "non": "Refuser",
+      "yes": "Accepté",
+      "oui": "Accepté",
+      "no": "Refusé",
+      "non": "Refusé",
       "maybe": "Peut-être",
       "peut-être": "Peut-être"
     },

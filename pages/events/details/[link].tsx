@@ -250,9 +250,9 @@ const EventDetails: NextPage = () => {
                   aria-hidden="true"
                 />
                 <p>
-                  Accepter: {data.guests.coming.length}
+                  Accepté: {data.guests.coming.length}
                   <br />
-                  Refuser: {data.guests.not_coming.length}
+                  Refusé: {data.guests.not_coming.length}
                   <br />
                   Peut-être: {data.guests.maybe.length}
                 </p>
@@ -270,7 +270,7 @@ const EventDetails: NextPage = () => {
                       : "text-black"
                   } p-2 btn-sm hover:text-white hover:bg-black`}
                 >
-                  Refuser
+                  Refusé
                 </button>
                 <button
                   onClick={() =>
@@ -283,7 +283,7 @@ const EventDetails: NextPage = () => {
                       : "text-black"
                   } p-2 btn-sm ml-3 hover:text-white hover:bg-black`}
                 >
-                  Accepter
+                  Accepté
                 </button>
                 <button
                   onClick={() =>

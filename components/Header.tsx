@@ -20,12 +20,10 @@ export default function Header() {
   const router = useRouter();
 
   useEffect(() => {
-    const user = getUserID();
-    if (user) {
-      setUser(user);
-      //getNotif(user);
-      // const intervalId = setInterval(() => getNotif(user), 60000);
-      // return () => clearInterval(intervalId);
+    const userData = localStorage.getItem("user");
+    const userDataParsed = userData ? JSON.parse(userData) : null;
+    if (userDataParsed) {
+      setUser(userDataParsed.id);
     }
   }, []);
 

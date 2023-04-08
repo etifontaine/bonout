@@ -10,15 +10,10 @@ import { getUserID } from "@src/utils/user";
 import { fetcher } from "../src/utils/fetcher";
 
 const Home: NextPage = () => {
-  if (typeof window !== "undefined" && !getUserID()) {
-    Router.push("/");
-  }
-
   const { data, error, isLoading } = useSWR(
     `/api/events?owner=${getUserID()}`,
     fetcher
   );
-  console.log(data);
 
   return (
     <div>

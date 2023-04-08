@@ -18,10 +18,7 @@ export function NotificationItem(props: {
   key?: string;
   onClick?: () => void;
 }) {
-  const handleClick = () => {
-   console.log("Handle click notif");
-   
-  };
+  const handleClick = () => {};
   // create a notification with message and badge read tailwind
   return (
     <div
@@ -31,8 +28,9 @@ export function NotificationItem(props: {
     >
       <div className="flex-shrink-0">
         <div
-          className={`h-2 w-2 rounded-full ${props.data.isRead ? "bg-gray-500" : "bg-blue-500"
-            }`}
+          className={`h-2 w-2 rounded-full ${
+            props.data.isRead ? "bg-gray-500" : "bg-blue-500"
+          }`}
         />
       </div>
       <div className="ml-3">

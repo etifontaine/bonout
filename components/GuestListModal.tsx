@@ -20,14 +20,12 @@ export default function GuestListModal({
   guests,
 }: IModal) {
   const renderGuestsList = () => {
-    console.log(guests);
-
     return (
       <>
         {guests.coming.length > 0 ? (
           <>
             <h4 className="text-l leading-8 font-medium text-gray-900 text-left">
-              Accepter
+              Accepté
             </h4>
             {guests.coming.map((g, key) => {
               return <p key={key}>{g.name}</p>;
@@ -47,7 +45,7 @@ export default function GuestListModal({
         {guests.not_coming.length > 0 ? (
           <>
             <h4 className="text-l leading-8 font-medium text-gray-900 text-left mt-5">
-              Refuser
+              Refusé
             </h4>
             {guests.not_coming.map((g, key) => {
               return <p key={key}>{g.name}</p>;

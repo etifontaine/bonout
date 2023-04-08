@@ -21,7 +21,6 @@ export default async function personHandler(
 
     const uid = new ShortUniqueId({ length: 10 });
     const eventLink = uid();
-    console.log(eventLink);
 
     try {
       await prisma.user.update({
@@ -74,6 +73,11 @@ export default async function personHandler(
         },
       },
     });
+
+    if (!events) {
+      return res.status(200).json({ message: `events not found.` });
+    }
+
     const guestEvents = events.guest.map((g) => {
       return g.event;
     });
@@ -81,10 +85,6 @@ export default async function personHandler(
     const now = new Date();
     const startOfDayDate = startOfDay(now);
     const endOfDayDate = endOfDay(now);
-
-    if (!events) {
-      return res.status(200).json({ message: `events not found.` });
-    }
 
     const allEvents = [...events.events, ...guestEvents];
     allEvents.forEach((event) => {
