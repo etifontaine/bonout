@@ -8,8 +8,6 @@ import { useRouter } from "next/router";
 import { BoNotification } from "@src/types";
 import Modal from "./Modal";
 import NotificationList from "./NotificationList";
-import { collection, getDocs } from "firebase/firestore";
-import { db } from "@src/firebase/client";
 
 export default function Header() {
   const [user, setUser] = useState("");
@@ -25,36 +23,35 @@ export default function Header() {
     const user = getUserID();
     if (user) {
       setUser(user);
-      getNotif(user);
-      const intervalId = setInterval(() => getNotif(user), 60000);
-      return () => clearInterval(intervalId);
+      //getNotif(user);
+      // const intervalId = setInterval(() => getNotif(user), 60000);
+      // return () => clearInterval(intervalId);
     }
   }, []);
 
   const getNotif = async (user: string) => {
-    let notifs: Array<BoNotification> = [];
-    const querySnapshot = await getDocs(
-      collection(db, `${process.env.NEXT_PUBLIC_DB_ENV}_notifications`)
-    );
-    querySnapshot.forEach((doc) => {
-      if (doc.data().organizer_id === user) {
-        notifs.push({
-          id: doc.id,
-          isRead: doc.data().isRead,
-          organizer_id: doc.data().organizer_id,
-          link: doc.data().link,
-          message: doc.data().message,
-          created_at: doc.data().created_at,
-        });
-      }
-    });
-
-    setNotifications(
-      notifs.sort(
-        (a, b) =>
-          new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
-      )
-    );
+    // let notifs: Array<BoNotification> = [];
+    // const querySnapshot = await getDocs(
+    //   collection(db, `${process.env.NEXT_PUBLIC_DB_ENV}_notifications`)
+    // );
+    // querySnapshot.forEach((doc) => {
+    //   if (doc.data().organizer_id === user) {
+    //     notifs.push({
+    //       id: doc.id,
+    //       isRead: doc.data().isRead,
+    //       organizer_id: doc.data().organizer_id,
+    //       link: doc.data().link,
+    //       message: doc.data().message,
+    //       created_at: doc.data().created_at,
+    //     });
+    //   }
+    // });
+    // setNotifications(
+    //   notifs.sort(
+    //     (a, b) =>
+    //       new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+    //   )
+    // );
   };
 
   const toggleUserID = (user: string) => {
@@ -142,7 +139,7 @@ export default function Header() {
               </Link>
             </div>
           </div>
-          {user.length > 0 && (
+          {/* {user.length > 0 && (
             <span
               onClick={() => {
                 if (user) getNotif(user);
@@ -166,7 +163,7 @@ export default function Header() {
                 </span>
               )}
             </span>
-          )}
+          )} */}
         </div>
 
         <div

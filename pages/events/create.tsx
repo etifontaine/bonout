@@ -5,13 +5,13 @@ import { toast } from "react-toastify";
 import { Form } from "@components/CreateEvent/Form/Form";
 import type { Tform } from "@components/CreateEvent/Form/types";
 import Loader from "@components/Loader";
-import { addDoc, collection } from "firebase/firestore";
-import { db } from "@src/firebase/client";
 import { useRouter } from "next/router";
 import ShortUniqueId from "short-unique-id";
+import { fetcher } from "@src/utils/fetcher";
+import { getUserID } from "@src/utils/user";
 
 const Add: NextPage = () => {
-  const { push } = useRouter()
+  const { push } = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   return (
     <>
@@ -48,28 +48,35 @@ const Add: NextPage = () => {
       toast.error("Il y a des erreurs dans le formulaire");
       return;
     }
+
     setIsLoading(true);
-    setIsLoading(false);
-    const uid = new ShortUniqueId({ length: 10 });
-    let user_id = localStorage.getItem("user_id")
-    if (!user_id) {
-      const newUserId = uid()
-      localStorage.setItem("user_id", newUserId)
-    }
-    addDoc(collection(db, `${process.env.NEXT_PUBLIC_DB_ENV}_events`), {
-      title: name.value,
-      start_at: new Date(startAt.value).toISOString(),
-      end_at: new Date(endAt.value).toISOString(),
-      address: location.value,
-      description: description.value,
-      user_id,
-      user_name: userName.value,
-      link: uid(),
-      created_at: new Date().toISOString(),
-    }).then(() => {
-      setIsLoading(false);
-      push('/home')
+    fetcher(`/api/events`, {
+      method: "POST",
+      body: JSON.stringify({
+        title: name.value,
+        start_at: Date.parse(startAt.value),
+        end_at: Date.parse(endAt.value),
+        address: location.value,
+        description: description.value,
+        user_id: getUserID(),
+        user_name: userName.value,
+      }),
     })
+      .then((data) => {
+        localStorage.setItem(
+          "user",
+          JSON.stringify({
+            id: getUserID(),
+            name: userName.value,
+          })
+        );
+        setIsLoading(false);
+        push("/home");
+      })
+      .catch((err) => {
+        setIsLoading(false);
+        console.error(err);
+      });
   }
 };
 

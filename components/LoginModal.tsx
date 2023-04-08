@@ -3,6 +3,7 @@ import Router from "next/router";
 import { Dialog, Transition } from "@headlessui/react";
 import { LockOpenIcon } from "@heroicons/react/outline";
 import { toast } from "react-toastify";
+import { fetcher } from "@src/utils/fetcher";
 interface IModal {
   isVisible: boolean;
   setLoginVisible: any;
@@ -17,13 +18,24 @@ export default function InvitationModal({
 }: IModal) {
   const [formContent, setFormContent] = useState<IModalForm>();
 
-  const postInvitationResponse = () => {
+  const postInvitationResponse = async () => {
     if (!formContent?.user_id) {
-      toast.error("Vous devez renseigner un user_id");
+      toast.error("Vous devez renseigner un pseudo");
       return;
     }
 
-    localStorage.setItem("user_id", formContent.user_id);
+    // check if pseudo exists
+    const userData = await fetcher(`/api/users?user_id=${formContent.user_id}`);
+
+    if (userData) {
+      localStorage.setItem(
+        "user",
+        JSON.stringify({
+          id: userData.password,
+          name: userData.name,
+        })
+      );
+    }
     Router.push("/home");
   };
 
@@ -32,7 +44,7 @@ export default function InvitationModal({
       <Dialog
         as="div"
         className="fixed z-40 inset-0 overflow-y-auto"
-        onClose={() => { }}
+        onClose={() => {}}
       >
         <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
           <Transition.Child
@@ -90,22 +102,24 @@ export default function InvitationModal({
                       <div className="mb-4">
                         <label
                           className="block text-gray-700 text-sm font-bold mb-2"
-                          htmlFor="user_id"
+                          htmlFor="password"
                         >
-                          Renseignez votre user_id (pas de pseudo)
+                          Renseignez votre mot de passe
                         </label>
                         <input
                           autoFocus={true}
                           autoComplete="on"
                           value={formContent?.user_id}
                           onChange={(e) => {
-                            setFormContent({ user_id: e.target.value });
+                            setFormContent({
+                              user_id: e.target.value,
+                            });
                           }}
                           className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                          id="user_id"
-                          name="user_id"
-                          type="text"
-                          placeholder="user_id"
+                          id="password"
+                          name="password"
+                          type="password"
+                          placeholder="Super bonout"
                         />
                       </div>
                     </form>

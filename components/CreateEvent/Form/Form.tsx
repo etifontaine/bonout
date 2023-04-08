@@ -35,58 +35,62 @@ export function Form(props: {
   const [form, setForm] = useState(
     props.event
       ? {
-        userName: {
-          ...defaultInputState,
-          value: props.event.user_name || "",
-          isValid: true,
-        },
-        name: {
-          ...defaultInputState,
-          value: props.event.title,
-          isValid: true,
-        },
-        description: {
-          ...defaultInputState,
-          value: props.event.description,
-          isValid: true,
-        },
-        location: {
-          ...defaultInputState,
-          hideSuggestions: false,
-          value: props.event.address,
-          isValid: true,
-        },
-        startAt: {
-          ...defaultInputState,
-          value: getDateTime(new Date(props.event.start_at)),
-          isValid: true,
-        },
-        endAt: {
-          ...defaultInputState,
-          value: getDateTime(new Date(props.event.end_at)),
-          isValid: true,
-        },
-      }
+          userName: {
+            ...defaultInputState,
+            value: props.event.user.name || "",
+            isValid: true,
+          },
+          name: {
+            ...defaultInputState,
+            value: props.event.title,
+            isValid: true,
+          },
+          description: {
+            ...defaultInputState,
+            value: props.event.description,
+            isValid: true,
+          },
+          location: {
+            ...defaultInputState,
+            hideSuggestions: false,
+            value: props.event.address,
+            isValid: true,
+          },
+          startAt: {
+            ...defaultInputState,
+            value: getDateTime(new Date(props.event.start_at)),
+            isValid: true,
+          },
+          endAt: {
+            ...defaultInputState,
+            value: getDateTime(new Date(props.event.end_at)),
+            isValid: true,
+          },
+        }
       : ({
-        userName: {
-          ...defaultInputState,
-          value: getUserName() || "",
-          isValid: getUserName() ? true : false,
-        },
-        name: defaultInputState,
-        description: defaultInputState,
-        location: { ...defaultInputState, hideSuggestions: false, isValid: true, },
-        startAt: {
-          ...defaultInputState,
-          value: getDateTime(add10min(new Date())),
-          isValid: true,
-        },
-        endAt: {
-          ...defaultInputState,
-          value: getDateTime(add1h(add10min(new Date()))),
-          isValid: true,
-        },
-      } as Tform)
+          userName: {
+            ...defaultInputState,
+            value: getUserName() || "",
+            isValid: getUserName() ? true : false,
+          },
+          name: defaultInputState,
+          description: defaultInputState,
+          location: {
+            ...defaultInputState,
+            hideSuggestions: false,
+            isValid: true,
+          },
+          startAt: {
+            ...defaultInputState,
+            value: getDateTime(add10min(new Date())),
+            isValid: true,
+          },
+          endAt: {
+            ...defaultInputState,
+            value: getDateTime(add1h(add10min(new Date()))),
+            isValid: true,
+          },
+        } as Tform)
   );
 
   const [gmapIsLoad, setGmapIsLoad] = useState(true);
@@ -102,7 +106,7 @@ export function Form(props: {
       <Script
         onLoad={() => setGmapIsLoad(true)}
         defer
-        src={`https://maps.googleapis.com/maps/api/js?key=AIzaSyAugCWPRmET1IH1TkplqNzrGMgK1yItKmM&libraries=places`}
+        src={`https://maps.googleapis.com/maps/api/js?key=AIzaSyBB_7qYyeck5tyMQmh3wEEjqr85rjhMYWM&libraries=places`}
       ></Script>
       <form
         onSubmit={(e) => {
@@ -117,11 +121,7 @@ export function Form(props: {
           </div>
         </div>
         <input
-          value={
-            props.event
-              ? "Modifier"
-              : "Créer"
-          }
+          value={props.event ? "Modifier" : "Créer"}
           type="submit"
           className={`${isFormValid ? "" : "cursor-not-allowed opacity-30"}
         btn bg-black cursor-pointer
@@ -149,9 +149,9 @@ export function Form(props: {
             className={setInvalidClass(form[props.id])}
           />
           {props.id === "location" &&
-            !form.location.hideSuggestions &&
-            gmapIsLoad &&
-            form.location.isTouched ? (
+          !form.location.hideSuggestions &&
+          gmapIsLoad &&
+          form.location.isTouched ? (
             <GMapsLocationSuggestions
               onSelect={onSuggestionSelectHandler}
               inputValue={form.location.value}
@@ -217,15 +217,19 @@ export function Form(props: {
               "endAt"
             )(f),
             setProp("isValid", isNotPassedDate(value)),
-            setHelperText("La date de l'événement ne peut pas être dans le passé")
+            setHelperText(
+              "La date de l'événement ne peut pas être dans le passé"
+            )
           )
         ),
         isInput("endAt", (f) =>
           pipe(
             setProp("isValid", isNotPassedDate(value, f.startAt.value))(f),
-            setHelperText("La date de l'événement doit être supérieur à la date de début")
+            setHelperText(
+              "La date de l'événement doit être supérieur à la date de début"
+            )
           )
-        ),
+        )
         // isInput("location", (f) =>
         //   pipe(
         //     setProp("isValid", false)(f),
@@ -261,7 +265,7 @@ export function Form(props: {
         setProp("helperText", form[inputId].isValid ? "" : helperText)(form);
     }
 
-    function isLongEnough(nth: Number, value: string) {
+    function isLongEnough(nth: number, value: string) {
       return value.length >= nth;
     }
 
@@ -290,33 +294,33 @@ export function inputsStaticProps(): TinputsStaticProps[] {
     {
       id: "userName",
       placeholder: "Nom ou pseudo",
-      label: "Nom"
+      label: "Nom",
     },
     {
       id: "name",
       placeholder: "Nom de l'événement",
-      label: "Nom de l'événement"
+      label: "Nom de l'événement",
     },
     {
       id: "description",
       type: "textarea",
       placeholder: "Description de l'événement",
-      label: "Et quelques infos ?"
+      label: "Et quelques infos ?",
     },
     {
       id: "startAt",
       type: "datetime-local",
-      label: "On commence quand ?"
+      label: "On commence quand ?",
     },
     {
       id: "endAt",
       type: "datetime-local",
-      label: "Jusqu'à quand ?"
+      label: "Jusqu'à quand ?",
     },
     {
       id: "location",
       placeholder: "Lieu de l'événement",
-      label: "Un lieu ?"
+      label: "Un lieu ?",
     },
   ];
 }

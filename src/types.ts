@@ -2,13 +2,29 @@ export type BoEvent = {
   id: string;
   title: string;
   description: string;
-  user_id: string;
-  user_name?: string; // maybe undefined, because prod data don't have user_name
+  user?: {
+    id?: string;
+    name?: string;
+  };
   address: string;
   start_at: string;
   end_at: string;
   main_asset?: string;
   link: string;
+  guests: {
+    all: {
+      name: string;
+    }[];
+    coming: {
+      name: string;
+    }[];
+    not_coming: {
+      name: string;
+    }[];
+    maybe: {
+      name: string;
+    }[];
+  };
   comingGuestAmount: number;
   maybeComingGuestAmount: number;
   notComingGuestAmount: number;
