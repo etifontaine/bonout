@@ -17,28 +17,40 @@ export default async function personHandler(
         link,
       },
     });
-    let user;
-    try {
-      user = await prisma.user.upsert({
+    let user = await prisma.user.findFirst({
+      where: {
+        password: data.id,
+      },
+    });
+
+    if (user && user.name !== data.name) {
+      await prisma.user.update({
         where: {
-          name: data.name,
+          id: user.id,
         },
-        update: {},
-        create: {
+        data: {
           name: data.name,
-          password: data.id,
         },
       });
-    } catch (e) {
-      console.log(e);
-      if (e.code === "P2002") {
-        return res
-          .status(400)
-          .json({ message: "error", error: "User already exists" });
-      }
-      return res.status(400).json({ message: "error", error: e.message });
     }
-    console.log(user);
+
+    if (!user) {
+      try {
+        user = await prisma.user.create({
+          data: {
+            name: data.name,
+            password: data.id,
+          },
+        });
+      } catch (e) {
+        if (e.code === "P2002") {
+          return res
+            .status(400)
+            .json({ message: "error", error: "User already exists" });
+        }
+        return res.status(400).json({ message: "error", error: e.message });
+      }
+    }
     await prisma.guest.create({
       data: {
         name: data.name,
