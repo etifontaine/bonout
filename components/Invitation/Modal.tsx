@@ -4,8 +4,8 @@ import { ExclamationIcon, ThumbUpIcon } from "@heroicons/react/outline";
 import { toast } from "react-toastify";
 import { BoInvitationValidResponse, BoEvent } from "../../src/types";
 import Modal from "@components/Modal";
-import { doc, updateDoc } from "firebase/firestore";
-import { db } from "@src/firebase/client";
+import { mutate } from "swr";
+import { fetcher } from "@src/utils/fetcher";
 
 export interface IModal {
   event: BoEvent;
@@ -17,28 +17,33 @@ interface IModalContent {
 }
 interface IModalForm {
   username: string;
+  password: string;
 }
 
-export default function InvitationModal({ event, userResponse }: IModal) {
-  const router = useRouter();
-  let [isOpen, setIsOpen] = useState(false);
+export default function InvitationModal({
+  event,
+  userResponse,
+  isInvitationOpen,
+  setInvitationOpen,
+}: any) {
   let [isLoading, setIsLoading] = useState(false);
-  const [formContent, setFormContent] = useState<IModalForm>();
+  const [formContent, setFormContent] = useState<IModalForm>({
+    username: null,
+    password: null,
+  });
 
   useEffect(() => {
-    const username = localStorage.getItem("user_pseudo");
-    if (username !== null) {
-      setFormContent({ username });
+    const user = localStorage.getItem("user");
+    if (user) {
+      const username = JSON.parse(user).name;
+      const password = JSON.parse(user).id;
+      if (username !== null) {
+        setFormContent({ username, password });
+      }
     }
   }, []);
 
-  useEffect(() => {
-    if (event?.link && userResponse) {
-      setIsOpen(true);
-    }
-  }, [userResponse, event]);
-
-  const postInvitationResponse = () => {
+  const postInvitationResponse = async () => {
     if (!formContent?.username) {
       toast.error("Vous devez renseigner un pseudo");
       return;
@@ -48,40 +53,58 @@ export default function InvitationModal({ event, userResponse }: IModal) {
       return;
     }
     setIsLoading(true);
-    const user_id = localStorage.getItem("user_id") || undefined;
-    localStorage.setItem("user_pseudo", formContent.username);
 
-    const hasInvitation = event.invitations.findIndex(
-      (i) => i.user_id === user_id
+    localStorage.setItem(
+      "user",
+      JSON.stringify({
+        name: formContent.username,
+        id: formContent.password,
+      })
+    );
+    const hasInvitation = event.guests.all.find(
+      (i) => i.name === formContent.username
     );
 
-    if (hasInvitation >= 0) {
-      event.invitations[hasInvitation].response = userResponse as string;
-    } else {
-      event.invitations.push({
-        name: formContent.username,
-        link: event.link,
-        eventID: event.id,
-        user_id: user_id,
-        response: userResponse as string,
+    if (!hasInvitation) {
+      let addGuest = await fetch(`/api/guests/${event.link}`, {
+        method: "POST",
+        body: JSON.stringify({
+          response: userResponse,
+          name: formContent.username,
+          id: formContent.password,
+        }),
       });
+      addGuest = await addGuest.json();
+      if (addGuest["error"] === "User already exists") {
+        toast.error("Ce nom et ce mot de passe sont déjà utilisés");
+      }
+      if (addGuest.status < 400) {
+        setInvitationOpen(false);
+        Router.push(`/home`);
+      } else {
+        setInvitationOpen(true);
+      }
+    } else {
+      let update = await fetch(`/api/guests/${event.link}`, {
+        method: "PUT",
+        body: JSON.stringify({
+          response: userResponse,
+          name: formContent.username,
+        }),
+      });
+      if (update.status < 400) {
+        setInvitationOpen(false);
+      } else {
+        setInvitationOpen(true);
+      }
     }
-    updateDoc(doc(db, `${process.env.NEXT_PUBLIC_DB_ENV}_events`, event.id), {
-      invitations: event.invitations,
-    });
-
     setIsLoading(false);
-    setIsOpen(false);
-    router.push({
-      pathname: `/events/details/${event.link}`,
-      search: "?refresh=true",
-    });
+    mutate(`/api/events/${event.link}`);
   };
-
   return (
     <Modal
-      isOpen={isOpen}
-      onClose={() => setIsOpen(false)}
+      isOpen={isInvitationOpen}
+      onClose={() => setInvitationOpen(false)}
       onConfirm={postInvitationResponse}
       icon={
         userResponse === BoInvitationValidResponse.NO ? (
@@ -121,15 +144,44 @@ export default function InvitationModal({ event, userResponse }: IModal) {
             autoComplete="on"
             value={formContent?.username}
             onChange={(e) => {
-              setFormContent({ username: e.target.value });
+              setFormContent({
+                username: e.target.value,
+                password: formContent?.password,
+              });
             }}
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             id="username"
             name="username"
             type="text"
-            placeholder="Nom ou pseudo"
+            placeholder="Nom"
           />
         </div>
+        {!localStorage.getItem("user") ? (
+          <div className="mb-4">
+            <label
+              className="block text-gray-700 text-sm font-bold mb-2"
+              htmlFor="user_id"
+            >
+              Mot de passe
+            </label>
+            <input
+              autoFocus={true}
+              autoComplete="on"
+              value={formContent?.password}
+              onChange={(e) => {
+                setFormContent({
+                  password: e.target.value,
+                  username: formContent?.username,
+                });
+              }}
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              id="password"
+              name="password"
+              type="password"
+              placeholder="Mot de passe"
+            />
+          </div>
+        ) : null}
       </form>
     </Modal>
   );

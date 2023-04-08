@@ -5,7 +5,7 @@ import { BoInvitationResponse } from "src/types";
 interface IModal {
   isVisible: boolean;
   setGuestListVisible: any;
-  guests: BoInvitationResponse[];
+  guests: any;
 }
 
 interface guestsGroup {
@@ -20,40 +20,37 @@ export default function GuestListModal({
   guests,
 }: IModal) {
   const renderGuestsList = () => {
-    const guestsGroup: guestsGroup = { yes: [], no: [], maybe: [] };
-    guests?.map((g) => {
-      return guestsGroup[g.response as keyof guestsGroup].push(g.name);
-    });
+    console.log(guests);
 
     return (
       <>
-        {guestsGroup.yes.length > 0 ? (
+        {guests.coming.length > 0 ? (
           <>
             <h4 className="text-l leading-8 font-medium text-gray-900 text-left">
               Accepter
             </h4>
-            {guestsGroup.yes.map((g, key) => {
-              return <p key={key}>{g}</p>;
+            {guests.coming.map((g, key) => {
+              return <p key={key}>{g.name}</p>;
             })}
           </>
         ) : null}
-        {guestsGroup.maybe.length > 0 ? (
+        {guests.maybe.length > 0 ? (
           <>
             <h4 className="text-l leading-8 font-medium text-gray-900 text-left mt-5">
               Peut-être
             </h4>
-            {guestsGroup.maybe.map((g, key) => {
-              return <p key={key}>{g}</p>;
+            {guests.maybe.map((g, key) => {
+              return <p key={key}>{g.name}</p>;
             })}
           </>
         ) : null}
-        {guestsGroup.no.length > 0 ? (
+        {guests.not_coming.length > 0 ? (
           <>
             <h4 className="text-l leading-8 font-medium text-gray-900 text-left mt-5">
               Refuser
             </h4>
-            {guestsGroup.no.map((g, key) => {
-              return <p key={key}>{g}</p>;
+            {guests.not_coming.map((g, key) => {
+              return <p key={key}>{g.name}</p>;
             })}
           </>
         ) : null}
@@ -66,7 +63,7 @@ export default function GuestListModal({
       <Dialog
         as="div"
         className="fixed z-40 inset-0 overflow-y-auto"
-        onClose={() => { }}
+        onClose={() => {}}
       >
         <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
           <Transition.Child

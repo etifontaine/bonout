@@ -1,5 +1,7 @@
 import React from "react";
 import type { BoEvent } from "@src/types";
+import { format, parseISO } from "date-fns";
+import { fr } from "date-fns/locale";
 
 export default function EventItem({
   event,
@@ -9,14 +11,10 @@ export default function EventItem({
   onClick: () => void;
 }) {
   function MiniCalandar({ date }: { date: string }) {
-    const jsDate = new Date(date);
-    const day = jsDate.getDate();
     return (
       <div className="bg-white overflow-hidden shadow-lg w-12 h-12 border-black border-2 border-solid text-right leading-none p-2">
-        <div>{day}</div>
-        <div className="">
-          {jsDate.toLocaleDateString('default', { month: 'short' })}
-        </div>
+        <div>{format(parseISO(date), "dd")}</div>
+        <div className="">{format(parseISO(date), "LLL", { locale: fr })}</div>
       </div>
     );
   }
