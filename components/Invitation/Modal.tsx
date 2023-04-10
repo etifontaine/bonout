@@ -1,10 +1,11 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Router, { useRouter } from "next/router";
 import { ExclamationIcon, ThumbUpIcon } from "@heroicons/react/outline";
 import { toast } from "react-toastify";
 import { BoInvitationValidResponse, BoEvent } from "../../src/types";
 import Modal from "@components/Modal";
 import { mutate } from "swr";
+import { ManagedUI } from "@src/context/UIContext";
 import { fetcher } from "@src/utils/fetcher";
 
 export interface IModal {
@@ -27,21 +28,17 @@ export default function InvitationModal({
   setInvitationOpen,
 }: any) {
   let [isLoading, setIsLoading] = useState(false);
+  const { setOpenModal, user, setUser } = useContext(ManagedUI);
   const [formContent, setFormContent] = useState<IModalForm>({
     username: null,
     password: null,
   });
 
   useEffect(() => {
-    const user = localStorage.getItem("user");
     if (user) {
-      const username = JSON.parse(user).name;
-      const password = JSON.parse(user).id;
-      if (username !== null) {
-        setFormContent({ username, password });
-      }
+      setFormContent({ username: user.name, password: user.id });
     }
-  }, []);
+  }, [user]);
 
   const postInvitationResponse = async () => {
     if (!formContent?.username) {
@@ -54,13 +51,6 @@ export default function InvitationModal({
     }
     setIsLoading(true);
 
-    localStorage.setItem(
-      "user",
-      JSON.stringify({
-        name: formContent.username,
-        id: formContent.password,
-      })
-    );
     const hasInvitation = event.guests.all.find(
       (i) => i.name === formContent.username
     );
@@ -156,7 +146,7 @@ export default function InvitationModal({
             placeholder="Nom"
           />
         </div>
-        {!localStorage.getItem("user") ? (
+        {/* {!localStorage.getItem("user") ? (
           <div className="mb-4">
             <label
               className="block text-gray-700 text-sm font-bold mb-2"
@@ -181,7 +171,7 @@ export default function InvitationModal({
               placeholder="Mot de passe"
             />
           </div>
-        ) : null}
+        ) : null} */}
       </form>
     </Modal>
   );

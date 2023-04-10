@@ -1,20 +1,35 @@
 import type { NextPage } from "next";
+import { parse } from "cookie";
 import EventItem from "../components/HomeScreen/EventItem";
 import EventCard from "../components/HomeScreen/EventCard";
 import Header from "../components/Header";
 import Router from "next/router";
 import Head from "next/head";
 import Skeleton from "react-loading-skeleton";
-import useSWR from "swr";
-import { getUserID } from "@src/utils/user";
-import { fetcher } from "../src/utils/fetcher";
+import { getUserEvents } from "@src/events";
 
-const Home: NextPage = () => {
-  const { data, error, isLoading } = useSWR(
-    `/api/events?owner=${getUserID()}`,
-    fetcher
-  );
+export async function getServerSideProps(context) {
+  const cookies = context.req.headers.cookie;
+  let data = {
+    todayEvents: [],
+    events: [],
+  };
+  if (cookies) {
+    const parsedCookie = parse(cookies);
+    const userPayload = parsedCookie["bonout-user"];
+    if (userPayload) {
+      const user = JSON.parse(userPayload);
+      data = await getUserEvents(user.id);
+    }
+  }
+  return {
+    props: {
+      data,
+    },
+  };
+}
 
+const Home: NextPage = ({ data }: any) => {
   return (
     <div>
       <Head>
@@ -34,7 +49,7 @@ const Home: NextPage = () => {
       </Head>
       <Header />
       <section className="pt-24 md:mt-0 min-h-screen flex justify-center md:flex-row md:justify-between lg:px-48 md:px-12 px-4 bg-secondary">
-        {isLoading || !data ? (
+        {!data ? (
           <div className="md:max-w-3xl mx-auto w-full">
             <Skeleton height={80} count={2} style={{ marginBottom: "5px" }} />
           </div>
@@ -48,7 +63,7 @@ const Home: NextPage = () => {
                 {data.todayEvents
                   .sort((a, b) => isPassed(a.start_at, b.start_at))
                   .map((event, index) => (
-                    <div key={event.id}>
+                    <div key={index}>
                       <EventCard event={event} />
                       {index !== data.todayEvents?.length - 1 ? (
                         <Separator color="transparent" />
@@ -67,7 +82,7 @@ const Home: NextPage = () => {
                   {data.events
                     .sort((a, b) => isPassed(a.start_at, b.start_at))
                     .map((event, index) => (
-                      <div key={event.id}>
+                      <div key={index}>
                         <EventItem
                           onClick={() =>
                             Router.push(`/events/details/${event.link}`)

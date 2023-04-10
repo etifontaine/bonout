@@ -1,29 +1,31 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import cookieCutter from "cookie-cutter";
 import Link from "next/link";
 import Image from "next/image";
 import { EyeIcon, EyeOffIcon } from "@heroicons/react/outline";
-import { getUserID } from "src/utils/user";
-import LoginModal from "./LoginModal";
 import { useRouter } from "next/router";
 import { BoNotification } from "@src/types";
 import Modal from "./Modal";
+import LoginModal from "./LoginModal";
 import NotificationList from "./NotificationList";
+import { ManagedUI } from "@src/context/UIContext";
 
 export default function Header() {
-  const [user, setUser] = useState("");
-  const [isLoginVisible, setLoginVisible] = useState(false);
   const [isUserIDVisible, setUserIDVisible] = useState(false);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const [notifications, setNotifications] = useState<Array<BoNotification>>([]);
   const [openNotifModal, setNotifModal] = useState(false);
+  const { setOpenModal, user, setUser } = useContext(ManagedUI);
 
   const router = useRouter();
 
   useEffect(() => {
-    const userData = localStorage.getItem("user");
-    const userDataParsed = userData ? JSON.parse(userData) : null;
+    const user = cookieCutter.get("bonout-user");
+    const userDataParsed = user ? JSON.parse(user) : null;
     if (userDataParsed) {
-      setUser(userDataParsed.id);
+      setUser(userDataParsed);
+    } else {
+      setOpenModal(true);
     }
   }, []);
 
@@ -56,7 +58,9 @@ export default function Header() {
     return (
       <div className="flex items-center">
         <span className="mr-1">Utilisateur:</span>
-        <span>{isUserIDVisible ? user : "**********"}</span>
+        <span>
+          {isUserIDVisible ? `${user["id"]} - ${user["name"]}` : "**********"}
+        </span>
         <button
           onClick={() => setUserIDVisible(!isUserIDVisible)}
           aria-label="Toggle Identifiant"
@@ -86,12 +90,9 @@ export default function Header() {
           onClick={() => setNotifModal(false)}
         />
       </Modal>
-      <LoginModal
-        isVisible={isLoginVisible}
-        setLoginVisible={setLoginVisible}
-      />
+      <LoginModal />
       <nav className="fixed flex items-center justify-between py-6 w-full lg:px-48 md:px-12 px-4 content-center bg-secondary z-10 mb-40">
-        <Link href={user.length > 0 ? "/home" : "/"}>
+        <Link href={user ? "/home" : "/"}>
           <Image
             alt="logo"
             src="/images/logo.svg"
@@ -103,7 +104,7 @@ export default function Header() {
         <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
           <div className="hidden sm:block sm:ml-6">
             <div className="flex space-x-4">
-              {user.length > 0 ? (
+              {user ? (
                 <>
                   <div className="text-gray-600 px-3 py-2 mr-10 rounded-md font-small inline">
                     {toggleUserID(user)}
@@ -116,7 +117,7 @@ export default function Header() {
                   </Link>
                 </>
               ) : (
-                <button onClick={() => setLoginVisible(true)} className="mr-6">
+                <button onClick={() => setOpenModal(true)} className="mr-6">
                   Se connecter
                 </button>
               )}
@@ -201,7 +202,7 @@ export default function Header() {
           <li className="my-6">
             <Link href="/events/create">Créer un événement</Link>
           </li>
-          {user.length > 0 ? (
+          {user ? (
             <>
               <li className="my-6">
                 <Link href="/home" onClick={() => setShowMobileMenu(false)}>
@@ -211,7 +212,7 @@ export default function Header() {
               <li className="my-6">{toggleUserID(user)}</li>
             </>
           ) : (
-            <button onClick={() => setLoginVisible(true)} className="mr-6">
+            <button onClick={() => setOpenModal(true)} className="mr-6">
               Se connecter
             </button>
           )}

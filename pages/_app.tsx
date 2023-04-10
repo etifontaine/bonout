@@ -6,6 +6,7 @@ import "react-loading-skeleton/dist/skeleton.css";
 import "react-toastify/dist/ReactToastify.css";
 import Head from "next/head";
 import { Analytics } from "@vercel/analytics/react";
+import { ManagedUIProvider } from "@src/context/UIContext";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
@@ -27,7 +28,9 @@ function MyApp({ Component, pageProps }: AppProps) {
         pauseOnHover
       ></ToastContainer>
       <NextNprogress color="#000000" />
-      <Component {...pageProps} />
+      <ManagedUIProvider>
+        <Component {...pageProps} />
+      </ManagedUIProvider>
       <Analytics />
     </>
   );

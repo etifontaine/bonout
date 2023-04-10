@@ -1,6 +1,5 @@
 import React from "react";
 import { BoEvent, BoInvitationValidResponse } from "../../src/types";
-import type { BoInvitationResponse } from "../../src/types";
 import Router from "next/router";
 
 export default function EventCard({ event, ...props }: { event: BoEvent }) {
@@ -15,6 +14,8 @@ export default function EventCard({ event, ...props }: { event: BoEvent }) {
     } else if (hours > 0) {
       const minutesFormated = ("0" + minutes).slice(-2);
       return `Dans ${hours}h${minutesFormated}`;
+    } else if (hours < 0) {
+      return "Terminé";
     }
     return "En cours";
   }

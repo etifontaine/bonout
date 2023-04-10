@@ -1,20 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import type { NextPage } from "next";
 import Link from "next/link";
 import Router from "next/router";
 import Head from "next/head";
-import Skeleton from "react-loading-skeleton";
 import Header from "@components/Header";
 import ModalInvitation from "@components/Invitation/Modal";
 import type { IModal } from "@components/Invitation/Modal";
 import GuestListModal from "@components/GuestListModal";
 import { BoEvent, BoInvitationValidResponse } from "src/types";
-import { getUserName } from "src/utils/user";
 import AddCalendarModal from "@components/AddCalendarModal";
 import Modal from "@components/Modal";
-import Loader from "@components/Loader";
-import { useRouter } from "next/router";
-import useSWR, { mutate } from "swr";
 
 const DeleteModal = Modal;
 import {
@@ -27,27 +22,38 @@ import {
   TrashIcon,
 } from "@heroicons/react/outline";
 import logger from "@src/logger";
-import { toast } from "react-toastify";
 import { fetcher } from "@src/utils/fetcher";
-import { format, parse, parseISO } from "date-fns";
+import { format, parseISO } from "date-fns";
+import { ManagedUI } from "@src/context/UIContext";
+import { getEventByLink } from "@src/events";
 
-const EventDetails: NextPage = () => {
-  const { query } = useRouter();
+export async function getServerSideProps(context) {
+  const event = await getEventByLink(context.params.link);
+  return {
+    props: {
+      event,
+    },
+  };
+}
+
+const EventDetails: NextPage = (props: any) => {
   const [userInvitationResponseValue, setUserInvitationResponseValue] =
     useState<string>();
-
   const [modalContent, setModal] = useState<IModal | null>(null);
   const [isGuestListVisible, setGuestListVisible] = useState(false);
   const [isDeleteModalVisible, setDeleteModalVisible] = useState(false);
   const [isAddCalendarVisible, setAddCalendarVisible] = useState(false);
   const [isInvitationOpen, setInvitationOpen] = useState(false);
+  const [isOrganizer, setIsOrganizer] = useState(false);
+  const { user } = useContext(ManagedUI);
 
-  const { data, error, isLoading } = useSWR(
-    `/api/events/${query.link}`,
-    fetcher
-  );
+  const data = props.event;
 
-  const isOrganizer = getUserName() === data?.user.name;
+  useEffect(() => {
+    if (user) {
+      setIsOrganizer(user.name === data?.user.name);
+    }
+  }, [user]);
 
   const setResponse = (
     userResponse: BoInvitationValidResponse,
@@ -63,7 +69,7 @@ const EventDetails: NextPage = () => {
         .share({
           title: event.title,
           text: event.description,
-          url: event.link,
+          url: `${window.location.host}/events/details/${event.link}`,
         })
         .catch((error) => logger.error({ message: "Error sharing", error }));
     }
@@ -137,19 +143,7 @@ const EventDetails: NextPage = () => {
       {/*  Site header */}
       <Header />
       <section className="pt-24 md:mt-0 h-screen flex justify-center md:flex-row md:justify-between lg:px-48 md:px-12 px-4 bg-secondary">
-        {isLoading && (
-          <div className="absolute top-0 left-0 right-0 bottom-0">
-            <Loader />
-          </div>
-        )}
-
-        <div
-          className={
-            "md:max-w-3xl mx-auto w-full text-left" +
-            " " +
-            (isLoading ? "filter blur-sm pointer-events-none" : null)
-          }
-        >
+        <div className={"md:max-w-3xl mx-auto w-full text-left"}>
           <div className="py-5 sm:px-4 grid grid-cols-5">
             <div className="col-span-4">
               <h3 className="text-lg leading-6 font-medium text-gray-900">
@@ -215,10 +209,9 @@ const EventDetails: NextPage = () => {
               <div className="text-sm font-medium text-gray-500">Lien</div>
               <div className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2 flex items-center">
                 <LinkIcon className="block h-3 w-3 mr-2" aria-hidden="true" />
-                <button
-                  className="underline"
-                  onClick={() => shareEvent(data)}
-                >{`${window.location.host}/events/details/${data.link}`}</button>
+                <button className="underline" onClick={() => shareEvent(data)}>
+                  Partager
+                </button>
               </div>
             </div>
             <div className="py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">

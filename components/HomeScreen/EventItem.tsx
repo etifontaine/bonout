@@ -1,6 +1,6 @@
 import React from "react";
 import type { BoEvent } from "@src/types";
-import { format, parseISO } from "date-fns";
+import { format, parse, parseISO } from "date-fns";
 import { fr } from "date-fns/locale";
 
 export default function EventItem({
@@ -13,8 +13,8 @@ export default function EventItem({
   function MiniCalandar({ date }: { date: string }) {
     return (
       <div className="bg-white overflow-hidden shadow-lg w-12 h-12 border-black border-2 border-solid text-right leading-none p-2">
-        <div>{format(parseISO(date), "dd")}</div>
-        <div className="">{format(parseISO(date), "LLL", { locale: fr })}</div>
+        <div>{format(new Date(date), "dd")}</div>
+        <div className="">{format(new Date(date), "LLL", { locale: fr })}</div>
       </div>
     );
   }

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import Script from "next/script";
 import Input from "../../Input";
 import type { TdefaultInputState, Tform, TinputsStaticProps } from "./types";
@@ -9,10 +9,10 @@ import {
   LocationSuggestions,
   withGooglePlacesAutocomplete,
 } from "./LocationSuggestions";
+import { ManagedUI } from "@src/context/UIContext";
 
 import type { suggestion } from "./LocationSuggestions";
 import { BoEvent } from "src/types";
-import { getUserName } from "@src/utils/user";
 
 const GMapsLocationSuggestions =
   withGooglePlacesAutocomplete(LocationSuggestions);
@@ -32,6 +32,7 @@ export function Form(props: {
   ) => void;
   event?: BoEvent;
 }) {
+  const { user } = useContext(ManagedUI);
   const [form, setForm] = useState(
     props.event
       ? {
@@ -70,8 +71,8 @@ export function Form(props: {
       : ({
           userName: {
             ...defaultInputState,
-            value: getUserName() || "",
-            isValid: getUserName() ? true : false,
+            value: user ? user.name : "",
+            isValid: user ? true : false,
           },
           name: defaultInputState,
           description: defaultInputState,

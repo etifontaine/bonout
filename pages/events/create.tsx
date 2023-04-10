@@ -1,18 +1,23 @@
 import type { NextPage } from "next";
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Header from "@components/Header";
 import { toast } from "react-toastify";
 import { Form } from "@components/CreateEvent/Form/Form";
 import type { Tform } from "@components/CreateEvent/Form/types";
 import Loader from "@components/Loader";
 import { useRouter } from "next/router";
-import ShortUniqueId from "short-unique-id";
 import { fetcher } from "@src/utils/fetcher";
-import { getUserID } from "@src/utils/user";
+import { ManagedUI } from "@src/context/UIContext";
 
 const Add: NextPage = () => {
   const { push } = useRouter();
   const [isLoading, setIsLoading] = useState(false);
+  const { setOpenModal, user, setUser } = useContext(ManagedUI);
+
+  useEffect(() => {
+    !user ? setOpenModal(true) : setOpenModal(false);
+  }, [user]);
+
   return (
     <>
       <Header />
@@ -48,7 +53,6 @@ const Add: NextPage = () => {
       toast.error("Il y a des erreurs dans le formulaire");
       return;
     }
-
     setIsLoading(true);
     fetcher(`/api/events`, {
       method: "POST",
@@ -58,18 +62,14 @@ const Add: NextPage = () => {
         end_at: Date.parse(endAt.value),
         address: location.value,
         description: description.value,
-        user_id: getUserID(),
+        user_id: user.id,
         user_name: userName.value,
       }),
     })
       .then((data) => {
-        localStorage.setItem(
-          "user",
-          JSON.stringify({
-            id: getUserID(),
-            name: userName.value,
-          })
-        );
+        if (userName.value !== user.name) {
+          setUser({ id: user.id, name: userName.value });
+        }
         setIsLoading(false);
         push("/home");
       })

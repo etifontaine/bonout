@@ -1,22 +1,18 @@
-import { Fragment, useState } from "react";
+import { Fragment, useContext, useState } from "react";
 import Router from "next/router";
 import { Dialog, Transition } from "@headlessui/react";
 import { LockOpenIcon } from "@heroicons/react/outline";
 import { toast } from "react-toastify";
 import { fetcher } from "@src/utils/fetcher";
-interface IModal {
-  isVisible: boolean;
-  setLoginVisible: any;
-}
+import { ManagedUI } from "@src/context/UIContext";
+
 interface IModalForm {
   user_id: string;
 }
 
-export default function InvitationModal({
-  isVisible,
-  setLoginVisible,
-}: IModal) {
+export default function InvitationModal() {
   const [formContent, setFormContent] = useState<IModalForm>();
+  const { setOpenModal, openModal, setUser } = useContext(ManagedUI);
 
   const postInvitationResponse = async () => {
     if (!formContent?.user_id) {
@@ -28,19 +24,13 @@ export default function InvitationModal({
     const userData = await fetcher(`/api/users?user_id=${formContent.user_id}`);
 
     if (userData) {
-      localStorage.setItem(
-        "user",
-        JSON.stringify({
-          id: userData.password,
-          name: userData.name,
-        })
-      );
+      setUser({ id: userData.password, name: userData.name });
     }
-    Router.push("/home");
+    setOpenModal(false);
   };
 
   return (
-    <Transition.Root show={isVisible} as={Fragment}>
+    <Transition.Root show={openModal} as={Fragment}>
       <Dialog
         as="div"
         className="fixed z-40 inset-0 overflow-y-auto"
@@ -137,7 +127,7 @@ export default function InvitationModal({
                 <button
                   type="button"
                   className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
-                  onClick={() => setLoginVisible(false)}
+                  onClick={() => setOpenModal(false)}
                 >
                   Annuler
                 </button>

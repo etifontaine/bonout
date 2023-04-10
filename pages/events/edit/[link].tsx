@@ -8,10 +8,12 @@ import Loader from "@components/Loader";
 import Link from "next/link";
 import useSWR from "swr";
 import { fetcher } from "@src/utils/fetcher";
-import { getUserName } from "@src/utils/user";
+import { ManagedUI } from "@src/context/UIContext";
+import { useContext } from "react";
 
 const EditEvent: NextPage = () => {
   const { query, push } = useRouter();
+  const { user } = useContext(ManagedUI);
 
   const { data, error, isLoading } = useSWR(
     `/api/events/${query.link}`,
@@ -24,7 +26,7 @@ const EditEvent: NextPage = () => {
       {!isLoading && data && (
         <section className="pt-24 md:mt-0 h-screen flex justify-center md:flex-row md:justify-between lg:px-48 md:px-12 px-4 bg-secondary">
           <div className="md:max-w-3xl mx-auto w-full text-left">
-            {data?.user.name === getUserName() ? (
+            {data?.user.name === user.name ? (
               <>
                 <h1 className="text-3xl md:text-5xl font-extrabold leading-tighter tracking-tighter mb-4 mt-5">
                   Modification de l'événement
