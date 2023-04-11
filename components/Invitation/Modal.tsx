@@ -5,6 +5,7 @@ import { toast } from "react-toastify";
 import { BoInvitationValidResponse, BoEvent } from "../../src/types";
 import Modal from "@components/Modal";
 import { ManagedUI } from "@src/context/UIContext";
+import Loader from "@components/Loader";
 
 export interface IModal {
   event: BoEvent;
@@ -90,6 +91,11 @@ export default function InvitationModal({
             : "Veuillez confirmer indiquer votre nom ou pseudo pour confirmer votre choix",
       }}
     >
+      {isLoading && (
+        <div className="absolute top-0 left-0 right-0 bottom-0">
+          <Loader />
+        </div>
+      )}
       <form
         className="bg-white pt-6 pb-8"
         onSubmit={(e) => {
@@ -120,32 +126,6 @@ export default function InvitationModal({
             placeholder="Nom"
           />
         </div>
-        {/* {!localStorage.getItem("user") ? (
-          <div className="mb-4">
-            <label
-              className="block text-gray-700 text-sm font-bold mb-2"
-              htmlFor="user_id"
-            >
-              Mot de passe
-            </label>
-            <input
-              autoFocus={true}
-              autoComplete="on"
-              value={formContent?.password}
-              onChange={(e) => {
-                setFormContent({
-                  password: e.target.value,
-                  username: formContent?.username,
-                });
-              }}
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              id="password"
-              name="password"
-              type="password"
-              placeholder="Mot de passe"
-            />
-          </div>
-        ) : null} */}
       </form>
     </Modal>
   );
