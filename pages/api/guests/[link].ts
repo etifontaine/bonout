@@ -52,7 +52,6 @@ export default async function personHandler(
     }
     await prisma.guest.upsert({
       where: {
-        // @ts-ignore
         guestNameEvent: {
           eventId: event.id,
           userId: user.id,

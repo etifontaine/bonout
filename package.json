@@ -8,7 +8,8 @@
     "lint": "next lint",
     "prettier": "prettier --write **/*.{ts,tsx,js,md}",
     "test": "jest --watch",
-    "test:ci": "jest --runInBand"
+    "test:ci": "jest --runInBand",
+    "postinstall": "prisma generate"
   },
   "dependencies": {
     "@headlessui/react": "1.7.13",
