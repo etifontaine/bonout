@@ -1,0 +1,36 @@
+{
+    "head": {
+        "part1": "Bonout, organise tes",
+        "part2": "événements!",
+        "description": "Bonout t'aide à organiser ton prochain événement, gratuit et sans inscription!",
+        "create_event": "Créer un événement"
+    },
+    "howItWorks": {
+        "howDoesItWork": "Comment ça marche",
+        "create": "Crée",
+        "create_content": "Crée ton événement en quelques clics, sans inscription et gratuitement!",
+        "share": "Partage",
+        "share_content": "Envoi ton lien unique à tes amis pour les inviter.",
+        "organise": "Organise",
+        "organise_content": "Suis les réponses et commentaires pour finaliser ton organisation."
+    },
+    "features": {
+        "title": "Fonctionnalités",
+        "first": {
+            "title": "Prépare un événement",
+            "content": "Prépare ton événement en lui donnant un nom, une description, une date et un lieu. En quelques secondes tu pourras le partager à tout tes invités! Le tout sans inscription et gratuitement! Plus besoin d'avoir un compte sur chaque réseau social pour inviter tout le monde."
+        },
+        "second": {
+            "title": "Invitations",
+            "content": "Partage ton événement par messagerie, mail ou QRCode, grâce à ton lien unique! Seul les personnes avec ton lien pourront trouver ton événement."
+        },
+        "third": {
+            "title": "Vie privée & respect de l'utilisateur",
+            "content": "Ce sont des valeurs essentielles chez Bonout. Nous n'avons pas de trackers ou cookies sur le site, car il n'y en a pas besoin pour vous laisser organiser vos événements dans de bonnes conditions."
+        },
+        "fourth": {
+            "title": "Organisation",
+            "content": "Tu peux gérer tout ton événement depuis Bonout! Invite tes amis, utilise les commentaires pour communiquer avec eux et créer des listes pour vous organiser."
+        }
+    }
+}

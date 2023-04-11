@@ -1,0 +1,24 @@
+name: Jest tests
+
+on: [pull_request]
+
+jobs:
+  jest-tests:
+    name: Jest test:ci
+    runs-on: ubuntu-20.04
+    steps:
+    - uses: actions/checkout@v3
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 16
+        cache: 'npm'
+    - name: npm ci
+      run: npm ci
+    - name: run build
+      run: npm run build
+      env:
+        DB_ENV: staging
+    - name: run test:ci
+      run: npm run test:ci
+      env:
+        DB_ENV: staging
