@@ -16,37 +16,25 @@ function HeroHome() {
           </span>
         </h1>
         <p className="font-pt-serif font-normal mb-7">
-          Bonout t'aide à organiser ton prochain événement, gratuit et sans inscription!
+          Bonout t'aide à organiser ton prochain événement, gratuit et sans
+          inscription!
         </p>
         <div className="font-montserrat">
-          <Link legacyBehavior href="/events/create">
-            <a className="bg-black px-6 py-4 rounded-lg border-2 border-black border-solid text-white mr-2 mb-2">
-              Créer un événement
-            </a>
+          <Link
+            href="/events/create"
+            className="bg-black px-6 py-4 rounded-lg border-2 border-black border-solid text-white mr-2 mb-2"
+          >
+            Créer un événement
           </Link>
         </div>
       </div>
       <div className="flex justify-around md:block mt-8 md:mt-0 md:flex-1">
-        <div className="relative">
-          <img
-            src="/images/Highlight1.svg"
-            alt="Highlight1"
-            className="absolute -top-16 -left-10"
-          />
-        </div>
-        <img
+        <Image
           src={`/images/iphone-fr.png`}
           height="438"
           width="219"
           alt="iPhone"
         />
-        <div className="relative">
-          <img
-            src="/images/Highlight2.svg"
-            alt="Highlight2"
-            className="absolute -bottom-10 left-52"
-          />
-        </div>
       </div>
     </section>
   );

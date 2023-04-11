@@ -3,6 +3,7 @@ import { CalendarIcon } from "@heroicons/react/outline";
 import { BoEvent } from "@src/types";
 import { useState, useEffect } from "react";
 import Image from "next/image";
+import * as FileSaver from "file-saver";
 import {
   ICalendar,
   OutlookCalendar,
@@ -50,7 +51,12 @@ export default function AddCalendarModal(props: props) {
     if (service === "Apple" || service === "Autre") {
       const cal = new ICalendar(config);
       setIsOpen(false);
-      cal.download();
+      const ics = cal.render();
+      const blob = new Blob([ics], {
+        type: "text/calendar",
+      });
+
+      FileSaver.saveAs(blob, `${props.event.title}.ics`);
     }
 
     function renderAndOpen(

@@ -10,6 +10,7 @@ import GuestListModal from "@components/GuestListModal";
 import { BoEvent, BoInvitationValidResponse } from "src/types";
 import AddCalendarModal from "@components/AddCalendarModal";
 import Modal from "@components/Modal";
+import { parse } from "cookie";
 
 const DeleteModal = Modal;
 import {
@@ -29,9 +30,20 @@ import { getEventByLink } from "@src/events";
 
 export async function getServerSideProps(context) {
   const event = await getEventByLink(context.params.link);
+  const cookies = context.req.headers.cookie;
+  let isOrganizer = false;
+  if (cookies) {
+    const parsedCookie = parse(cookies);
+    const userPayload = parsedCookie["bonout-user"];
+    if (userPayload) {
+      const user = JSON.parse(userPayload);
+      isOrganizer = user.name === event.user.name;
+    }
+  }
   return {
     props: {
       event,
+      isOrganizer,
     },
   };
 }
@@ -44,16 +56,9 @@ const EventDetails: NextPage = (props: any) => {
   const [isDeleteModalVisible, setDeleteModalVisible] = useState(false);
   const [isAddCalendarVisible, setAddCalendarVisible] = useState(false);
   const [isInvitationOpen, setInvitationOpen] = useState(false);
-  const [isOrganizer, setIsOrganizer] = useState(false);
-  const { user } = useContext(ManagedUI);
 
   const data = props.event;
-
-  useEffect(() => {
-    if (user) {
-      setIsOrganizer(user.name === data?.user.name);
-    }
-  }, [user]);
+  const isOrganizer = props.isOrganizer;
 
   const router = useRouter();
   const refreshData = () => {

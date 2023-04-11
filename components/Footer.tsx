@@ -20,13 +20,14 @@ function Footer() {
         © 2023 Bonout. Tout droits réservés
       </div>
       <div className="text-white font-montserrat text-xs mt-5">
-        Bonout souhaite devenir la référence mondial pour organiser les événements privés, en respectant la vie privée.
+        Bonout souhaite devenir la référence mondial pour organiser les
+        événements privés, en respectant la vie privée.
       </div>
       <div className="text-white font-montserrat text-sm mt-10 w-full	flex flex-col md:flex-row justify-evenly">
-        <Link legacyBehavior href={`privacy`}>
-          <a className="mr-10 mb-5">Politique de confidentialité</a>
+        <Link className="mr-10 mb-5" href="/privacy">
+          Politique de confidentialité
         </Link>
-        <Link legacyBehavior href={`terms`}>Conditions générales d'utilisation</Link>
+        <Link href="/terms">Conditions générales d'utilisation</Link>
       </div>
     </footer>
   );

@@ -74,6 +74,7 @@ export default function InvitationModal({
         body: JSON.stringify({
           response: userResponse,
           name: formContent.username,
+          id: formContent.password,
         }),
       });
       if (update.status < 400) {
