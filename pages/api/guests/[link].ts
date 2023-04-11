@@ -22,7 +22,6 @@ export default async function personHandler(
         password: data.id,
       },
     });
-
     if (user && user.name !== data.name) {
       await prisma.user.update({
         where: {
@@ -51,8 +50,19 @@ export default async function personHandler(
         return res.status(400).json({ message: "error", error: e.message });
       }
     }
-    await prisma.guest.create({
-      data: {
+    await prisma.guest.upsert({
+      where: {
+        // @ts-ignore
+        guestNameEvent: {
+          eventId: event.id,
+          userId: user.id,
+        },
+      },
+      update: {
+        name: data.name,
+        response: data.response,
+      },
+      create: {
         name: data.name,
         response: data.response,
         eventId: event.id,
@@ -61,22 +71,5 @@ export default async function personHandler(
     });
 
     return res.status(201).json({ message: "ok" });
-  } else if (req.method === "PUT") {
-    const data = JSON.parse(req.body);
-    let user = await prisma.user.findFirst({
-      where: {
-        password: data.id,
-      },
-    });
-    await prisma.guest.update({
-      where: {
-        id: user.id,
-      },
-      data: {
-        response: data.response,
-      },
-    });
-
-    return res.status(200).json({ message: "ok" });
   }
 }

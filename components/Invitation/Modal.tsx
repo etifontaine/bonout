@@ -44,45 +44,25 @@ export default function InvitationModal({
       return;
     }
     setIsLoading(true);
-
-    const hasInvitation = event.guests.all.find(
-      (i) => i.name === formContent.username
-    );
-
-    if (!hasInvitation) {
-      let addGuest = await fetch(`/api/guests/${event.link}`, {
-        method: "POST",
-        body: JSON.stringify({
-          response: userResponse,
-          name: formContent.username,
-          id: formContent.password,
-        }),
-      });
-      addGuest = await addGuest.json();
-      if (addGuest["error"] === "User already exists") {
-        toast.error("Ce nom et ce mot de passe sont déjà utilisés");
-      }
-      if (addGuest.status < 400) {
-        setInvitationOpen(false);
-        Router.push(`/home`);
-      } else {
-        setInvitationOpen(true);
-      }
-    } else {
-      let update = await fetch(`/api/guests/${event.link}`, {
-        method: "PUT",
-        body: JSON.stringify({
-          response: userResponse,
-          name: formContent.username,
-          id: formContent.password,
-        }),
-      });
-      if (update.status < 400) {
-        setInvitationOpen(false);
-      } else {
-        setInvitationOpen(true);
-      }
+    let response = await fetch(`/api/guests/${event.link}`, {
+      method: "POST",
+      body: JSON.stringify({
+        response: userResponse,
+        name: formContent.username,
+        id: formContent.password,
+      }),
+    });
+    const addGuest = await response.json();
+    if (addGuest["error"] === "User already exists") {
+      toast.error("Ce nom et ce mot de passe sont déjà utilisés");
     }
+    if (response.status < 400) {
+      setInvitationOpen(false);
+      Router.push(`/home`);
+    } else {
+      setInvitationOpen(true);
+    }
+
     setIsLoading(false);
   };
   return (
