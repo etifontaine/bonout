@@ -63,9 +63,14 @@ export default async function personHandler(
     return res.status(201).json({ message: "ok" });
   } else if (req.method === "PUT") {
     const data = JSON.parse(req.body);
+    let user = await prisma.user.findFirst({
+      where: {
+        password: data.id,
+      },
+    });
     await prisma.guest.update({
       where: {
-        name: data.name,
+        id: user.id,
       },
       data: {
         response: data.response,
