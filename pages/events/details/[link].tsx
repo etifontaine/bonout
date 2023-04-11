@@ -115,7 +115,6 @@ const EventDetails: NextPage = (props: any) => {
   if (!data) {
     return null;
   }
-
   return (
     <>
       <Head>
