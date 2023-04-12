@@ -1,6 +1,9 @@
 {
   "name": "bonout",
   "private": true,
+  "engines" : {
+    "node" : ">=16.15.0"
+  },
   "scripts": {
     "dev": "next dev -p 8080",
     "build": "next build",
@@ -25,6 +28,7 @@
     "next": "13.3.0",
     "nextjs-progressbar": "0.0.16",
     "pino": "8.11.0",
+    "qrcode": "^1.5.1",
     "react": "18.2.0",
     "react-cool-onclickoutside": "1.7.0",
     "react-dom": "18.2.0",
