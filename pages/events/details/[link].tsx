@@ -242,7 +242,7 @@ const EventDetails: NextPage = (props: any) => {
                   Partager
                 </button>
                 <span>&nbsp;ou&nbsp;</span>
-                <button className="underline" onClick={() => showQrCode()}>
+                <button className="underline" onClick={showQrCode}>
                   Partager via un QR code
                 </button>
               </div>
