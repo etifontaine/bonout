@@ -92,7 +92,7 @@ const EventDetails: NextPage = (props: any) => {
     }
   };
 
-  const showQrCode = (event: BoEvent) => {
+  const showQrCode = () => {
     setQrCodeVisible(true);
   };
 
@@ -242,7 +242,7 @@ const EventDetails: NextPage = (props: any) => {
                   Partager
                 </button>
                 <span>&nbsp;ou&nbsp;</span>
-                <button className="underline" onClick={() => showQrCode(data)}>
+                <button className="underline" onClick={() => showQrCode()}>
                   Partager via un QR code
                 </button>
               </div>
