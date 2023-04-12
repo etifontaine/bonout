@@ -27,6 +27,7 @@ import { fetcher } from "@src/utils/fetcher";
 import { format, parseISO } from "date-fns";
 import { ManagedUI } from "@src/context/UIContext";
 import { getEventByLink } from "@src/events";
+import QRCodeModal from "@components/QRCodeModal";
 
 export async function getServerSideProps(context) {
   const event = await getEventByLink(context.params.link);
@@ -44,6 +45,7 @@ export async function getServerSideProps(context) {
     props: {
       event,
       isOrganizer,
+      resolvedUrl: context.resolvedUrl,
     },
   };
 }
@@ -56,9 +58,11 @@ const EventDetails: NextPage = (props: any) => {
   const [isDeleteModalVisible, setDeleteModalVisible] = useState(false);
   const [isAddCalendarVisible, setAddCalendarVisible] = useState(false);
   const [isInvitationOpen, setInvitationOpen] = useState(false);
+  const [isQrCodeVisible, setQrCodeVisible] = useState(false);
 
   const data = props.event;
   const isOrganizer = props.isOrganizer;
+  const resolvedUrl = props.resolvedUrl;
 
   const router = useRouter();
   const refreshData = () => {
@@ -82,10 +86,18 @@ const EventDetails: NextPage = (props: any) => {
         .share({
           title: event.title,
           text: event.description,
-          url: `/events/details/${event.link}`,
+          url: resolvedUrl,
         })
         .catch((error) => logger.error({ message: "Error sharing", error }));
     }
+  };
+
+  const showQrCode = () => {
+    setQrCodeVisible(true);
+  };
+
+  const hideQrCode = () => {
+    setQrCodeVisible(false);
   };
 
   const openAddress = (event: BoEvent) => {
@@ -151,6 +163,11 @@ const EventDetails: NextPage = (props: any) => {
         isVisible={isGuestListVisible}
         setGuestListVisible={setGuestListVisible}
         guests={data.guests}
+      />
+      <QRCodeModal
+        isVisible={isQrCodeVisible}
+        url={`${process.env.NEXT_PUBLIC_BASE_URL}${resolvedUrl}`}
+        onClose={hideQrCode}
       />
       {/*  Site header */}
       <Header />
@@ -223,6 +240,10 @@ const EventDetails: NextPage = (props: any) => {
                 <LinkIcon className="block h-3 w-3 mr-2" aria-hidden="true" />
                 <button className="underline" onClick={() => shareEvent(data)}>
                   Partager
+                </button>
+                <span>&nbsp;ou&nbsp;</span>
+                <button className="underline" onClick={showQrCode}>
+                  Partager via un QR code
                 </button>
               </div>
             </div>

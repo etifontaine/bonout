@@ -48,3 +48,7 @@ yarn.lock
 bonout-web-app-sa.json
 
 .env
+
+# IDE
+.vscode
+.idea
